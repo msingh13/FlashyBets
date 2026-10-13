@@ -53,6 +53,7 @@ jobs:
       - name: Update schedules, predictions and results
         working-directory: backend
         env:
+          FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
           MODEL_STATE: ${{ runner.temp }}/flashybets-state/model-state.json
           PUBLISH_DIR: ../frontend/public/data
         run: python publish.py
