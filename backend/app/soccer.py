@@ -1,5 +1,5 @@
 """Champions League 90-minute markets; never settle from extra-time or penalties."""
-import math,os
+import asyncio,math,os
 from datetime import datetime,timezone
 import httpx
 from . import providers,store
@@ -29,7 +29,7 @@ def regular_score(match):
 
 async def live_games(day):
     token=os.getenv('FOOTBALL_DATA_TOKEN')
-    if not token:raise ValueError('Champions League needs FOOTBALL_DATA_TOKEN from football-data.org; no live forecasts are fabricated.')
+    if not token:return await espn_games(day)
     year=int(day[:4])-(int(day[5:7])<7)
     cached=CACHE.get(year)
     if cached and (datetime.now(timezone.utc)-cached[0]).total_seconds()<600:matches=cached[1]
@@ -37,6 +37,9 @@ async def live_games(day):
         async with httpx.AsyncClient(timeout=25) as client:
             body=await providers.get(client,'https://api.football-data.org/v4/competitions/CL/matches',{'season':year},headers={'X-Auth-Token':token})
         matches=body.get('matches',[]);CACHE[year]=(datetime.now(timezone.utc),matches)
+    return rows_from_matches(matches,day,'football-data.org · Champions League','https://www.football-data.org/')
+
+def rows_from_matches(matches,day,source,source_url):
     rows=[]
     for m in matches:
         if providers.localday(m['utcDate'])!=day:continue
@@ -57,7 +60,7 @@ async def live_games(day):
             home_score=score[0] if state=='post' else None,away_score=score[1] if state=='post' else None,
             home_rate=(hf+aa)/2+.10,away_rate=max(.1,(af+ha)/2-.10),sample_sizes={'home':hn,'away':an},
             line=None,home_odds=None,away_odds=None,draw_odds=None,over_odds=None,under_odds=None,btts_yes_odds=None,btts_no_odds=None,
-            source='football-data.org · Champions League',source_url='https://www.football-data.org/',odds_source=None,odds_updated=None,
+            source=source,source_url=m.get('source_url') or source_url,odds_source=None,odds_updated=None,
             rates_source='Prior completed Champions League 90-minute scores; 10-match prior at 1.5 goals per team',rates_asof=store.now(),
             home_starters=[],away_starters=[],lineup_source='Confirmed starting XIs unavailable',injuries={'home':[],'away':[]},injuries_checked=False,injuries_asof=None,
             injuries_source='Injury coverage unavailable',travel={'home':{'km':None,'rest_hours':None,'from':None,'method':'Unavailable'},'away':{'km':None,'rest_hours':None,'from':None,'method':'Unavailable'}},
@@ -65,3 +68,44 @@ async def live_games(day):
             provider_errors=['Starting XIs, injuries, domestic form, travel and weather are not supplied by this adapter. Baseline only.'])
         rows.append(g)
     return rows
+
+
+ESPN_CACHE={}
+
+def espn_match(event):
+    """Normalize only unambiguous regulation finals; ET/shootout scores never settle."""
+    c=event['competitions'][0];status=c['status']['type']
+    teams={t['homeAway']:t for t in c['competitors']};h,a=teams['home'],teams['away']
+    final=status.get('completed') and status.get('name')=='STATUS_FULL_TIME' and c['status'].get('period',2)<=2
+    state='FINISHED' if final else 'TIMED' if status.get('state')=='pre' else 'IN_PLAY' if status.get('state')=='in' else 'UNAVAILABLE'
+    def team(t):
+        value=t['team'];return {'id':str(value['id']),'name':value['displayName'],'tla':value.get('abbreviation'),'shortName':value.get('shortDisplayName',value['displayName'])}
+    def goals(t):
+        score=t.get('score');return int(score['value'] if isinstance(score,dict) else score) if final else None
+    return {'id':'espn-'+str(event['id']),'utcDate':event['date'],'status':state,'homeTeam':team(h),'awayTeam':team(a),
+        'venue':c.get('venue',{}).get('fullName'),'score':{'duration':'REGULAR','fullTime':{'home':goals(h),'away':goals(a)}},
+        'source_url':next((l['href'] for l in event.get('links',[]) if 'desktop' in l.get('rel',[])), 'https://www.espn.com/soccer/scoreboard/_/league/uefa.champions')}
+
+async def espn_games(day):
+    base=providers.BASE+'soccer/uefa.champions/'
+    season=int(day[:4])-(int(day[5:7])<7)
+    async with httpx.AsyncClient(timeout=25) as client:
+        body=await providers.get(client,base+'scoreboard',{'dates':day.replace('-','')})
+        events=body.get('events',[])
+        ids={str(t['team']['id']) for e in events for t in e['competitions'][0]['competitors']}
+        semaphore=asyncio.Semaphore(4)
+        async def history(team):
+            key=(season,team);cached=ESPN_CACHE.get(key)
+            if cached and (datetime.now(timezone.utc)-cached[0]).total_seconds()<600:return cached[1]
+            async with semaphore:
+                data=await providers.get(client,base+f'teams/{team}/schedule',{'season':season})
+            rows=[espn_match(e) for e in data.get('events',[])]
+            ESPN_CACHE[key]=(datetime.now(timezone.utc),rows);return rows
+        # A failed historical fetch fails the update rather than quietly substituting made-up form.
+        histories=await asyncio.gather(*(history(t) for t in sorted(ids)))
+    matches={m['id']:m for group in histories for m in group}
+    matches.update({m['id']:m for m in map(espn_match,events)})
+    rows=rows_from_matches(list(matches.values()),day,'ESPN public Champions League feed','https://www.espn.com/soccer/scoreboard/_/league/uefa.champions')
+    # Team schedules can contain other dates; publish only the requested scoreboard's fixtures.
+    event_ids={'espn-'+str(e['id']) for e in events}
+    return [g for g in rows if g['id'] in event_ids]
