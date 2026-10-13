@@ -67,6 +67,7 @@ def test_keyless_soccer_uses_real_history_without_future_leakage(monkeypatch):
     assert len(rows)==1 and g['id']=='espn-1' and g['state']=='pre'
     assert g['sample_sizes']=={'home':1,'away':1}
     assert g['home_rate']==pytest.approx(17/11+.1)
+    assert g['domestic_form']['home']['samples']==0
     assert g['source']=='ESPN public Champions League feed'
     assert g['home_odds'] is None and not g['injuries_checked']
 
@@ -80,3 +81,13 @@ def test_keyless_empty_day_and_provider_failure(monkeypatch):
     async def failed(*args,**kwargs):raise ValueError('Unavailable')
     monkeypatch.setattr(soccer.providers,'get',failed)
     with pytest.raises(ValueError):asyncio.run(soccer.live_games('2026-10-15'))
+
+
+def test_lineups_require_event_team_and_eleven_unique_starters():
+    from app.soccer import attach_lineups
+    g={'id':'espn-1','home_id':'h','away_id':'a','home_starters':[],'away_starters':[]}
+    roster={'homeAway':'home','team':{'id':'h'},'roster':[{'starter':True,'athlete':{'id':str(i),'displayName':str(i)}} for i in range(11)]}
+    attach_lineups(g,{'header':{'id':'wrong'},'rosters':[roster]});assert not g['home_starters']
+    attach_lineups(g,{'header':{'id':'1'},'rosters':[roster]});assert len(g['home_starters'])==11
+    g['home_starters']=[];roster['roster'][0]['athlete']['id']='1'
+    attach_lineups(g,{'header':{'id':'1'},'rosters':[roster]});assert not g['home_starters']
