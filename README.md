@@ -1,6 +1,6 @@
 # FlashyBets
 
-A daily NHL, NBA and NFL scorebook with transparent model probabilities, game context, an automatic model record and daily favorite cards. Next.js / TypeScript / Tailwind, FastAPI / Python, SQLite. MLB and soccer remain deferred.
+A daily NHL, NBA and NFL scorebook with transparent model probabilities, game context, an automatic model record and daily favorite cards. Next.js / TypeScript / Tailwind, FastAPI / Python, SQLite. Champions League adds 90-minute home/draw/away, totals and BTTS baselines. MLB remains deferred.
 
 ## GitHub deployment (current default)
 Read [GITHUB-PAGES.md](GITHUB-PAGES.md). The scheduled Pages version needs no running server. Python runs in GitHub Actions; the model-data branch preserves forecasts and results. The earlier static-demo/Render instructions below are alternative configurations.
@@ -98,4 +98,7 @@ The generated `out/` is a clearly labeled frozen demo. Only copy the contents in
 4. Add event correction/void settlement, backfill actual results for recorded forecasts, cancellation review, database migrations, quotas and alerting.
 5. Improve rolling evaluation and model governance; add uncertainty estimates, promotion logs and independent final holdouts.
 6. Create branded result cards for Discord/IG/TikTok; show market, price, prediction time, model version, source and settled result. No auto-posting is configured or authorized.
-7. Add MLB with pitcher/lineup/run models later. Soccer remains deferred.
+7. Add MLB with pitcher/lineup/run models later. Expand soccer only after validating the Champions League baseline.
+
+## Champions League setup
+Add FOOTBALL_DATA_TOKEN to the backend environment or GitHub Actions repository secrets. Obtain a token from football-data.org and check coverage/terms. Without it, the live UCL tab explicitly reports unavailable data. Use local demo mode for synthetic UCL fixtures. Soccer prices/EV remain unavailable until a licensed three-way and BTTS odds adapter is added. Regulation scoring is kept separate from extra time and penalties. Current UCL baseline uses prior Champions League results only; domestic form, confirmed lineups, injury effects and three-way calibration are next-phase work. Favorite summaries are generated directly from stored model inputs, with missing checks disclosed.

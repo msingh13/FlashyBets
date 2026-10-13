@@ -31,3 +31,6 @@ From frontend/: STATIC_EXPORT=1 NEXT_PUBLIC_PUBLISHED_DATA=1 NEXT_PUBLIC_BASE_PA
 The normal FastAPI app is still available for local development. Render config remains an optional future deployment, not an active paid service.
 
 References: https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages and https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule.
+
+## Champions League
+UCL uses football-data.org v4 competition CL matches. Add FOOTBALL_DATA_TOKEN under repository Settings → Secrets and variables → Actions, then run the publish workflow. Register for a token at https://www.football-data.org/client/register and confirm coverage/terms for your use. No key is included in the repository. Without a token the UCL tab explicitly displays unavailable data, never a demo disguised as live. Scores use regularTime when a match goes to extra time or penalties; missing regulation scores remain unsettled. ML is three-way (draw loses team ML); BTTS and totals use 90 minutes plus stoppage time. Baseline uses only prior UCL results, not domestic form or confirmed lineup impacts. UCL calibration is disabled until a separate three-way validation is implemented.
