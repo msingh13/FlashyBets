@@ -34,11 +34,11 @@ def history():
     return result
 @app.get('/api/tracker')
 def tracker(sport:Literal['nhl','nba','nfl','ucl']='nhl',mode:Literal['demo','live']='demo'):
-    from . import picks,learning
+    from . import picks,learning,validation
     if mode=='demo':service.seed_demo(sport,DB)
     result=store.ledger(sport,mode,DB)
     result['cards']=picks.settled_cards(sport,mode,DB)
-    result['learning']=learning.status(sport,mode,DB)
+    result['learning']=learning.status(sport,mode,DB);result['validation']=validation.report(sport,mode,DB)
     return result
 @app.get('/api/favorites')
 def favorites(day:Optional[date]=None,sport:Literal['nhl','nba','nfl','ucl']='nhl',mode:Literal['demo','live']='demo'):

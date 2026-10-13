@@ -98,14 +98,44 @@ async def espn_games(day):
             key=(season,team);cached=ESPN_CACHE.get(key)
             if cached and (datetime.now(timezone.utc)-cached[0]).total_seconds()<600:return cached[1]
             async with semaphore:
-                data=await providers.get(client,base+f'teams/{team}/schedule',{'season':season})
-            rows=[espn_match(e) for e in data.get('events',[])]
+                data=await providers.get(client,providers.BASE+f'soccer/all/teams/{team}/schedule',{'season':season})
+            rows=[]
+            for e in data.get('events',[]):
+                m=espn_match(e);m['league']=e.get('league',{}).get('slug','uefa.champions');m['league_name']=e.get('league',{}).get('name','Champions League');m['is_tournament']=e.get('league',{}).get('isTournament',True);rows.append(m)
             ESPN_CACHE[key]=(datetime.now(timezone.utc),rows);return rows
         # A failed historical fetch fails the update rather than quietly substituting made-up form.
         histories=await asyncio.gather(*(history(t) for t in sorted(ids)))
     matches={m['id']:m for group in histories for m in group}
     matches.update({m['id']:m for m in map(espn_match,events)})
-    rows=rows_from_matches(list(matches.values()),day,'ESPN public Champions League feed','https://www.espn.com/soccer/scoreboard/_/league/uefa.champions')
+    rows=rows_from_matches([m for m in matches.values() if m.get('league','uefa.champions')=='uefa.champions'],day,'ESPN public Champions League feed','https://www.espn.com/soccer/scoreboard/_/league/uefa.champions')
+    async with httpx.AsyncClient(timeout=25) as client:
+        async def lineup(g):
+            if abs((store.instant(g['start'])-datetime.now(timezone.utc)).total_seconds())>7200:return
+            async with semaphore:
+                data,error=await providers.optional(client,base+'summary',{'event':g['id'].removeprefix('espn-')})
+            if data:attach_lineups(g,data)
+            elif error:g['provider_errors'].append('Lineup summary unavailable')
+        await asyncio.gather(*(lineup(g) for g in rows))
     # Team schedules can contain other dates; publish only the requested scoreboard's fixtures.
+    for g in rows:
+        g['domestic_form']={}
+        for side in ('home','away'):
+            team=g[side+'_id'];past=[m for m in matches.values() if not m.get('is_tournament',True) and m['status']=='FINISHED' and store.instant(m['utcDate'])<store.instant(g['start']) and team in (m['homeTeam']['id'],m['awayTeam']['id'])]
+            past=sorted(past,key=lambda m:m['utcDate'])[-10:];gf=ga=0
+            for m in past:
+                h,a=regular_score(m);ishome=m['homeTeam']['id']==team;gf+=h if ishome else a;ga+=a if ishome else h
+            g['domestic_form'][side]={'samples':len(past),'goals_for':gf,'goals_against':ga,'matches':[{'start':m['utcDate'],'league':m.get('league_name'),'home':m['homeTeam']['name'],'away':m['awayTeam']['name'],'score':regular_score(m)} for m in past]}
+        g['provider_errors']=['Domestic form is displayed as context; league-strength and player-impact coefficients are not fitted. Confirmed XIs and injury coverage remain unavailable.']
     event_ids={'espn-'+str(e['id']) for e in events}
     return [g for g in rows if g['id'] in event_ids]
+
+
+def attach_lineups(g,data):
+    """Accept explicitly marked starters only, with event and team identity checks."""
+    if str(data.get('header',{}).get('id'))!=g['id'].removeprefix('espn-'):return
+    for side in ('home','away'):
+        roster=next((r for r in data.get('rosters',[]) if r.get('homeAway')==side and str(r.get('team',{}).get('id'))==str(g[side+'_id'])),None)
+        starters=[r for r in (roster or {}).get('roster',[]) if r.get('starter') is True and r.get('athlete',{}).get('displayName')]
+        if len(starters)==11 and len({r['athlete'].get('id') for r in starters})==11:
+            g[side+'_starters']=[{'name':r['athlete']['displayName'],'status':'ESPN listed starter','confirmed':True} for r in starters]
+    if g['home_starters'] or g['away_starters']:g['lineup_source']='ESPN match roster · explicitly marked starting XI · fetched '+store.now()
