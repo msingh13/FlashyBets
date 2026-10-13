@@ -37,3 +37,46 @@ def test_soccer_record_tracks_draw_btts_and_favorites(tmp_path):
     favorites=picks.favorites('ucl',day,'demo',path)
     assert len(favorites['btts'])==5
     assert 'Projected' in favorites['moneylines'][0]['summary']
+
+
+def espn_event(id='1',day='2026-10-13',state='pre',name='STATUS_SCHEDULED',period=0):
+    return {'id':id,'date':day+'T19:00Z','competitions':[{'status':{'period':period,'type':{'name':name,'state':state,'completed':state=='post'}},'competitors':[
+        {'homeAway':'home','score':'2','team':{'id':'h','displayName':'Home','abbreviation':'H'}},
+        {'homeAway':'away','score':'1','team':{'id':'a','displayName':'Away','abbreviation':'A'}}]}]}
+
+
+def test_espn_never_settles_extra_time_or_penalty_final():
+    from app.soccer import espn_match
+    assert regular_score(espn_match(espn_event(state='post',name='STATUS_FULL_TIME',period=2)))==(2,1)
+    e=espn_event(state='post',name='STATUS_FULL_TIME',period=2)
+    for t in e['competitions'][0]['competitors']:t['score']={'value':int(t['score'])}
+    assert regular_score(espn_match(e))==(2,1)
+    for name,period in [('STATUS_FINAL_PEN',5),('STATUS_FULL_TIME',4),('STATUS_FINAL_ET',4)]:
+        m=espn_match(espn_event(state='post',name=name,period=period))
+        assert m['status']=='UNAVAILABLE' and regular_score(m) is None
+
+
+def test_keyless_soccer_uses_real_history_without_future_leakage(monkeypatch):
+    from app import soccer
+    monkeypatch.delenv('FOOTBALL_DATA_TOKEN',raising=False);soccer.ESPN_CACHE.clear()
+    async def get(client,url,params=None,headers=None):
+        if url.endswith('scoreboard'):return {'events':[espn_event()]}
+        return {'events':[espn_event('old','2026-09-08','post','STATUS_FULL_TIME',2),espn_event('future','2026-10-20','post','STATUS_FULL_TIME',2)]}
+    monkeypatch.setattr(soccer.providers,'get',get)
+    rows=asyncio.run(soccer.live_games('2026-10-13'));g=rows[0]
+    assert len(rows)==1 and g['id']=='espn-1' and g['state']=='pre'
+    assert g['sample_sizes']=={'home':1,'away':1}
+    assert g['home_rate']==pytest.approx(17/11+.1)
+    assert g['source']=='ESPN public Champions League feed'
+    assert g['home_odds'] is None and not g['injuries_checked']
+
+
+def test_keyless_empty_day_and_provider_failure(monkeypatch):
+    from app import soccer
+    monkeypatch.delenv('FOOTBALL_DATA_TOKEN',raising=False)
+    async def empty(*args,**kwargs):return {'events':[]}
+    monkeypatch.setattr(soccer.providers,'get',empty)
+    assert asyncio.run(soccer.live_games('2026-10-15'))==[]
+    async def failed(*args,**kwargs):raise ValueError('Unavailable')
+    monkeypatch.setattr(soccer.providers,'get',failed)
+    with pytest.raises(ValueError):asyncio.run(soccer.live_games('2026-10-15'))
