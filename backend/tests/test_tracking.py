@@ -54,7 +54,7 @@ def test_tracker_tick_records_and_settles_without_browser(monkeypatch,tmp_path):
         return [g]
     monkeypatch.setattr(providers,'live_games',fetched)
     asyncio.run(service.tick('live',db))
-    assert set(calls)=={'nhl','nba','nfl'}
+    assert set(calls)=={'nhl','nba','nfl','ucl'}
     g=games('nhl',future())[0];g['mode']='live';g.update(state='post',home_score=3,away_score=2)
     store.settle(g,db)
     assert store.ledger('nhl','live',db)['forecasts'][0]['result']['home_score']==3

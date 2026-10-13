@@ -26,7 +26,7 @@ def test_static_publication_and_durable_history(tmp_path,monkeypatch):
     async def fail(*args):raise ValueError('provider failed')
     monkeypatch.setattr(providers,'live_games',fail)
     asyncio.run(publish(out,state,second))
-    assert len(json.loads((out/'manifest.json').read_text())['errors'])==21
+    assert len(json.loads((out/'manifest.json').read_text())['errors'])==28
     assert json.loads((out/'nhl'/(day+'.json')).read_text())==board
     assert store.ledger('nhl','live',second)['forecasts']==first['forecasts']
 
