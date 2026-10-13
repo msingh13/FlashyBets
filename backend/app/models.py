@@ -58,4 +58,6 @@ class NFLModel:
             'distribution':[{'goals':k,'probability':v} for k,v in sorted(totals.items())],
             'version':'nfl-drive-v1','assumptions':'11 possessions; scoring outcomes 3/7 points with fixed 32/68% mix. Tied regulation: 10% remain tied; 90% receive one 3/7-point settlement score. Regular season only; 2-way ML tie returns stake. Uncalibrated approximation, not a complete NFL OT simulation.'}
 
-MODELS={'nhl':NHLModel(),'nba':NBAModel(),'nfl':NFLModel()}
+from .soccer import SoccerModel
+
+MODELS={'ucl':SoccerModel(),'nhl':NHLModel(),'nba':NBAModel(),'nfl':NFLModel()}

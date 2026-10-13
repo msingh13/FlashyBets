@@ -3,9 +3,12 @@ from .data import demo as nhl_demo
 from .store import now,instant
 
 def games(sport,day):
-    if sport=='nhl':
+    if sport in ('nhl','ucl'):
         rows=nhl_demo(day)
         extra=dict(rows[0]);extra.update(id=f'demo-nhl-{day}-extra',home='Demo Lightning',away='Demo Kraken',home_abbr='TBL',away_abbr='SEA',home_rate=3.8,away_rate=2.7);rows.append(extra)
+        if sport=='ucl':
+            for i,g in enumerate(rows):
+                g.update(id=f'demo-ucl-{day}-{i}',home=f'Demo Club {i*2+1}',away=f'Demo Club {i*2+2}',home_abbr=f'C{i*2+1}',away_abbr=f'C{i*2+2}',home_rate=2+i*.12,away_rate=1+i*.08,line=2.5,home_odds=None,away_odds=None,over_odds=None,under_odds=None)
     else:
         teams={'nba': [('Boston Celtics','BOS','New York Knicks','NYK',117,111,227.5),('Los Angeles Lakers','LAL','Denver Nuggets','DEN',113,119,231.5),('Toronto Raptors','TOR','Cleveland Cavaliers','CLE',109,116,224.),('Miami Heat','MIA','Chicago Bulls','CHI',116,109,224.5),('Phoenix Suns','PHX','Sacramento Kings','SAC',120,111,229.5)],
                'nfl':[('Buffalo Bills','BUF','Kansas City Chiefs','KC',28,24,48.5),('Baltimore Ravens','BAL','Cincinnati Bengals','CIN',27,23,47.),('Green Bay Packers','GB','Detroit Lions','DET',24,28,49.5),('Philadelphia Eagles','PHI','Dallas Cowboys','DAL',28,22,47.5),('San Francisco 49ers','SF','Seattle Seahawks','SEA',27,21,46.5)]}[sport]
@@ -28,6 +31,6 @@ def games(sport,day):
                      'wind_kmh':None if sport!='nfl' else 15,'source':'Synthetic fixture'},'source_url':None})
         if instant(g['start'])+timedelta(hours=4)<datetime.now(timezone.utc):
             g['state']='post';g['status']='Final · synthetic'
-            g['home_score']={'nhl':4,'nba':118,'nfl':27}[sport]+i
-            g['away_score']={'nhl':3,'nba':111,'nfl':24}[sport]+(i%2)*3
+            g['home_score']={'nhl':4,'nba':118,'nfl':27,'ucl':2}[sport]+i
+            g['away_score']={'nhl':3,'nba':111,'nfl':24,'ucl':1}[sport]+(i%2)*3
     return rows

@@ -8,7 +8,7 @@ from .store import instant
 def context_for(g):
     starters=all(g.get(s+'_starters') and all(x.get('confirmed') for x in g[s+'_starters']) for s in ('home','away'))
     travel=all(g.get('travel',{}).get(s,{}).get('km') is not None for s in ('home','away'))
-    weather=g['sport']!='nfl' or g.get('indoor') is True or g.get('weather',{}).get('temperature_c') is not None
+    weather=g['sport'] not in ('nfl','ucl') or g.get('indoor') is True or g.get('weather',{}).get('temperature_c') is not None
     checked=g.get('injuries_checked',False)
     # An old injury endpoint timestamp cannot establish current gameday availability.
     fresh=False

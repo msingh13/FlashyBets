@@ -113,6 +113,9 @@ async def sportsdata_context(client,games,sport,day):
                 g['depth_chart']=depth;g['lineup_source']='SportsDataIO depth chart; inactives still required'
 
 async def live_games(sport,day):
+    if sport=='ucl':
+        from .soccer import live_games as soccer_games
+        return await soccer_games(day)
     startdate=date.fromisoformat(day);past=startdate-timedelta(days=120 if sport=='nfl' else 45)
     async with httpx.AsyncClient(timeout=25) as client:
         scheduled=await get(client,BASE+PATHS[sport]+'/scoreboard',{'dates':startdate.strftime('%Y%m%d'),'limit':1000})

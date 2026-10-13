@@ -16,20 +16,21 @@ def enrich(g,path=None):
         g.update(prediction=None,markets={},reference_line=g['line'],recommendations=[],explanation='NFL preseason/playoff modeling is not supported by the regular-season adapter. No forecast is issued.')
         return g
     adj=g['context']['adjustments'];hr=g['home_rate']+adj['home'];ar=g['away_rate']+adj['away']
-    line=g['line'] if g['line'] is not None else {'nhl':6.5,'nba':228.5,'nfl':44.5}[g['sport']]
+    line=g['line'] if g['line'] is not None else {'nhl':6.5,'nba':228.5,'nfl':44.5,'ucl':2.5}[g['sport']]
     g['reference_line']=line
     p=MODELS[g['sport']].predict(hr,ar,line);p.setdefault('ml_push',0);g['prediction']=p
     learning.apply(g,path)
     markets={}
-    for n in ('home','away','over','under'):
-        odds=g.get(n+'_odds');push=p['ml_push'] if n in ('home','away') else p['push']
+    for n in (('home','away','draw','over','under','btts_yes','btts_no') if g['sport']=='ucl' else ('home','away','over','under')):
+        odds=g.get(n+'_odds');push=p['ml_push'] if n in ('home','away') else p['push'] if n in ('over','under') else 0
         markets[n]=market(p[n],push,odds) if odds is not None else None
-    for sides in [('home','away'),('over','under')]:
+    for sides in ([('home','away','draw'),('over','under'),('btts_yes','btts_no')] if g['sport']=='ucl' else [('home','away'),('over','under')]):
         if all(markets[n] for n in sides):
             vig=sum(markets[n]['implied'] for n in sides)
             for n in sides:markets[n]['no_vig']=markets[n]['implied']/vig;markets[n]['conditional']=markets[n]['probability']/(1-markets[n]['push'])
     g['markets']=markets
     g['explanation']={'nhl':'Independent Poisson regulation goals; ties split 50/50, with one OT/shootout settlement goal added.',
+      'ucl':'Independent Poisson 90-minute goals including stoppage time. Three-way ML includes draw; BTTS requires both teams to score. Extra time and penalties excluded. Champions League history only; domestic form and player effects are not fitted.',
       'nba':'Final-score Gaussian model: shrunk scoring/conceding means, 15-point margin and 20-point total standard deviations. Historical inputs include overtime.',
       'nfl':'Possession scoring model: eleven possessions with 0/3/7-point outcomes; explicit approximate overtime/tie settlement. Regular season only.'}[g['sport']]
     g['recommendations']=[]

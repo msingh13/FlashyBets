@@ -2,11 +2,19 @@
 import json,math
 from . import store
 
+def explain(g,side):
+    p=g['prediction'];unit='goals' if g['sport'] in ('nhl','ucl') else 'points'
+    basis=f"Projected {g['home_abbr']} {p['home_rate']:.2f} vs {g['away_abbr']} {p['away_rate']:.2f} {unit}. "
+    why=('Highest three-way result probability. ' if g['sport']=='ucl' else 'Higher modeled win probability. ') if side in ('home','away','draw') else 'Both teams’ scoring rates imply this BTTS probability. ' if side.startswith('btts') else f"Expected total {p['expected_total']:.2f} versus {'market' if g['line'] is not None else 'reference'} line {g['reference_line']}. "
+    missing=', '.join(k for k,v in g['context']['checks'].items() if not v)
+    return why+basis+('Pending checks: '+missing+'. ' if missing else '')+'Experimental baseline; context effects require fitted coefficients. No verified price means no confirmed betting edge.'
+
 def chosen(g,kind):
-    p=g['prediction'];sides=('home','away') if kind=='ml' else ('over','under');side=max(sides,key=lambda n:p[n])
-    m=g['markets'].get(side);push=p.get('ml_push',0) if kind=='ml' else p['push']
+    p=g['prediction'];sides=(('home','away','draw') if g['sport']=='ucl' else ('home','away')) if kind=='ml' else ('btts_yes','btts_no') if kind=='btts' else ('over','under');side=max(sides,key=lambda n:p[n])
+    m=g['markets'].get(side);push=p.get('ml_push',0) if kind=='ml' else 0 if kind=='btts' else p['push']
     return {'game_key':store.key(g),'id':g['id'],'home':g['home_abbr'],'away':g['away_abbr'],'start':g['start'],
-      'side':side,'label':g[side+'_abbr']+' ML' if kind=='ml' else side.title()+' '+str(g['reference_line']),
+      'side':side,'label':('Draw' if side=='draw' else g[side+'_abbr']+' ML') if kind=='ml' else side.replace('_',' ').upper() if kind=='btts' else side.title()+' '+str(g['reference_line']),
+      'summary':explain(g,side),
       'probability':p[side],'conditional':p[side]/(1-push),'push':push,'odds':m['odds'] if m else None,
       'ev':m['ev'] if m else None,'line':g['reference_line'],'market_line':g['line'] is not None,
       'context_ready':g['context']['ready'],'model':p['version'],'outcome':None}
@@ -40,7 +48,7 @@ def settled_cards(sport,mode,path=None):
     for row in cs:
         card=json.loads(row['payload']);wins=losses=pushes=pending=0
         for leg in card['legs']:
-            r=fs.get(leg['game_key']);leg['outcome']=store.outcome(leg['side'],r['home_score'],r['away_score']) if r else None
+            r=fs.get(leg['game_key']);leg['outcome']=store.outcome('soccer_'+leg['side'] if sport=='ucl' and leg['side'] in ('home','away') else leg['side'],r['home_score'],r['away_score']) if r else None
             if leg['outcome']=='win':wins+=1
             elif leg['outcome']=='loss':losses+=1
             elif leg['outcome']=='push':pushes+=1
@@ -52,18 +60,18 @@ def settled_cards(sport,mode,path=None):
     return cards
 
 def favorites(sport,day,mode,path=None):
-    record=store.ledger(sport,mode,path);ml=[];totals=[]
+    record=store.ledger(sport,mode,path);ml=[];totals=[];btts=[]
     with store.connect(path) as c:fs=c.execute('SELECT payload,result FROM forecasts WHERE sport=? AND mode=?',(sport,mode)).fetchall()
     from zoneinfo import ZoneInfo
     for f in fs:
         g=json.loads(f['payload'])
         if store.instant(g['start']).astimezone(ZoneInfo('America/Toronto')).date().isoformat()!=day:continue
         r=json.loads(f['result']) if f['result'] else None
-        for kind,target in [('ml',ml),('total',totals)]:
+        for kind,target in ([('ml',ml),('total',totals),('btts',btts)] if sport=='ucl' else [('ml',ml),('total',totals)]):
             p=chosen(g,kind)
-            if r:p['outcome']=store.outcome(p['side'],r['home_score'],r['away_score'],p['line'])
+            if r:p['outcome']=store.outcome('soccer_'+p['side'] if sport=='ucl' and p['side'] in ('home','away') else p['side'],r['home_score'],r['away_score'],p['line'])
             target.append(p)
     ml.sort(key=lambda x:-x['probability']);totals.sort(key=lambda x:-x['conditional'])
     cards=settled_cards(sport,mode,path)
-    return {'moneylines':ml[:5],'totals':totals[:5],'card':next((c for c in cards if c['day']==day),None),
+    return {'moneylines':ml[:5],'totals':totals[:5],'btts':sorted(btts,key=lambda x:-x['probability'])[:5],'card':next((c for c in cards if c['day']==day),None),
         'reason':'At least four recorded pregame ML favorites above 52% conditional probability are needed to create a card.'}
