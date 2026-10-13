@@ -2,7 +2,7 @@
 import asyncio,json,os,tempfile
 from datetime import date,timedelta
 from pathlib import Path
-from app import service,store,picks,learning
+from app import service,store,picks,learning,validation
 TABLES=('forecasts','cards','model_versions','model_checks','updates')
 
 def restore(path,db):
@@ -53,7 +53,7 @@ async def publish(out,state,db):
                     write(out/sport/(day+'.json'),{'games':[],'updated':None,'refresh_seconds':1800,'warning':reason})
                     write(out/sport/(day+'-favorites.json'),{'moneylines':[],'totals':[],'btts':[],'card':None,'reason':reason})
                     available[sport].append(day)
-        ledger=store.ledger(sport,'live',db);ledger['cards']=picks.settled_cards(sport,'live',db);ledger['learning']=learning.status(sport,'live',db)
+        ledger=store.ledger(sport,'live',db);ledger['cards']=picks.settled_cards(sport,'live',db);ledger['learning']=learning.status(sport,'live',db);ledger['validation']=validation.report(sport,'live',db)
         write(out/(sport+'-tracker.json'),ledger)
     save(state,db)
     write(out/'manifest.json',{'generated':store.now(),'today':current,'dates':available,'errors':errors,'cadence_minutes':30})
