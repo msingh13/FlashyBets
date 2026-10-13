@@ -1,0 +1,1169 @@
+{
+  "games": [
+    {
+      "id": "demo-2026-10-13-0",
+      "home": "Toronto Maple Leafs",
+      "away": "Montreal Canadiens",
+      "home_abbr": "TOR",
+      "away_abbr": "MTL",
+      "start": "2026-10-13T23:00:00+00:00",
+      "home_rate": 3.536,
+      "away_rate": 2.8559999999999994,
+      "goalie_status": "Unconfirmed \u00b7 demo",
+      "source": "demo",
+      "odds_source": "Illustrative sportsbook",
+      "odds_updated": null,
+      "home_odds": -145,
+      "away_odds": 125,
+      "line": 6.5,
+      "over_odds": -110,
+      "under_odds": -110,
+      "rates_source": "Synthetic team averages",
+      "sport": "nhl",
+      "mode": "demo",
+      "state": "pre",
+      "status": "Scheduled \u00b7 demo",
+      "season_type": 2,
+      "venue": "Demo arena",
+      "city": "Demo city",
+      "indoor": true,
+      "home_score": null,
+      "away_score": null,
+      "rates_asof": "2026-10-13",
+      "provider_errors": [],
+      "home_starters": [
+        {
+          "name": "Demo starter A",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "away_starters": [
+        {
+          "name": "Demo starter B",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "lineup_source": "Synthetic fixture, not real players",
+      "injuries_checked": true,
+      "injuries_asof": "2026-10-13T14:00:00Z",
+      "injuries_source": "Synthetic fixture",
+      "injuries": {
+        "home": [
+          {
+            "name": "Demo player",
+            "status": "Questionable",
+            "report": "Synthetic report, not a real injury.",
+            "reported_at": "2026-10-13T15:58:30.813092+00:00",
+            "url": null
+          }
+        ],
+        "away": []
+      },
+      "travel": {
+        "home": {
+          "km": 230,
+          "rest_hours": 48,
+          "from": "Demo city A",
+          "previous_start": null,
+          "method": "Synthetic"
+        },
+        "away": {
+          "km": 870,
+          "rest_hours": 72,
+          "from": "Demo city B",
+          "previous_start": null,
+          "method": "Synthetic"
+        }
+      },
+      "weather": {
+        "status": "Indoor venue",
+        "temperature_c": null,
+        "wind_kmh": null,
+        "source": "Synthetic fixture"
+      },
+      "source_url": null,
+      "updated": "2026-10-13T14:00:00Z",
+      "context": {
+        "checks": {
+          "injuries": true,
+          "starters": false,
+          "travel": true,
+          "weather": true
+        },
+        "calibrated": false,
+        "ready": false,
+        "adjustments": {
+          "home": 0.0,
+          "away": 0.0
+        },
+        "applied": [],
+        "missing_impacts": [],
+        "decision": "Watch only \u00b7 inputs or calibration incomplete",
+        "note": "No public sentiment is used. Observed context only changes probabilities when a sourced, fitted effect is configured."
+      },
+      "reference_line": 6.5,
+      "prediction": {
+        "home": 0.6040635994931846,
+        "away": 0.39593640050681544,
+        "tie": 0.15593422805704868,
+        "over": 0.5043201232549427,
+        "under": 0.495679876745057,
+        "push": 0.0,
+        "expected_total": 6.5479342280570325,
+        "home_rate": 3.536,
+        "away_rate": 2.8559999999999994,
+        "distribution": [
+          {
+            "goals": 1,
+            "probability": 0.01238088329579504
+          },
+          {
+            "goals": 2,
+            "probability": 0.017301775235348413
+          },
+          {
+            "goals": 3,
+            "probability": 0.08981809497651567
+          },
+          {
+            "goals": 4,
+            "probability": 0.07379568373746753
+          },
+          {
+            "goals": 5,
+            "probability": 0.1916376533465227
+          },
+          {
+            "goals": 6,
+            "probability": 0.11074578615340758
+          },
+          {
+            "goals": 7,
+            "probability": 0.19280067473868898
+          },
+          {
+            "goals": 8,
+            "probability": 0.08551658668493209
+          },
+          {
+            "goals": 9,
+            "probability": 0.11246090790276075
+          },
+          {
+            "goals": 10,
+            "probability": 0.04033519220705249
+          },
+          {
+            "goals": 11,
+            "probability": 0.04275526399568624
+          },
+          {
+            "goals": 12,
+            "probability": 0.012839228950871726
+          },
+          {
+            "goals": 13,
+            "probability": 0.01142537200128733
+          },
+          {
+            "goals": 14,
+            "probability": 0.0029453550076453732
+          },
+          {
+            "goals": 15,
+            "probability": 0.002262467554079114
+          },
+          {
+            "goals": 16,
+            "probability": 0.0005102094801509355
+          }
+        ],
+        "version": "nhl-poisson-v1",
+        "ot_home": 0.5,
+        "ml_push": 0,
+        "raw": {
+          "home": 0.6040635994931846,
+          "away": 0.39593640050681544,
+          "over": 0.5043201232549427,
+          "under": 0.495679876745057
+        },
+        "calibration_versions": {}
+      },
+      "markets": {
+        "home": {
+          "probability": 0.6040635994931846,
+          "push": 0,
+          "odds": -145,
+          "implied": 0.5918367346938775,
+          "ev": 0.020659185350553222,
+          "no_vig": 0.5711159737417943,
+          "conditional": 0.6040635994931846
+        },
+        "away": {
+          "probability": 0.39593640050681544,
+          "push": 0,
+          "odds": 125,
+          "implied": 0.4444444444444444,
+          "ev": -0.10914309885966522,
+          "no_vig": 0.42888402625820565,
+          "conditional": 0.39593640050681544
+        },
+        "over": {
+          "probability": 0.5043201232549427,
+          "push": 0.0,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": -0.03720703742238213,
+          "no_vig": 0.5,
+          "conditional": 0.5043201232549427
+        },
+        "under": {
+          "probability": 0.495679876745057,
+          "push": 0.0,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": -0.05370205348670937,
+          "no_vig": 0.5,
+          "conditional": 0.495679876745057
+        }
+      },
+      "explanation": "Independent Poisson regulation goals; ties split 50/50, with one OT/shootout settlement goal added.",
+      "recommendations": []
+    },
+    {
+      "id": "demo-2026-10-13-1",
+      "home": "New Jersey Devils",
+      "away": "Carolina Hurricanes",
+      "home_abbr": "NJD",
+      "away_abbr": "CAR",
+      "start": "2026-10-13T23:00:00+00:00",
+      "home_rate": 3.1460000000000004,
+      "away_rate": 2.928,
+      "goalie_status": "Unconfirmed \u00b7 demo",
+      "source": "demo",
+      "odds_source": "Illustrative sportsbook",
+      "odds_updated": null,
+      "home_odds": -110,
+      "away_odds": -110,
+      "line": 5.5,
+      "over_odds": -110,
+      "under_odds": -110,
+      "rates_source": "Synthetic team averages",
+      "sport": "nhl",
+      "mode": "demo",
+      "state": "pre",
+      "status": "Scheduled \u00b7 demo",
+      "season_type": 2,
+      "venue": "Demo arena",
+      "city": "Demo city",
+      "indoor": true,
+      "home_score": null,
+      "away_score": null,
+      "rates_asof": "2026-10-13",
+      "provider_errors": [],
+      "home_starters": [
+        {
+          "name": "Demo starter A",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "away_starters": [
+        {
+          "name": "Demo starter B",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "lineup_source": "Synthetic fixture, not real players",
+      "injuries_checked": true,
+      "injuries_asof": "2026-10-13T14:00:00Z",
+      "injuries_source": "Synthetic fixture",
+      "injuries": {
+        "home": [
+          {
+            "name": "Demo player",
+            "status": "Questionable",
+            "report": "Synthetic report, not a real injury.",
+            "reported_at": "2026-10-13T15:58:30.813108+00:00",
+            "url": null
+          }
+        ],
+        "away": []
+      },
+      "travel": {
+        "home": {
+          "km": 360,
+          "rest_hours": 48,
+          "from": "Demo city A",
+          "previous_start": null,
+          "method": "Synthetic"
+        },
+        "away": {
+          "km": 1140,
+          "rest_hours": 72,
+          "from": "Demo city B",
+          "previous_start": null,
+          "method": "Synthetic"
+        }
+      },
+      "weather": {
+        "status": "Indoor venue",
+        "temperature_c": null,
+        "wind_kmh": null,
+        "source": "Synthetic fixture"
+      },
+      "source_url": null,
+      "updated": "2026-10-13T14:00:00Z",
+      "context": {
+        "checks": {
+          "injuries": true,
+          "starters": false,
+          "travel": true,
+          "weather": true
+        },
+        "calibrated": false,
+        "ready": false,
+        "adjustments": {
+          "home": 0.0,
+          "away": 0.0
+        },
+        "applied": [],
+        "missing_impacts": [],
+        "decision": "Watch only \u00b7 inputs or calibration incomplete",
+        "note": "No public sentiment is used. Observed context only changes probabilities when a sourced, fitted effect is configured."
+      },
+      "reference_line": 5.5,
+      "prediction": {
+        "home": 0.5344987132253883,
+        "away": 0.46550128677461167,
+        "tie": 0.16499620378512483,
+        "over": 0.5661319902813905,
+        "under": 0.4338680097186081,
+        "push": 0.0,
+        "expected_total": 6.238996203785117,
+        "home_rate": 3.1460000000000004,
+        "away_rate": 2.928,
+        "distribution": [
+          {
+            "goals": 1,
+            "probability": 0.016283972954328964
+          },
+          {
+            "goals": 2,
+            "probability": 0.021259055870294967
+          },
+          {
+            "goals": 3,
+            "probability": 0.10717861360983007
+          },
+          {
+            "goals": 4,
+            "probability": 0.08172098862542641
+          },
+          {
+            "goals": 5,
+            "probability": 0.2074253786587277
+          },
+          {
+            "goals": 6,
+            "probability": 0.11057207541441257
+          },
+          {
+            "goals": 7,
+            "probability": 0.18929030661747281
+          },
+          {
+            "goals": 8,
+            "probability": 0.0769991252515022
+          },
+          {
+            "goals": 9,
+            "probability": 0.1001581922573341
+          },
+          {
+            "goals": 10,
+            "probability": 0.03275723710112854
+          },
+          {
+            "goals": 11,
+            "probability": 0.03454395420564366
+          },
+          {
+            "goals": 12,
+            "probability": 0.009405947958376
+          },
+          {
+            "goals": 13,
+            "probability": 0.008374972116640858
+          },
+          {
+            "goals": 14,
+            "probability": 0.001946629589949267
+          },
+          {
+            "goals": 15,
+            "probability": 0.0015047260088244265
+          },
+          {
+            "goals": 16,
+            "probability": 0.00030423566000111743
+          }
+        ],
+        "version": "nhl-poisson-v1",
+        "ot_home": 0.5,
+        "ml_push": 0,
+        "raw": {
+          "home": 0.5344987132253883,
+          "away": 0.46550128677461167,
+          "over": 0.5661319902813905,
+          "under": 0.4338680097186081
+        },
+        "calibration_versions": {}
+      },
+      "markets": {
+        "home": {
+          "probability": 0.5344987132253883,
+          "push": 0,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": 0.020406634339377783,
+          "no_vig": 0.5,
+          "conditional": 0.5344987132253883
+        },
+        "away": {
+          "probability": 0.46550128677461167,
+          "push": 0,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": -0.11131572524846861,
+          "no_vig": 0.5,
+          "conditional": 0.46550128677461167
+        },
+        "over": {
+          "probability": 0.5661319902813905,
+          "push": 0.0,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": 0.08079743599174549,
+          "no_vig": 0.5,
+          "conditional": 0.5661319902813905
+        },
+        "under": {
+          "probability": 0.4338680097186081,
+          "push": 0.0,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": -0.1717065269008391,
+          "no_vig": 0.5,
+          "conditional": 0.4338680097186081
+        }
+      },
+      "explanation": "Independent Poisson regulation goals; ties split 50/50, with one OT/shootout settlement goal added.",
+      "recommendations": []
+    },
+    {
+      "id": "demo-2026-10-13-2",
+      "home": "Boston Bruins",
+      "away": "Florida Panthers",
+      "home_abbr": "BOS",
+      "away_abbr": "FLA",
+      "start": "2026-10-14T00:00:00+00:00",
+      "home_rate": 2.912,
+      "away_rate": 3.024,
+      "goalie_status": "Unconfirmed \u00b7 demo",
+      "source": "demo",
+      "odds_source": "Illustrative sportsbook",
+      "odds_updated": null,
+      "home_odds": 130,
+      "away_odds": -150,
+      "line": 6.0,
+      "over_odds": -110,
+      "under_odds": -110,
+      "rates_source": "Synthetic team averages",
+      "sport": "nhl",
+      "mode": "demo",
+      "state": "pre",
+      "status": "Scheduled \u00b7 demo",
+      "season_type": 2,
+      "venue": "Demo arena",
+      "city": "Demo city",
+      "indoor": true,
+      "home_score": null,
+      "away_score": null,
+      "rates_asof": "2026-10-13",
+      "provider_errors": [],
+      "home_starters": [
+        {
+          "name": "Demo starter A",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "away_starters": [
+        {
+          "name": "Demo starter B",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "lineup_source": "Synthetic fixture, not real players",
+      "injuries_checked": true,
+      "injuries_asof": "2026-10-13T14:00:00Z",
+      "injuries_source": "Synthetic fixture",
+      "injuries": {
+        "home": [
+          {
+            "name": "Demo player",
+            "status": "Questionable",
+            "report": "Synthetic report, not a real injury.",
+            "reported_at": "2026-10-13T15:58:30.813116+00:00",
+            "url": null
+          }
+        ],
+        "away": []
+      },
+      "travel": {
+        "home": {
+          "km": 490,
+          "rest_hours": 48,
+          "from": "Demo city A",
+          "previous_start": null,
+          "method": "Synthetic"
+        },
+        "away": {
+          "km": 1410,
+          "rest_hours": 72,
+          "from": "Demo city B",
+          "previous_start": null,
+          "method": "Synthetic"
+        }
+      },
+      "weather": {
+        "status": "Indoor venue",
+        "temperature_c": null,
+        "wind_kmh": null,
+        "source": "Synthetic fixture"
+      },
+      "source_url": null,
+      "updated": "2026-10-13T14:00:00Z",
+      "context": {
+        "checks": {
+          "injuries": true,
+          "starters": false,
+          "travel": true,
+          "weather": true
+        },
+        "calibrated": false,
+        "ready": false,
+        "adjustments": {
+          "home": 0.0,
+          "away": 0.0
+        },
+        "applied": [],
+        "missing_impacts": [],
+        "decision": "Watch only \u00b7 inputs or calibration incomplete",
+        "note": "No public sentiment is used. Observed context only changes probabilities when a sourced, fitted effect is configured."
+      },
+      "reference_line": 6.0,
+      "prediction": {
+        "home": 0.4820660832012021,
+        "away": 0.517933916798798,
+        "tie": 0.16743889300746786,
+        "over": 0.4335424206715755,
+        "under": 0.4560135561741395,
+        "push": 0.110444023154285,
+        "expected_total": 6.103438893007448,
+        "home_rate": 2.912,
+        "away_rate": 3.024,
+        "distribution": [
+          {
+            "goals": 1,
+            "probability": 0.018328926931049504
+          },
+          {
+            "goals": 2,
+            "probability": 0.02328682767369048
+          },
+          {
+            "goals": 3,
+            "probability": 0.11539119787475642
+          },
+          {
+            "goals": 4,
+            "probability": 0.08547867023707317
+          },
+          {
+            "goals": 5,
+            "probability": 0.2135279334575699
+          },
+          {
+            "goals": 6,
+            "probability": 0.110444023154285
+          },
+          {
+            "goals": 7,
+            "probability": 0.186285514232773
+          },
+          {
+            "goals": 8,
+            "probability": 0.07344531639722533
+          },
+          {
+            "goals": 9,
+            "probability": 0.09422275375079345
+          },
+          {
+            "goals": 10,
+            "probability": 0.029838245028433318
+          },
+          {
+            "goals": 11,
+            "probability": 0.03106241579348553
+          },
+          {
+            "goals": 12,
+            "probability": 0.00818202549075979
+          },
+          {
+            "goals": 13,
+            "probability": 0.007198196050105611
+          },
+          {
+            "goals": 14,
+            "probability": 0.0016171018200467871
+          },
+          {
+            "goals": 15,
+            "probability": 0.0012361266295190317
+          },
+          {
+            "goals": 16,
+            "probability": 0.00024135862000986905
+          }
+        ],
+        "version": "nhl-poisson-v1",
+        "ot_home": 0.5,
+        "ml_push": 0,
+        "raw": {
+          "home": 0.4820660832012021,
+          "away": 0.517933916798798,
+          "over": 0.4335424206715755,
+          "under": 0.4560135561741395
+        },
+        "calibration_versions": {}
+      },
+      "markets": {
+        "home": {
+          "probability": 0.4820660832012021,
+          "push": 0,
+          "odds": 130,
+          "implied": 0.4347826086956522,
+          "ev": 0.1087519913627647,
+          "no_vig": 0.4201680672268907,
+          "conditional": 0.4820660832012021
+        },
+        "away": {
+          "probability": 0.517933916798798,
+          "push": 0,
+          "odds": -150,
+          "implied": 0.6000000000000001,
+          "ev": -0.13677680533533682,
+          "no_vig": 0.5798319327731092,
+          "conditional": 0.517933916798798
+        },
+        "over": {
+          "probability": 0.4335424206715755,
+          "push": 0.110444023154285,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": -0.06188408283634356,
+          "no_vig": 0.5,
+          "conditional": 0.48736946516719243
+        },
+        "under": {
+          "probability": 0.4560135561741395,
+          "push": 0.110444023154285,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": -0.018984642331448587,
+          "no_vig": 0.5,
+          "conditional": 0.5126305348328076
+        }
+      },
+      "explanation": "Independent Poisson regulation goals; ties split 50/50, with one OT/shootout settlement goal added.",
+      "recommendations": []
+    },
+    {
+      "id": "demo-2026-10-13-3",
+      "home": "Edmonton Oilers",
+      "away": "Los Angeles Kings",
+      "home_abbr": "EDM",
+      "away_abbr": "LAK",
+      "start": "2026-10-14T00:00:00+00:00",
+      "home_rate": 3.276,
+      "away_rate": 2.88,
+      "goalie_status": "Unconfirmed \u00b7 demo",
+      "source": "demo",
+      "odds_source": "Illustrative sportsbook",
+      "odds_updated": null,
+      "home_odds": -150,
+      "away_odds": 130,
+      "line": 6.5,
+      "over_odds": -110,
+      "under_odds": -110,
+      "rates_source": "Synthetic team averages",
+      "sport": "nhl",
+      "mode": "demo",
+      "state": "pre",
+      "status": "Scheduled \u00b7 demo",
+      "season_type": 2,
+      "venue": "Demo arena",
+      "city": "Demo city",
+      "indoor": true,
+      "home_score": null,
+      "away_score": null,
+      "rates_asof": "2026-10-13",
+      "provider_errors": [],
+      "home_starters": [
+        {
+          "name": "Demo starter A",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "away_starters": [
+        {
+          "name": "Demo starter B",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "lineup_source": "Synthetic fixture, not real players",
+      "injuries_checked": true,
+      "injuries_asof": "2026-10-13T14:00:00Z",
+      "injuries_source": "Synthetic fixture",
+      "injuries": {
+        "home": [
+          {
+            "name": "Demo player",
+            "status": "Questionable",
+            "report": "Synthetic report, not a real injury.",
+            "reported_at": "2026-10-13T15:58:30.813123+00:00",
+            "url": null
+          }
+        ],
+        "away": []
+      },
+      "travel": {
+        "home": {
+          "km": 620,
+          "rest_hours": 48,
+          "from": "Demo city A",
+          "previous_start": null,
+          "method": "Synthetic"
+        },
+        "away": {
+          "km": 1680,
+          "rest_hours": 72,
+          "from": "Demo city B",
+          "previous_start": null,
+          "method": "Synthetic"
+        }
+      },
+      "weather": {
+        "status": "Indoor venue",
+        "temperature_c": null,
+        "wind_kmh": null,
+        "source": "Synthetic fixture"
+      },
+      "source_url": null,
+      "updated": "2026-10-13T14:00:00Z",
+      "context": {
+        "checks": {
+          "injuries": true,
+          "starters": false,
+          "travel": true,
+          "weather": true
+        },
+        "calibrated": false,
+        "ready": false,
+        "adjustments": {
+          "home": 0.0,
+          "away": 0.0
+        },
+        "applied": [],
+        "missing_impacts": [],
+        "decision": "Watch only \u00b7 inputs or calibration incomplete",
+        "note": "No public sentiment is used. Observed context only changes probabilities when a sourced, fitted effect is configured."
+      },
+      "reference_line": 6.5,
+      "prediction": {
+        "home": 0.5621128314030076,
+        "away": 0.4378871685969924,
+        "tie": 0.16251862184426005,
+        "over": 0.4682131723823482,
+        "under": 0.5317868276176511,
+        "push": 0.0,
+        "expected_total": 6.318518621844266,
+        "home_rate": 3.276,
+        "away_rate": 2.88,
+        "distribution": [
+          {
+            "goals": 1,
+            "probability": 0.015175866633835744
+          },
+          {
+            "goals": 2,
+            "probability": 0.020175012568092503
+          },
+          {
+            "goals": 3,
+            "probability": 0.10246577346289758
+          },
+          {
+            "goals": 4,
+            "probability": 0.07970639352169458
+          },
+          {
+            "goals": 5,
+            "probability": 0.2034359834218296
+          },
+          {
+            "goals": 6,
+            "probability": 0.110827798009301
+          },
+          {
+            "goals": 7,
+            "probability": 0.19045071885150483
+          },
+          {
+            "goals": 8,
+            "probability": 0.0793057770147997
+          },
+          {
+            "goals": 9,
+            "probability": 0.10337532483267746
+          },
+          {
+            "goals": 10,
+            "probability": 0.03466752555117648
+          },
+          {
+            "goals": 11,
+            "probability": 0.03657340777785357
+          },
+          {
+            "goals": 12,
+            "probability": 0.010228227484166012
+          },
+          {
+            "goals": 13,
+            "probability": 0.009095504945340904
+          },
+          {
+            "goals": 14,
+            "probability": 0.002174964363628402
+          },
+          {
+            "goals": 15,
+            "probability": 0.0016762498241074894
+          },
+          {
+            "goals": 16,
+            "probability": 0.00034925357858148686
+          }
+        ],
+        "version": "nhl-poisson-v1",
+        "ot_home": 0.5,
+        "ml_push": 0,
+        "raw": {
+          "home": 0.5621128314030076,
+          "away": 0.4378871685969924,
+          "over": 0.4682131723823482,
+          "under": 0.5317868276176511
+        },
+        "calibration_versions": {}
+      },
+      "markets": {
+        "home": {
+          "probability": 0.5621128314030076,
+          "push": 0,
+          "odds": -150,
+          "implied": 0.6000000000000001,
+          "ev": -0.0631452809949874,
+          "no_vig": 0.5798319327731092,
+          "conditional": 0.5621128314030076
+        },
+        "away": {
+          "probability": 0.4378871685969924,
+          "push": 0,
+          "odds": 130,
+          "implied": 0.4347826086956522,
+          "ev": 0.0071404877730824046,
+          "no_vig": 0.4201680672268907,
+          "conditional": 0.4378871685969924
+        },
+        "over": {
+          "probability": 0.4682131723823482,
+          "push": 0.0,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": -0.1061384890882443,
+          "no_vig": 0.5,
+          "conditional": 0.4682131723823482
+        },
+        "under": {
+          "probability": 0.5317868276176511,
+          "push": 0.0,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": 0.015229398179152087,
+          "no_vig": 0.5,
+          "conditional": 0.5317868276176511
+        }
+      },
+      "explanation": "Independent Poisson regulation goals; ties split 50/50, with one OT/shootout settlement goal added.",
+      "recommendations": []
+    },
+    {
+      "id": "demo-nhl-2026-10-13-extra",
+      "home": "Demo Lightning",
+      "away": "Demo Kraken",
+      "home_abbr": "TBL",
+      "away_abbr": "SEA",
+      "start": "2026-10-13T23:00:00+00:00",
+      "home_rate": 3.8,
+      "away_rate": 2.7,
+      "goalie_status": "Unconfirmed \u00b7 demo",
+      "source": "demo",
+      "odds_source": "Illustrative sportsbook",
+      "odds_updated": null,
+      "home_odds": -145,
+      "away_odds": 125,
+      "line": 6.5,
+      "over_odds": -110,
+      "under_odds": -110,
+      "rates_source": "Synthetic team averages",
+      "sport": "nhl",
+      "mode": "demo",
+      "state": "pre",
+      "status": "Scheduled \u00b7 demo",
+      "season_type": 2,
+      "venue": "Demo arena",
+      "city": "Demo city",
+      "indoor": true,
+      "home_score": null,
+      "away_score": null,
+      "rates_asof": "2026-10-13",
+      "provider_errors": [],
+      "home_starters": [
+        {
+          "name": "Demo starter A",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "away_starters": [
+        {
+          "name": "Demo starter B",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "lineup_source": "Synthetic fixture, not real players",
+      "injuries_checked": true,
+      "injuries_asof": "2026-10-13T14:00:00Z",
+      "injuries_source": "Synthetic fixture",
+      "injuries": {
+        "home": [
+          {
+            "name": "Demo player",
+            "status": "Questionable",
+            "report": "Synthetic report, not a real injury.",
+            "reported_at": "2026-10-13T15:58:30.813129+00:00",
+            "url": null
+          }
+        ],
+        "away": []
+      },
+      "travel": {
+        "home": {
+          "km": 750,
+          "rest_hours": 48,
+          "from": "Demo city A",
+          "previous_start": null,
+          "method": "Synthetic"
+        },
+        "away": {
+          "km": 1950,
+          "rest_hours": 72,
+          "from": "Demo city B",
+          "previous_start": null,
+          "method": "Synthetic"
+        }
+      },
+      "weather": {
+        "status": "Indoor venue",
+        "temperature_c": null,
+        "wind_kmh": null,
+        "source": "Synthetic fixture"
+      },
+      "source_url": null,
+      "updated": "2026-10-13T14:00:00Z",
+      "context": {
+        "checks": {
+          "injuries": true,
+          "starters": false,
+          "travel": true,
+          "weather": true
+        },
+        "calibrated": false,
+        "ready": false,
+        "adjustments": {
+          "home": 0.0,
+          "away": 0.0
+        },
+        "applied": [],
+        "missing_impacts": [],
+        "decision": "Watch only \u00b7 inputs or calibration incomplete",
+        "note": "No public sentiment is used. Observed context only changes probabilities when a sourced, fitted effect is configured."
+      },
+      "reference_line": 6.5,
+      "prediction": {
+        "home": 0.6643358746971303,
+        "away": 0.3356641253028697,
+        "tie": 0.14661449557730927,
+        "over": 0.5185814566253446,
+        "under": 0.48141854337465445,
+        "push": 0.0,
+        "expected_total": 6.646614495577316,
+        "home_rate": 3.8,
+        "away_rate": 2.7,
+        "distribution": [
+          {
+            "goals": 1,
+            "probability": 0.011275793947331796
+          },
+          {
+            "goals": 2,
+            "probability": 0.016334866831701326
+          },
+          {
+            "goals": 3,
+            "probability": 0.08423895084852755
+          },
+          {
+            "goals": 4,
+            "probability": 0.0722563462862672
+          },
+          {
+            "goals": 5,
+            "probability": 0.18493472563679178
+          },
+          {
+            "goals": 6,
+            "probability": 0.11237785982403481
+          },
+          {
+            "goals": 7,
+            "probability": 0.1913392367559129
+          },
+          {
+            "goals": 8,
+            "probability": 0.08989162105954074
+          },
+          {
+            "goals": 9,
+            "probability": 0.11473464809971161
+          },
+          {
+            "goals": 10,
+            "probability": 0.04390690189130175
+          },
+          {
+            "goals": 11,
+            "probability": 0.044829489756570494
+          },
+          {
+            "goals": 12,
+            "probability": 0.014469893197733612
+          },
+          {
+            "goals": 13,
+            "probability": 0.012309482138856407
+          },
+          {
+            "goals": 14,
+            "probability": 0.0034360633988220163
+          },
+          {
+            "goals": 15,
+            "probability": 0.0025042821619533093
+          },
+          {
+            "goals": 16,
+            "probability": 0.0006160322987746046
+          }
+        ],
+        "version": "nhl-poisson-v1",
+        "ot_home": 0.5,
+        "ml_push": 0,
+        "raw": {
+          "home": 0.6643358746971303,
+          "away": 0.3356641253028697,
+          "over": 0.5185814566253446,
+          "under": 0.48141854337465445
+        },
+        "calibration_versions": {}
+      },
+      "markets": {
+        "home": {
+          "probability": 0.6643358746971303,
+          "push": 0,
+          "odds": -145,
+          "implied": 0.5918367346938775,
+          "ev": 0.12249854690204776,
+          "no_vig": 0.5711159737417943,
+          "conditional": 0.6643358746971303
+        },
+        "away": {
+          "probability": 0.3356641253028697,
+          "push": 0,
+          "odds": 125,
+          "implied": 0.4444444444444444,
+          "ev": -0.24475571806854313,
+          "no_vig": 0.42888402625820565,
+          "conditional": 0.3356641253028697
+        },
+        "over": {
+          "probability": 0.5185814566253446,
+          "push": 0.0,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": -0.009980855533432975,
+          "no_vig": 0.5,
+          "conditional": 0.5185814566253446
+        },
+        "under": {
+          "probability": 0.48141854337465445,
+          "push": 0.0,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": -0.08092823537565957,
+          "no_vig": 0.5,
+          "conditional": 0.48141854337465445
+        }
+      },
+      "explanation": "Independent Poisson regulation goals; ties split 50/50, with one OT/shootout settlement goal added.",
+      "recommendations": []
+    }
+  ],
+  "updated": "2026-10-13T14:00:00Z",
+  "refresh_seconds": 600,
+  "mode": "demo",
+  "sport": "nhl",
+  "date": "2026-10-13"
+}

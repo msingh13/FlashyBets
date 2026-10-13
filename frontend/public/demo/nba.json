@@ -1,0 +1,839 @@
+{
+  "games": [
+    {
+      "id": "demo-nba-2026-10-13-0",
+      "home": "Boston Celtics",
+      "away": "New York Knicks",
+      "home_abbr": "BOS",
+      "away_abbr": "NYK",
+      "start": "2026-10-13T23:00:00+00:00",
+      "home_rate": 117,
+      "away_rate": 111,
+      "line": 227.5,
+      "home_odds": -120,
+      "away_odds": 100,
+      "over_odds": -110,
+      "under_odds": -110,
+      "source": "Synthetic demo",
+      "odds_source": "Illustrative odds",
+      "odds_updated": null,
+      "rates_source": "Synthetic scoring averages",
+      "sport": "nba",
+      "mode": "demo",
+      "state": "pre",
+      "status": "Scheduled \u00b7 demo",
+      "season_type": 2,
+      "venue": "Demo arena",
+      "city": "Demo city",
+      "indoor": true,
+      "home_score": null,
+      "away_score": null,
+      "rates_asof": "2026-10-13",
+      "provider_errors": [],
+      "home_starters": [
+        {
+          "name": "Demo starter A",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "away_starters": [
+        {
+          "name": "Demo starter B",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "lineup_source": "Synthetic fixture, not real players",
+      "injuries_checked": true,
+      "injuries_asof": "2026-10-13T14:00:00Z",
+      "injuries_source": "Synthetic fixture",
+      "injuries": {
+        "home": [
+          {
+            "name": "Demo player",
+            "status": "Questionable",
+            "report": "Synthetic report, not a real injury.",
+            "reported_at": "2026-10-13T15:58:30.918106+00:00",
+            "url": null
+          }
+        ],
+        "away": []
+      },
+      "travel": {
+        "home": {
+          "km": 230,
+          "rest_hours": 48,
+          "from": "Demo city A",
+          "previous_start": null,
+          "method": "Synthetic"
+        },
+        "away": {
+          "km": 870,
+          "rest_hours": 72,
+          "from": "Demo city B",
+          "previous_start": null,
+          "method": "Synthetic"
+        }
+      },
+      "weather": {
+        "status": "Indoor venue",
+        "temperature_c": null,
+        "wind_kmh": null,
+        "source": "Synthetic fixture"
+      },
+      "source_url": null,
+      "updated": "2026-10-13T14:00:00Z",
+      "context": {
+        "checks": {
+          "injuries": true,
+          "starters": false,
+          "travel": true,
+          "weather": true
+        },
+        "calibrated": false,
+        "ready": false,
+        "adjustments": {
+          "home": 0.0,
+          "away": 0.0
+        },
+        "applied": [],
+        "missing_impacts": [],
+        "decision": "Watch only \u00b7 inputs or calibration incomplete",
+        "note": "No public sentiment is used. Observed context only changes probabilities when a sourced, fitted effect is configured."
+      },
+      "reference_line": 227.5,
+      "prediction": {
+        "home": 0.6554217416103242,
+        "away": 0.3445782583896758,
+        "tie": 0,
+        "ml_push": 0,
+        "over": 0.509972518195238,
+        "under": 0.49002748180476197,
+        "push": 0,
+        "expected_total": 228.0,
+        "home_rate": 117.0,
+        "away_rate": 111.0,
+        "distribution": [],
+        "version": "nba-final-gaussian-v1",
+        "assumptions": "Final-score Gaussian margin \u03c3=15, total \u03c3=20; includes OT in historical scores, no NBA final tie.",
+        "raw": {
+          "home": 0.6554217416103242,
+          "away": 0.3445782583896758,
+          "over": 0.509972518195238,
+          "under": 0.49002748180476197
+        },
+        "calibration_versions": {}
+      },
+      "markets": {
+        "home": {
+          "probability": 0.6554217416103242,
+          "push": 0,
+          "odds": -120,
+          "implied": 0.5454545454545454,
+          "ev": 0.2016065262855944,
+          "no_vig": 0.5217391304347826,
+          "conditional": 0.6554217416103242
+        },
+        "away": {
+          "probability": 0.3445782583896758,
+          "push": 0,
+          "odds": 100,
+          "implied": 0.5,
+          "ev": -0.31084348322064836,
+          "no_vig": 0.4782608695652174,
+          "conditional": 0.3445782583896758
+        },
+        "over": {
+          "probability": 0.509972518195238,
+          "push": 0,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": -0.026416101627272814,
+          "no_vig": 0.5,
+          "conditional": 0.509972518195238
+        },
+        "under": {
+          "probability": 0.49002748180476197,
+          "push": 0,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": -0.06449298928181801,
+          "no_vig": 0.5,
+          "conditional": 0.49002748180476197
+        }
+      },
+      "explanation": "Final-score Gaussian model: shrunk scoring/conceding means, 15-point margin and 20-point total standard deviations. Historical inputs include overtime.",
+      "recommendations": []
+    },
+    {
+      "id": "demo-nba-2026-10-13-1",
+      "home": "Los Angeles Lakers",
+      "away": "Denver Nuggets",
+      "home_abbr": "LAL",
+      "away_abbr": "DEN",
+      "start": "2026-10-13T23:30:00+00:00",
+      "home_rate": 113,
+      "away_rate": 119,
+      "line": 231.5,
+      "home_odds": -120,
+      "away_odds": 100,
+      "over_odds": -110,
+      "under_odds": -110,
+      "source": "Synthetic demo",
+      "odds_source": "Illustrative odds",
+      "odds_updated": null,
+      "rates_source": "Synthetic scoring averages",
+      "sport": "nba",
+      "mode": "demo",
+      "state": "pre",
+      "status": "Scheduled \u00b7 demo",
+      "season_type": 2,
+      "venue": "Demo arena",
+      "city": "Demo city",
+      "indoor": true,
+      "home_score": null,
+      "away_score": null,
+      "rates_asof": "2026-10-13",
+      "provider_errors": [],
+      "home_starters": [
+        {
+          "name": "Demo starter A",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "away_starters": [
+        {
+          "name": "Demo starter B",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "lineup_source": "Synthetic fixture, not real players",
+      "injuries_checked": true,
+      "injuries_asof": "2026-10-13T14:00:00Z",
+      "injuries_source": "Synthetic fixture",
+      "injuries": {
+        "home": [
+          {
+            "name": "Demo player",
+            "status": "Questionable",
+            "report": "Synthetic report, not a real injury.",
+            "reported_at": "2026-10-13T15:58:30.918119+00:00",
+            "url": null
+          }
+        ],
+        "away": []
+      },
+      "travel": {
+        "home": {
+          "km": 360,
+          "rest_hours": 48,
+          "from": "Demo city A",
+          "previous_start": null,
+          "method": "Synthetic"
+        },
+        "away": {
+          "km": 1140,
+          "rest_hours": 72,
+          "from": "Demo city B",
+          "previous_start": null,
+          "method": "Synthetic"
+        }
+      },
+      "weather": {
+        "status": "Indoor venue",
+        "temperature_c": null,
+        "wind_kmh": null,
+        "source": "Synthetic fixture"
+      },
+      "source_url": null,
+      "updated": "2026-10-13T14:00:00Z",
+      "context": {
+        "checks": {
+          "injuries": true,
+          "starters": false,
+          "travel": true,
+          "weather": true
+        },
+        "calibrated": false,
+        "ready": false,
+        "adjustments": {
+          "home": 0.0,
+          "away": 0.0
+        },
+        "applied": [],
+        "missing_impacts": [],
+        "decision": "Watch only \u00b7 inputs or calibration incomplete",
+        "note": "No public sentiment is used. Observed context only changes probabilities when a sourced, fitted effect is configured."
+      },
+      "reference_line": 231.5,
+      "prediction": {
+        "home": 0.3445782583896758,
+        "away": 0.6554217416103242,
+        "tie": 0,
+        "ml_push": 0,
+        "over": 0.509972518195238,
+        "under": 0.49002748180476197,
+        "push": 0,
+        "expected_total": 232.0,
+        "home_rate": 113.0,
+        "away_rate": 119.0,
+        "distribution": [],
+        "version": "nba-final-gaussian-v1",
+        "assumptions": "Final-score Gaussian margin \u03c3=15, total \u03c3=20; includes OT in historical scores, no NBA final tie.",
+        "raw": {
+          "home": 0.3445782583896758,
+          "away": 0.6554217416103242,
+          "over": 0.509972518195238,
+          "under": 0.49002748180476197
+        },
+        "calibration_versions": {}
+      },
+      "markets": {
+        "home": {
+          "probability": 0.3445782583896758,
+          "push": 0,
+          "odds": -120,
+          "implied": 0.5454545454545454,
+          "ev": -0.36827319295226096,
+          "no_vig": 0.5217391304347826,
+          "conditional": 0.3445782583896758
+        },
+        "away": {
+          "probability": 0.6554217416103242,
+          "push": 0,
+          "odds": 100,
+          "implied": 0.5,
+          "ev": 0.31084348322064836,
+          "no_vig": 0.4782608695652174,
+          "conditional": 0.6554217416103242
+        },
+        "over": {
+          "probability": 0.509972518195238,
+          "push": 0,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": -0.026416101627272814,
+          "no_vig": 0.5,
+          "conditional": 0.509972518195238
+        },
+        "under": {
+          "probability": 0.49002748180476197,
+          "push": 0,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": -0.06449298928181801,
+          "no_vig": 0.5,
+          "conditional": 0.49002748180476197
+        }
+      },
+      "explanation": "Final-score Gaussian model: shrunk scoring/conceding means, 15-point margin and 20-point total standard deviations. Historical inputs include overtime.",
+      "recommendations": []
+    },
+    {
+      "id": "demo-nba-2026-10-13-2",
+      "home": "Toronto Raptors",
+      "away": "Cleveland Cavaliers",
+      "home_abbr": "TOR",
+      "away_abbr": "CLE",
+      "start": "2026-10-14T00:00:00+00:00",
+      "home_rate": 109,
+      "away_rate": 116,
+      "line": 224.0,
+      "home_odds": -120,
+      "away_odds": 100,
+      "over_odds": -110,
+      "under_odds": -110,
+      "source": "Synthetic demo",
+      "odds_source": "Illustrative odds",
+      "odds_updated": null,
+      "rates_source": "Synthetic scoring averages",
+      "sport": "nba",
+      "mode": "demo",
+      "state": "pre",
+      "status": "Scheduled \u00b7 demo",
+      "season_type": 2,
+      "venue": "Demo arena",
+      "city": "Demo city",
+      "indoor": true,
+      "home_score": null,
+      "away_score": null,
+      "rates_asof": "2026-10-13",
+      "provider_errors": [],
+      "home_starters": [
+        {
+          "name": "Demo starter A",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "away_starters": [
+        {
+          "name": "Demo starter B",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "lineup_source": "Synthetic fixture, not real players",
+      "injuries_checked": true,
+      "injuries_asof": "2026-10-13T14:00:00Z",
+      "injuries_source": "Synthetic fixture",
+      "injuries": {
+        "home": [
+          {
+            "name": "Demo player",
+            "status": "Questionable",
+            "report": "Synthetic report, not a real injury.",
+            "reported_at": "2026-10-13T15:58:30.918125+00:00",
+            "url": null
+          }
+        ],
+        "away": []
+      },
+      "travel": {
+        "home": {
+          "km": 490,
+          "rest_hours": 48,
+          "from": "Demo city A",
+          "previous_start": null,
+          "method": "Synthetic"
+        },
+        "away": {
+          "km": 1410,
+          "rest_hours": 72,
+          "from": "Demo city B",
+          "previous_start": null,
+          "method": "Synthetic"
+        }
+      },
+      "weather": {
+        "status": "Indoor venue",
+        "temperature_c": null,
+        "wind_kmh": null,
+        "source": "Synthetic fixture"
+      },
+      "source_url": null,
+      "updated": "2026-10-13T14:00:00Z",
+      "context": {
+        "checks": {
+          "injuries": true,
+          "starters": false,
+          "travel": true,
+          "weather": true
+        },
+        "calibrated": false,
+        "ready": false,
+        "adjustments": {
+          "home": 0.0,
+          "away": 0.0
+        },
+        "applied": [],
+        "missing_impacts": [],
+        "decision": "Watch only \u00b7 inputs or calibration incomplete",
+        "note": "No public sentiment is used. Observed context only changes probabilities when a sourced, fitted effect is configured."
+      },
+      "reference_line": 224.0,
+      "prediction": {
+        "home": 0.32036919090127036,
+        "away": 0.6796308090987296,
+        "tie": 0,
+        "ml_push": 0,
+        "over": 0.509972518195238,
+        "under": 0.47010735594710523,
+        "push": 0.019920125857656734,
+        "expected_total": 225.0,
+        "home_rate": 109.0,
+        "away_rate": 116.0,
+        "distribution": [],
+        "version": "nba-final-gaussian-v1",
+        "assumptions": "Final-score Gaussian margin \u03c3=15, total \u03c3=20; includes OT in historical scores, no NBA final tie.",
+        "raw": {
+          "home": 0.32036919090127036,
+          "away": 0.6796308090987296,
+          "over": 0.509972518195238,
+          "under": 0.47010735594710523
+        },
+        "calibration_versions": {}
+      },
+      "markets": {
+        "home": {
+          "probability": 0.32036919090127036,
+          "push": 0,
+          "odds": -120,
+          "implied": 0.5454545454545454,
+          "ev": -0.41265648334767097,
+          "no_vig": 0.5217391304347826,
+          "conditional": 0.32036919090127036
+        },
+        "away": {
+          "probability": 0.6796308090987296,
+          "push": 0,
+          "odds": 100,
+          "implied": 0.5,
+          "ev": 0.3592616181974593,
+          "no_vig": 0.4782608695652174,
+          "conditional": 0.6796308090987296
+        },
+        "over": {
+          "probability": 0.509972518195238,
+          "push": 0.019920125857656734,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": -0.00649597576961608,
+          "no_vig": 0.5,
+          "conditional": 0.5203377108845431
+        },
+        "under": {
+          "probability": 0.47010735594710523,
+          "push": 0.019920125857656734,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": -0.08260219460696061,
+          "no_vig": 0.5,
+          "conditional": 0.47966228911545683
+        }
+      },
+      "explanation": "Final-score Gaussian model: shrunk scoring/conceding means, 15-point margin and 20-point total standard deviations. Historical inputs include overtime.",
+      "recommendations": []
+    },
+    {
+      "id": "demo-nba-2026-10-13-3",
+      "home": "Miami Heat",
+      "away": "Chicago Bulls",
+      "home_abbr": "MIA",
+      "away_abbr": "CHI",
+      "start": "2026-10-14T00:30:00+00:00",
+      "home_rate": 116,
+      "away_rate": 109,
+      "line": 224.5,
+      "home_odds": -120,
+      "away_odds": 100,
+      "over_odds": -110,
+      "under_odds": -110,
+      "source": "Synthetic demo",
+      "odds_source": "Illustrative odds",
+      "odds_updated": null,
+      "rates_source": "Synthetic scoring averages",
+      "sport": "nba",
+      "mode": "demo",
+      "state": "pre",
+      "status": "Scheduled \u00b7 demo",
+      "season_type": 2,
+      "venue": "Demo arena",
+      "city": "Demo city",
+      "indoor": true,
+      "home_score": null,
+      "away_score": null,
+      "rates_asof": "2026-10-13",
+      "provider_errors": [],
+      "home_starters": [
+        {
+          "name": "Demo starter A",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "away_starters": [
+        {
+          "name": "Demo starter B",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "lineup_source": "Synthetic fixture, not real players",
+      "injuries_checked": true,
+      "injuries_asof": "2026-10-13T14:00:00Z",
+      "injuries_source": "Synthetic fixture",
+      "injuries": {
+        "home": [
+          {
+            "name": "Demo player",
+            "status": "Questionable",
+            "report": "Synthetic report, not a real injury.",
+            "reported_at": "2026-10-13T15:58:30.918132+00:00",
+            "url": null
+          }
+        ],
+        "away": []
+      },
+      "travel": {
+        "home": {
+          "km": 620,
+          "rest_hours": 48,
+          "from": "Demo city A",
+          "previous_start": null,
+          "method": "Synthetic"
+        },
+        "away": {
+          "km": 1680,
+          "rest_hours": 72,
+          "from": "Demo city B",
+          "previous_start": null,
+          "method": "Synthetic"
+        }
+      },
+      "weather": {
+        "status": "Indoor venue",
+        "temperature_c": null,
+        "wind_kmh": null,
+        "source": "Synthetic fixture"
+      },
+      "source_url": null,
+      "updated": "2026-10-13T14:00:00Z",
+      "context": {
+        "checks": {
+          "injuries": true,
+          "starters": false,
+          "travel": true,
+          "weather": true
+        },
+        "calibrated": false,
+        "ready": false,
+        "adjustments": {
+          "home": 0.0,
+          "away": 0.0
+        },
+        "applied": [],
+        "missing_impacts": [],
+        "decision": "Watch only \u00b7 inputs or calibration incomplete",
+        "note": "No public sentiment is used. Observed context only changes probabilities when a sourced, fitted effect is configured."
+      },
+      "reference_line": 224.5,
+      "prediction": {
+        "home": 0.6796308090987296,
+        "away": 0.32036919090127036,
+        "tie": 0,
+        "ml_push": 0,
+        "over": 0.509972518195238,
+        "under": 0.49002748180476197,
+        "push": 0,
+        "expected_total": 225.0,
+        "home_rate": 116.0,
+        "away_rate": 109.0,
+        "distribution": [],
+        "version": "nba-final-gaussian-v1",
+        "assumptions": "Final-score Gaussian margin \u03c3=15, total \u03c3=20; includes OT in historical scores, no NBA final tie.",
+        "raw": {
+          "home": 0.6796308090987296,
+          "away": 0.32036919090127036,
+          "over": 0.509972518195238,
+          "under": 0.49002748180476197
+        },
+        "calibration_versions": {}
+      },
+      "markets": {
+        "home": {
+          "probability": 0.6796308090987296,
+          "push": 0,
+          "odds": -120,
+          "implied": 0.5454545454545454,
+          "ev": 0.2459898166810044,
+          "no_vig": 0.5217391304347826,
+          "conditional": 0.6796308090987296
+        },
+        "away": {
+          "probability": 0.32036919090127036,
+          "push": 0,
+          "odds": 100,
+          "implied": 0.5,
+          "ev": -0.3592616181974593,
+          "no_vig": 0.4782608695652174,
+          "conditional": 0.32036919090127036
+        },
+        "over": {
+          "probability": 0.509972518195238,
+          "push": 0,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": -0.026416101627272814,
+          "no_vig": 0.5,
+          "conditional": 0.509972518195238
+        },
+        "under": {
+          "probability": 0.49002748180476197,
+          "push": 0,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": -0.06449298928181801,
+          "no_vig": 0.5,
+          "conditional": 0.49002748180476197
+        }
+      },
+      "explanation": "Final-score Gaussian model: shrunk scoring/conceding means, 15-point margin and 20-point total standard deviations. Historical inputs include overtime.",
+      "recommendations": []
+    },
+    {
+      "id": "demo-nba-2026-10-13-4",
+      "home": "Phoenix Suns",
+      "away": "Sacramento Kings",
+      "home_abbr": "PHX",
+      "away_abbr": "SAC",
+      "start": "2026-10-14T01:00:00+00:00",
+      "home_rate": 120,
+      "away_rate": 111,
+      "line": 229.5,
+      "home_odds": -120,
+      "away_odds": 100,
+      "over_odds": -110,
+      "under_odds": -110,
+      "source": "Synthetic demo",
+      "odds_source": "Illustrative odds",
+      "odds_updated": null,
+      "rates_source": "Synthetic scoring averages",
+      "sport": "nba",
+      "mode": "demo",
+      "state": "pre",
+      "status": "Scheduled \u00b7 demo",
+      "season_type": 2,
+      "venue": "Demo arena",
+      "city": "Demo city",
+      "indoor": true,
+      "home_score": null,
+      "away_score": null,
+      "rates_asof": "2026-10-13",
+      "provider_errors": [],
+      "home_starters": [
+        {
+          "name": "Demo starter A",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "away_starters": [
+        {
+          "name": "Demo starter B",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "lineup_source": "Synthetic fixture, not real players",
+      "injuries_checked": true,
+      "injuries_asof": "2026-10-13T14:00:00Z",
+      "injuries_source": "Synthetic fixture",
+      "injuries": {
+        "home": [
+          {
+            "name": "Demo player",
+            "status": "Questionable",
+            "report": "Synthetic report, not a real injury.",
+            "reported_at": "2026-10-13T15:58:30.918137+00:00",
+            "url": null
+          }
+        ],
+        "away": []
+      },
+      "travel": {
+        "home": {
+          "km": 750,
+          "rest_hours": 48,
+          "from": "Demo city A",
+          "previous_start": null,
+          "method": "Synthetic"
+        },
+        "away": {
+          "km": 1950,
+          "rest_hours": 72,
+          "from": "Demo city B",
+          "previous_start": null,
+          "method": "Synthetic"
+        }
+      },
+      "weather": {
+        "status": "Indoor venue",
+        "temperature_c": null,
+        "wind_kmh": null,
+        "source": "Synthetic fixture"
+      },
+      "source_url": null,
+      "updated": "2026-10-13T14:00:00Z",
+      "context": {
+        "checks": {
+          "injuries": true,
+          "starters": false,
+          "travel": true,
+          "weather": true
+        },
+        "calibrated": false,
+        "ready": false,
+        "adjustments": {
+          "home": 0.0,
+          "away": 0.0
+        },
+        "applied": [],
+        "missing_impacts": [],
+        "decision": "Watch only \u00b7 inputs or calibration incomplete",
+        "note": "No public sentiment is used. Observed context only changes probabilities when a sourced, fitted effect is configured."
+      },
+      "reference_line": 229.5,
+      "prediction": {
+        "home": 0.7257468822499265,
+        "away": 0.27425311775007355,
+        "tie": 0,
+        "ml_push": 0,
+        "over": 0.5298926440528948,
+        "under": 0.47010735594710523,
+        "push": 0,
+        "expected_total": 231.0,
+        "home_rate": 120.0,
+        "away_rate": 111.0,
+        "distribution": [],
+        "version": "nba-final-gaussian-v1",
+        "assumptions": "Final-score Gaussian margin \u03c3=15, total \u03c3=20; includes OT in historical scores, no NBA final tie.",
+        "raw": {
+          "home": 0.7257468822499265,
+          "away": 0.27425311775007355,
+          "over": 0.5298926440528948,
+          "under": 0.47010735594710523
+        },
+        "calibration_versions": {}
+      },
+      "markets": {
+        "home": {
+          "probability": 0.7257468822499265,
+          "push": 0,
+          "odds": -120,
+          "implied": 0.5454545454545454,
+          "ev": 0.330535950791532,
+          "no_vig": 0.5217391304347826,
+          "conditional": 0.7257468822499265
+        },
+        "away": {
+          "probability": 0.27425311775007355,
+          "push": 0,
+          "odds": 100,
+          "implied": 0.5,
+          "ev": -0.4514937644998529,
+          "no_vig": 0.4782608695652174,
+          "conditional": 0.27425311775007355
+        },
+        "over": {
+          "probability": 0.5298926440528948,
+          "push": 0,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": 0.011613229555526516,
+          "no_vig": 0.5,
+          "conditional": 0.5298926440528948
+        },
+        "under": {
+          "probability": 0.47010735594710523,
+          "push": 0,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": -0.10252232046461729,
+          "no_vig": 0.5,
+          "conditional": 0.47010735594710523
+        }
+      },
+      "explanation": "Final-score Gaussian model: shrunk scoring/conceding means, 15-point margin and 20-point total standard deviations. Historical inputs include overtime.",
+      "recommendations": []
+    }
+  ],
+  "updated": "2026-10-13T14:00:00Z",
+  "refresh_seconds": 600,
+  "mode": "demo",
+  "sport": "nba",
+  "date": "2026-10-13"
+}

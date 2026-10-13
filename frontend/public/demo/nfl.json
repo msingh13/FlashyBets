@@ -1,0 +1,3784 @@
+{
+  "games": [
+    {
+      "id": "demo-nfl-2026-10-13-0",
+      "home": "Buffalo Bills",
+      "away": "Kansas City Chiefs",
+      "home_abbr": "BUF",
+      "away_abbr": "KC",
+      "start": "2026-10-13T23:00:00+00:00",
+      "home_rate": 28,
+      "away_rate": 24,
+      "line": 48.5,
+      "home_odds": -120,
+      "away_odds": 100,
+      "over_odds": -110,
+      "under_odds": -110,
+      "source": "Synthetic demo",
+      "odds_source": "Illustrative odds",
+      "odds_updated": null,
+      "rates_source": "Synthetic scoring averages",
+      "sport": "nfl",
+      "mode": "demo",
+      "state": "pre",
+      "status": "Scheduled \u00b7 demo",
+      "season_type": 2,
+      "venue": "Demo stadium",
+      "city": "Demo city",
+      "indoor": false,
+      "home_score": null,
+      "away_score": null,
+      "rates_asof": "2026-10-13",
+      "provider_errors": [],
+      "home_starters": [
+        {
+          "name": "Demo starter A",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "away_starters": [
+        {
+          "name": "Demo starter B",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "lineup_source": "Synthetic fixture, not real players",
+      "injuries_checked": true,
+      "injuries_asof": "2026-10-13T14:00:00Z",
+      "injuries_source": "Synthetic fixture",
+      "injuries": {
+        "home": [
+          {
+            "name": "Demo player",
+            "status": "Questionable",
+            "report": "Synthetic report, not a real injury.",
+            "reported_at": "2026-10-13T15:58:30.987774+00:00",
+            "url": null
+          }
+        ],
+        "away": []
+      },
+      "travel": {
+        "home": {
+          "km": 230,
+          "rest_hours": 48,
+          "from": "Demo city A",
+          "previous_start": null,
+          "method": "Synthetic"
+        },
+        "away": {
+          "km": 870,
+          "rest_hours": 72,
+          "from": "Demo city B",
+          "previous_start": null,
+          "method": "Synthetic"
+        }
+      },
+      "weather": {
+        "status": "Synthetic weather",
+        "temperature_c": 12,
+        "wind_kmh": 15,
+        "source": "Synthetic fixture"
+      },
+      "source_url": null,
+      "updated": "2026-10-13T14:00:00Z",
+      "context": {
+        "checks": {
+          "injuries": true,
+          "starters": false,
+          "travel": true,
+          "weather": true
+        },
+        "calibrated": false,
+        "ready": false,
+        "adjustments": {
+          "home": 0.0,
+          "away": 0.0
+        },
+        "applied": [],
+        "missing_impacts": [],
+        "decision": "Watch only \u00b7 inputs or calibration incomplete",
+        "note": "No public sentiment is used. Observed context only changes probabilities when a sourced, fitted effect is configured."
+      },
+      "reference_line": 48.5,
+      "prediction": {
+        "home": 0.6064858436912403,
+        "away": 0.3888073840136743,
+        "tie": 0.0047067722950873804,
+        "ml_push": 0.0047067722950873804,
+        "over": 0.5828157783057893,
+        "under": 0.41718422169421204,
+        "push": 0.0,
+        "expected_total": 52.24230463775121,
+        "home_rate": 28.0,
+        "away_rate": 24.0,
+        "distribution": [
+          {
+            "goals": 0,
+            "probability": 7.80487633072705e-07
+          },
+          {
+            "goals": 3,
+            "probability": 4.1218002160748655e-05
+          },
+          {
+            "goals": 6,
+            "probability": 4.975813801361893e-05
+          },
+          {
+            "goals": 7,
+            "probability": 8.758825459159093e-05
+          },
+          {
+            "goals": 9,
+            "probability": 0.0001539425309429436
+          },
+          {
+            "goals": 10,
+            "probability": 0.0003943684198702094
+          },
+          {
+            "goals": 12,
+            "probability": 9.62703101601625e-05
+          },
+          {
+            "goals": 13,
+            "probability": 0.0009228568081013206
+          },
+          {
+            "goals": 14,
+            "probability": 0.00022468909196774804
+          },
+          {
+            "goals": 15,
+            "probability": 0.00014019440535345586
+          },
+          {
+            "goals": 16,
+            "probability": 0.0012813148810690987
+          },
+          {
+            "goals": 17,
+            "probability": 0.0019610707172153063
+          },
+          {
+            "goals": 18,
+            "probability": 5.379870447468005e-05
+          },
+          {
+            "goals": 19,
+            "probability": 0.001341400038573999
+          },
+          {
+            "goals": 20,
+            "probability": 0.003100279538403853
+          },
+          {
+            "goals": 21,
+            "probability": 0.0015257161305178802
+          },
+          {
+            "goals": 22,
+            "probability": 0.0010024184577420263
+          },
+          {
+            "goals": 23,
+            "probability": 0.0058583760271401185
+          },
+          {
+            "goals": 24,
+            "probability": 0.0057980830698771526
+          },
+          {
+            "goals": 25,
+            "probability": 0.0006205982237934584
+          },
+          {
+            "goals": 26,
+            "probability": 0.0043165521967431005
+          },
+          {
+            "goals": 27,
+            "probability": 0.012456680983484392
+          },
+          {
+            "goals": 28,
+            "probability": 0.0022549720017872635
+          },
+          {
+            "goals": 29,
+            "probability": 0.004171523460152399
+          },
+          {
+            "goals": 30,
+            "probability": 0.015089751356816672
+          },
+          {
+            "goals": 31,
+            "probability": 0.012990289224177652
+          },
+          {
+            "goals": 32,
+            "probability": 0.0018080649613505784
+          },
+          {
+            "goals": 33,
+            "probability": 0.014317417651520992
+          },
+          {
+            "goals": 34,
+            "probability": 0.019529417804636368
+          },
+          {
+            "goals": 35,
+            "probability": 0.007170086495718737
+          },
+          {
+            "goals": 36,
+            "probability": 0.009228000849399589
+          },
+          {
+            "goals": 37,
+            "probability": 0.03043371820292833
+          },
+          {
+            "goals": 38,
+            "probability": 0.020742331227208755
+          },
+          {
+            "goals": 39,
+            "probability": 0.005101964571080769
+          },
+          {
+            "goals": 40,
+            "probability": 0.020823670849572817
+          },
+          {
+            "goals": 41,
+            "probability": 0.04015431458387787
+          },
+          {
+            "goals": 42,
+            "probability": 0.006982181171610512
+          },
+          {
+            "goals": 43,
+            "probability": 0.016656514299516246
+          },
+          {
+            "goals": 44,
+            "probability": 0.041692415523841155
+          },
+          {
+            "goals": 45,
+            "probability": 0.027615977388982558
+          },
+          {
+            "goals": 46,
+            "probability": 0.006536744260432893
+          },
+          {
+            "goals": 47,
+            "probability": 0.03540090254223261
+          },
+          {
+            "goals": 48,
+            "probability": 0.037056007849537324
+          },
+          {
+            "goals": 49,
+            "probability": 0.012737964281049272
+          },
+          {
+            "goals": 50,
+            "probability": 0.019263355564061016
+          },
+          {
+            "goals": 51,
+            "probability": 0.04900206017922467
+          },
+          {
+            "goals": 52,
+            "probability": 0.0276664535188042
+          },
+          {
+            "goals": 53,
+            "probability": 0.009364219308023801
+          },
+          {
+            "goals": 54,
+            "probability": 0.029524938480393337
+          },
+          {
+            "goals": 55,
+            "probability": 0.04772602486989711
+          },
+          {
+            "goals": 56,
+            "probability": 0.00811010443886014
+          },
+          {
+            "goals": 57,
+            "probability": 0.01989987250001859
+          },
+          {
+            "goals": 58,
+            "probability": 0.041459917159139034
+          },
+          {
+            "goals": 59,
+            "probability": 0.024149842498466773
+          },
+          {
+            "goals": 60,
+            "probability": 0.006668991522218226
+          },
+          {
+            "goals": 61,
+            "probability": 0.031105033599395104
+          },
+          {
+            "goals": 62,
+            "probability": 0.02801368590334381
+          },
+          {
+            "goals": 63,
+            "probability": 0.0094841102887117
+          },
+          {
+            "goals": 64,
+            "probability": 0.013842213290841277
+          },
+          {
+            "goals": 65,
+            "probability": 0.031418652689222365
+          },
+          {
+            "goals": 66,
+            "probability": 0.016129273982881123
+          },
+          {
+            "goals": 67,
+            "probability": 0.0058172277269722085
+          },
+          {
+            "goals": 68,
+            "probability": 0.016024918362905285
+          },
+          {
+            "goals": 69,
+            "probability": 0.024725139212848673
+          },
+          {
+            "goals": 70,
+            "probability": 0.0038698240773727935
+          },
+          {
+            "goals": 71,
+            "probability": 0.009019567845179566
+          },
+          {
+            "goals": 72,
+            "probability": 0.01737869831128072
+          },
+          {
+            "goals": 73,
+            "probability": 0.009633451988811777
+          },
+          {
+            "goals": 74,
+            "probability": 0.0024508222529650747
+          },
+          {
+            "goals": 75,
+            "probability": 0.011364644202572423
+          },
+          {
+            "goals": 76,
+            "probability": 0.009419186389245314
+          },
+          {
+            "goals": 77,
+            "probability": 0.0031870240953317743
+          },
+          {
+            "goals": 78,
+            "probability": 0.00394295333506648
+          },
+          {
+            "goals": 79,
+            "probability": 0.008847315728267644
+          },
+          {
+            "goals": 80,
+            "probability": 0.004399491553807994
+          },
+          {
+            "goals": 81,
+            "probability": 0.0014055330858139176
+          },
+          {
+            "goals": 82,
+            "probability": 0.003649703783626202
+          },
+          {
+            "goals": 83,
+            "probability": 0.005992654637626845
+          },
+          {
+            "goals": 84,
+            "probability": 0.0008071639618402835
+          },
+          {
+            "goals": 85,
+            "probability": 0.001676844076033672
+          },
+          {
+            "goals": 86,
+            "probability": 0.003239131396302861
+          },
+          {
+            "goals": 87,
+            "probability": 0.001826377188656704
+          },
+          {
+            "goals": 88,
+            "probability": 0.00034470686783426654
+          },
+          {
+            "goals": 89,
+            "probability": 0.0018202858686273936
+          },
+          {
+            "goals": 90,
+            "probability": 0.0014541422753923299
+          },
+          {
+            "goals": 91,
+            "probability": 0.0005151522739591149
+          },
+          {
+            "goals": 92,
+            "probability": 0.0004559204509951973
+          },
+          {
+            "goals": 93,
+            "probability": 0.0011163799358385879
+          },
+          {
+            "goals": 94,
+            "probability": 0.000571391654440634
+          },
+          {
+            "goals": 95,
+            "probability": 0.00013519487816662765
+          },
+          {
+            "goals": 96,
+            "probability": 0.00034880120726678147
+          },
+          {
+            "goals": 97,
+            "probability": 0.0006904051921678038
+          },
+          {
+            "goals": 98,
+            "probability": 7.666577399001253e-05
+          },
+          {
+            "goals": 99,
+            "probability": 0.00012607768892313297
+          },
+          {
+            "goals": 100,
+            "probability": 0.0002639983457183567
+          },
+          {
+            "goals": 101,
+            "probability": 0.0001639395761010596
+          },
+          {
+            "goals": 102,
+            "probability": 1.7458463516640365e-05
+          },
+          {
+            "goals": 103,
+            "probability": 0.00012602262297695344
+          },
+          {
+            "goals": 104,
+            "probability": 0.00010008497772680407
+          },
+          {
+            "goals": 105,
+            "probability": 4.2173008650868776e-05
+          },
+          {
+            "goals": 106,
+            "probability": 1.9848994327172953e-05
+          },
+          {
+            "goals": 107,
+            "probability": 6.033345070921372e-05
+          },
+          {
+            "goals": 108,
+            "probability": 3.4234395842728e-05
+          },
+          {
+            "goals": 109,
+            "probability": 4.849479370574634e-06
+          },
+          {
+            "goals": 110,
+            "probability": 1.2758572535240938e-05
+          },
+          {
+            "goals": 111,
+            "probability": 3.666715371712769e-05
+          },
+          {
+            "goals": 112,
+            "probability": 3.3781453395304672e-06
+          },
+          {
+            "goals": 113,
+            "probability": 3.4328200365288787e-06
+          },
+          {
+            "goals": 114,
+            "probability": 8.536401604536096e-06
+          },
+          {
+            "goals": 115,
+            "probability": 6.575122502541463e-06
+          },
+          {
+            "goals": 116,
+            "probability": 2.492270861784233e-07
+          },
+          {
+            "goals": 117,
+            "probability": 3.4767520624883194e-06
+          },
+          {
+            "goals": 118,
+            "probability": 2.750876583678993e-06
+          },
+          {
+            "goals": 119,
+            "probability": 1.766585728687962e-06
+          },
+          {
+            "goals": 120,
+            "probability": 2.559413423389838e-07
+          },
+          {
+            "goals": 121,
+            "probability": 1.222416859243177e-06
+          },
+          {
+            "goals": 122,
+            "probability": 8.506602981618524e-07
+          },
+          {
+            "goals": 123,
+            "probability": 5.432668500573309e-08
+          },
+          {
+            "goals": 124,
+            "probability": 1.3701650262568961e-07
+          },
+          {
+            "goals": 125,
+            "probability": 8.228163630131555e-07
+          },
+          {
+            "goals": 126,
+            "probability": 6.471448290417936e-08
+          },
+          {
+            "goals": 127,
+            "probability": 2.572115310258792e-08
+          },
+          {
+            "goals": 128,
+            "probability": 8.498052382349073e-08
+          },
+          {
+            "goals": 129,
+            "probability": 1.0151414676785585e-07
+          },
+          {
+            "goals": 130,
+            "probability": 3.7903691270196547e-10
+          },
+          {
+            "goals": 131,
+            "probability": 3.1889102299337534e-08
+          },
+          {
+            "goals": 132,
+            "probability": 2.2750838675793902e-08
+          },
+          {
+            "goals": 133,
+            "probability": 3.476840347571248e-08
+          },
+          {
+            "goals": 134,
+            "probability": 4.232807670163701e-10
+          },
+          {
+            "goals": 135,
+            "probability": 6.830740952702801e-09
+          },
+          {
+            "goals": 136,
+            "probability": 6.732283822639479e-09
+          },
+          {
+            "goals": 137,
+            "probability": 1.2602946145750568e-10
+          },
+          {
+            "goals": 138,
+            "probability": 1.5686274247591307e-10
+          },
+          {
+            "goals": 139,
+            "probability": 6.498691258632997e-09
+          },
+          {
+            "goals": 140,
+            "probability": 3.835679184139185e-10
+          },
+          {
+            "goals": 141,
+            "probability": 2.975695617746663e-11
+          },
+          {
+            "goals": 142,
+            "probability": 1.1177644523732729e-10
+          },
+          {
+            "goals": 143,
+            "probability": 4.25568647763916e-10
+          },
+          {
+            "goals": 145,
+            "probability": 6.323353187711659e-11
+          },
+          {
+            "goals": 146,
+            "probability": 1.8832335014538984e-11
+          },
+          {
+            "goals": 147,
+            "probability": 2.5790284808490854e-10
+          },
+          {
+            "goals": 149,
+            "probability": 5.37485020955491e-12
+          },
+          {
+            "goals": 150,
+            "probability": 7.210578721782944e-12
+          },
+          {
+            "goals": 153,
+            "probability": 1.1421556695304184e-11
+          },
+          {
+            "goals": 154,
+            "probability": 6.9647635380858e-14
+          },
+          {
+            "goals": 157,
+            "probability": 2.0058518989687104e-13
+          },
+          {
+            "goals": 161,
+            "probability": 4.26243528530851e-13
+          }
+        ],
+        "version": "nfl-drive-v1",
+        "assumptions": "11 possessions; scoring outcomes 3/7 points with fixed 32/68% mix. Tied regulation: 10% remain tied; 90% receive one 3/7-point settlement score. Regular season only; 2-way ML tie returns stake. Uncalibrated approximation, not a complete NFL OT simulation.",
+        "raw": {
+          "home": 0.6064858436912403,
+          "away": 0.3888073840136743,
+          "over": 0.5828157783057893,
+          "under": 0.41718422169421204
+        },
+        "calibration_versions": {}
+      },
+      "markets": {
+        "home": {
+          "probability": 0.6064858436912403,
+          "push": 0.0047067722950873804,
+          "odds": -120,
+          "implied": 0.5454545454545454,
+          "ev": 0.1165974857290279,
+          "no_vig": 0.5217391304347826,
+          "conditional": 0.6093539339052481
+        },
+        "away": {
+          "probability": 0.3888073840136743,
+          "push": 0.0047067722950873804,
+          "odds": 100,
+          "implied": 0.5,
+          "ev": -0.21767845967756394,
+          "no_vig": 0.4782608695652174,
+          "conditional": 0.390646066094754
+        },
+        "over": {
+          "probability": 0.5828157783057893,
+          "push": 0.0,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": 0.11264830403832515,
+          "no_vig": 0.5,
+          "conditional": 0.5828157783057893
+        },
+        "under": {
+          "probability": 0.41718422169421204,
+          "push": 0.0,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": -0.20355739494741326,
+          "no_vig": 0.5,
+          "conditional": 0.41718422169421204
+        }
+      },
+      "explanation": "Possession scoring model: eleven possessions with 0/3/7-point outcomes; explicit approximate overtime/tie settlement. Regular season only.",
+      "recommendations": []
+    },
+    {
+      "id": "demo-nfl-2026-10-13-1",
+      "home": "Baltimore Ravens",
+      "away": "Cincinnati Bengals",
+      "home_abbr": "BAL",
+      "away_abbr": "CIN",
+      "start": "2026-10-13T23:30:00+00:00",
+      "home_rate": 27,
+      "away_rate": 23,
+      "line": 47.0,
+      "home_odds": -120,
+      "away_odds": 100,
+      "over_odds": -110,
+      "under_odds": -110,
+      "source": "Synthetic demo",
+      "odds_source": "Illustrative odds",
+      "odds_updated": null,
+      "rates_source": "Synthetic scoring averages",
+      "sport": "nfl",
+      "mode": "demo",
+      "state": "pre",
+      "status": "Scheduled \u00b7 demo",
+      "season_type": 2,
+      "venue": "Demo stadium",
+      "city": "Demo city",
+      "indoor": false,
+      "home_score": null,
+      "away_score": null,
+      "rates_asof": "2026-10-13",
+      "provider_errors": [],
+      "home_starters": [
+        {
+          "name": "Demo starter A",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "away_starters": [
+        {
+          "name": "Demo starter B",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "lineup_source": "Synthetic fixture, not real players",
+      "injuries_checked": true,
+      "injuries_asof": "2026-10-13T14:00:00Z",
+      "injuries_source": "Synthetic fixture",
+      "injuries": {
+        "home": [
+          {
+            "name": "Demo player",
+            "status": "Questionable",
+            "report": "Synthetic report, not a real injury.",
+            "reported_at": "2026-10-13T15:58:30.987783+00:00",
+            "url": null
+          }
+        ],
+        "away": []
+      },
+      "travel": {
+        "home": {
+          "km": 360,
+          "rest_hours": 48,
+          "from": "Demo city A",
+          "previous_start": null,
+          "method": "Synthetic"
+        },
+        "away": {
+          "km": 1140,
+          "rest_hours": 72,
+          "from": "Demo city B",
+          "previous_start": null,
+          "method": "Synthetic"
+        }
+      },
+      "weather": {
+        "status": "Synthetic weather",
+        "temperature_c": 12,
+        "wind_kmh": 15,
+        "source": "Synthetic fixture"
+      },
+      "source_url": null,
+      "updated": "2026-10-13T14:00:00Z",
+      "context": {
+        "checks": {
+          "injuries": true,
+          "starters": false,
+          "travel": true,
+          "weather": true
+        },
+        "calibrated": false,
+        "ready": false,
+        "adjustments": {
+          "home": 0.0,
+          "away": 0.0
+        },
+        "applied": [],
+        "missing_impacts": [],
+        "decision": "Watch only \u00b7 inputs or calibration incomplete",
+        "note": "No public sentiment is used. Observed context only changes probabilities when a sourced, fitted effect is configured."
+      },
+      "reference_line": 47.0,
+      "prediction": {
+        "home": 0.6072828616875542,
+        "away": 0.3878741183341551,
+        "tie": 0.0048430199782916105,
+        "ml_push": 0.0048430199782916105,
+        "over": 0.5668409037303428,
+        "under": 0.3977870630271248,
+        "push": 0.035372033242531686,
+        "expected_total": 50.249318668482495,
+        "home_rate": 27.0,
+        "away_rate": 23.0,
+        "distribution": [
+          {
+            "goals": 0,
+            "probability": 1.4074849502554036e-06
+          },
+          {
+            "goals": 3,
+            "probability": 6.983850025919475e-05
+          },
+          {
+            "goals": 6,
+            "probability": 7.865415851218417e-05
+          },
+          {
+            "goals": 7,
+            "probability": 0.00014840681305078887
+          },
+          {
+            "goals": 9,
+            "probability": 0.00022907998227880756
+          },
+          {
+            "goals": 10,
+            "probability": 0.0006231653556578961
+          },
+          {
+            "goals": 12,
+            "probability": 0.000133341595762983
+          },
+          {
+            "goals": 13,
+            "probability": 0.0013679416287934421
+          },
+          {
+            "goals": 14,
+            "probability": 0.00035517268453158165
+          },
+          {
+            "goals": 15,
+            "probability": 0.00018320317357536914
+          },
+          {
+            "goals": 16,
+            "probability": 0.0017739637864713843
+          },
+          {
+            "goals": 17,
+            "probability": 0.002906875961186065
+          },
+          {
+            "goals": 18,
+            "probability": 6.528494518234571e-05
+          },
+          {
+            "goals": 19,
+            "probability": 0.0017415544480427684
+          },
+          {
+            "goals": 20,
+            "probability": 0.004293319096594727
+          },
+          {
+            "goals": 21,
+            "probability": 0.002253885075944563
+          },
+          {
+            "goals": 22,
+            "probability": 0.0012158769252525988
+          },
+          {
+            "goals": 23,
+            "probability": 0.007619396879827016
+          },
+          {
+            "goals": 24,
+            "probability": 0.008023466930751783
+          },
+          {
+            "goals": 25,
+            "probability": 0.0007058428752514876
+          },
+          {
+            "goals": 26,
+            "probability": 0.005236959441463043
+          },
+          {
+            "goals": 27,
+            "probability": 0.016198915753883592
+          },
+          {
+            "goals": 28,
+            "probability": 0.0030291530996664913
+          },
+          {
+            "goals": 29,
+            "probability": 0.004760524164169065
+          },
+          {
+            "goals": 30,
+            "probability": 0.01830265897041098
+          },
+          {
+            "goals": 31,
+            "probability": 0.016829626959637932
+          },
+          {
+            "goals": 32,
+            "probability": 0.0019216399608943421
+          },
+          {
+            "goals": 33,
+            "probability": 0.016306566865466703
+          },
+          {
+            "goals": 34,
+            "probability": 0.02368303596642596
+          },
+          {
+            "goals": 35,
+            "probability": 0.009035413724402756
+          },
+          {
+            "goals": 36,
+            "probability": 0.009805345787670608
+          },
+          {
+            "goals": 37,
+            "probability": 0.034659473536147664
+          },
+          {
+            "goals": 38,
+            "probability": 0.025074078145967606
+          },
+          {
+            "goals": 39,
+            "probability": 0.0050903506273384785
+          },
+          {
+            "goals": 40,
+            "probability": 0.022130550130057946
+          },
+          {
+            "goals": 41,
+            "probability": 0.045791051388149685
+          },
+          {
+            "goals": 42,
+            "probability": 0.00789933309169546
+          },
+          {
+            "goals": 43,
+            "probability": 0.016643546059557108
+          },
+          {
+            "goals": 44,
+            "probability": 0.04429538636709911
+          },
+          {
+            "goals": 45,
+            "probability": 0.031218500259542478
+          },
+          {
+            "goals": 46,
+            "probability": 0.006085274425601274
+          },
+          {
+            "goals": 47,
+            "probability": 0.035372033242531686
+          },
+          {
+            "goals": 48,
+            "probability": 0.03933716372153472
+          },
+          {
+            "goals": 49,
+            "probability": 0.013742479416142792
+          },
+          {
+            "goals": 50,
+            "probability": 0.017929282063003576
+          },
+          {
+            "goals": 51,
+            "probability": 0.048880067919212775
+          },
+          {
+            "goals": 52,
+            "probability": 0.029203233471643802
+          },
+          {
+            "goals": 53,
+            "probability": 0.008197472422678086
+          },
+          {
+            "goals": 54,
+            "probability": 0.027484138313093702
+          },
+          {
+            "goals": 55,
+            "probability": 0.04774072766817991
+          },
+          {
+            "goals": 56,
+            "probability": 0.007863212996750699
+          },
+          {
+            "goals": 57,
+            "probability": 0.017420235059622705
+          },
+          {
+            "goals": 58,
+            "probability": 0.03858040651930712
+          },
+          {
+            "goals": 59,
+            "probability": 0.023847571022208778
+          },
+          {
+            "goals": 60,
+            "probability": 0.005437653152428726
+          },
+          {
+            "goals": 61,
+            "probability": 0.027276082008204118
+          },
+          {
+            "goals": 62,
+            "probability": 0.026038134637012558
+          },
+          {
+            "goals": 63,
+            "probability": 0.008907603400668478
+          },
+          {
+            "goals": 64,
+            "probability": 0.011284360377250958
+          },
+          {
+            "goals": 65,
+            "probability": 0.027457710301824235
+          },
+          {
+            "goals": 66,
+            "probability": 0.01489479813311068
+          },
+          {
+            "goals": 67,
+            "probability": 0.004470554683143295
+          },
+          {
+            "goals": 68,
+            "probability": 0.013065393530171367
+          },
+          {
+            "goals": 69,
+            "probability": 0.021715274291764338
+          },
+          {
+            "goals": 70,
+            "probability": 0.0032789966040939647
+          },
+          {
+            "goals": 71,
+            "probability": 0.006919965417944797
+          },
+          {
+            "goals": 72,
+            "probability": 0.014164340976492839
+          },
+          {
+            "goals": 73,
+            "probability": 0.008332915949547782
+          },
+          {
+            "goals": 74,
+            "probability": 0.0017500977190630133
+          },
+          {
+            "goals": 75,
+            "probability": 0.008752299740985556
+          },
+          {
+            "goals": 76,
+            "probability": 0.007669411823429114
+          },
+          {
+            "goals": 77,
+            "probability": 0.002651548606847515
+          },
+          {
+            "goals": 78,
+            "probability": 0.002815142333879821
+          },
+          {
+            "goals": 79,
+            "probability": 0.006776269809389083
+          },
+          {
+            "goals": 80,
+            "probability": 0.0035631883704042478
+          },
+          {
+            "goals": 81,
+            "probability": 0.0009492695139419173
+          },
+          {
+            "goals": 82,
+            "probability": 0.002606118954862594
+          },
+          {
+            "goals": 83,
+            "probability": 0.004627027520369902
+          },
+          {
+            "goals": 84,
+            "probability": 0.0006080745058656925
+          },
+          {
+            "goals": 85,
+            "probability": 0.0011281476231036092
+          },
+          {
+            "goals": 86,
+            "probability": 0.002312323668221805
+          },
+          {
+            "goals": 87,
+            "probability": 0.0013874138795871747
+          },
+          {
+            "goals": 88,
+            "probability": 0.0002155577425079976
+          },
+          {
+            "goals": 89,
+            "probability": 0.0012327092989504642
+          },
+          {
+            "goals": 90,
+            "probability": 0.0010375313246219432
+          },
+          {
+            "goals": 91,
+            "probability": 0.0003848747424961701
+          },
+          {
+            "goals": 92,
+            "probability": 0.00028506265333755207
+          },
+          {
+            "goals": 93,
+            "probability": 0.0007497076927665511
+          },
+          {
+            "goals": 94,
+            "probability": 0.0004064323836382298
+          },
+          {
+            "goals": 95,
+            "probability": 8.040864464966459e-05
+          },
+          {
+            "goals": 96,
+            "probability": 0.00021811770811891348
+          },
+          {
+            "goals": 97,
+            "probability": 0.0004693685551987293
+          },
+          {
+            "goals": 98,
+            "probability": 5.204295795773242e-05
+          },
+          {
+            "goals": 99,
+            "probability": 7.446129943871107e-05
+          },
+          {
+            "goals": 100,
+            "probability": 0.00016505615761624665
+          },
+          {
+            "goals": 101,
+            "probability": 0.00010949656507519868
+          },
+          {
+            "goals": 102,
+            "probability": 9.55970333897016e-06
+          },
+          {
+            "goals": 103,
+            "probability": 7.520988004805856e-05
+          },
+          {
+            "goals": 104,
+            "probability": 6.257090425177699e-05
+          },
+          {
+            "goals": 105,
+            "probability": 2.8430202604414037e-05
+          },
+          {
+            "goals": 106,
+            "probability": 1.0867381889200807e-05
+          },
+          {
+            "goals": 107,
+            "probability": 3.5555006647154385e-05
+          },
+          {
+            "goals": 108,
+            "probability": 2.137856105811314e-05
+          },
+          {
+            "goals": 109,
+            "probability": 2.5502059329279704e-06
+          },
+          {
+            "goals": 110,
+            "probability": 6.986290135148515e-06
+          },
+          {
+            "goals": 111,
+            "probability": 2.1995015202814077e-05
+          },
+          {
+            "goals": 112,
+            "probability": 2.0717399326324448e-06
+          },
+          {
+            "goals": 113,
+            "probability": 1.7843499407158425e-06
+          },
+          {
+            "goals": 114,
+            "probability": 4.673685109095998e-06
+          },
+          {
+            "goals": 115,
+            "probability": 3.860422972869389e-06
+          },
+          {
+            "goals": 116,
+            "probability": 1.1948595454941933e-07
+          },
+          {
+            "goals": 117,
+            "probability": 1.8357176297301938e-06
+          },
+          {
+            "goals": 118,
+            "probability": 1.506330827116422e-06
+          },
+          {
+            "goals": 119,
+            "probability": 1.0676181090218616e-06
+          },
+          {
+            "goals": 120,
+            "probability": 1.2269430711983613e-07
+          },
+          {
+            "goals": 121,
+            "probability": 6.335023676741754e-07
+          },
+          {
+            "goals": 122,
+            "probability": 4.6569170976085035e-07
+          },
+          {
+            "goals": 123,
+            "probability": 2.5449154952650463e-08
+          },
+          {
+            "goals": 124,
+            "probability": 6.569016195368544e-08
+          },
+          {
+            "goals": 125,
+            "probability": 4.3692490540053925e-07
+          },
+          {
+            "goals": 126,
+            "probability": 3.536870823038237e-08
+          },
+          {
+            "goals": 127,
+            "probability": 1.1860314623250265e-08
+          },
+          {
+            "goals": 128,
+            "probability": 4.073834416088311e-08
+          },
+          {
+            "goals": 129,
+            "probability": 5.240084953655496e-08
+          },
+          {
+            "goals": 130,
+            "probability": 1.5908422052887546e-10
+          },
+          {
+            "goals": 131,
+            "probability": 1.4990229296210195e-08
+          },
+          {
+            "goals": 132,
+            "probability": 1.0907865624591052e-08
+          },
+          {
+            "goals": 133,
+            "probability": 1.8664737606550256e-08
+          },
+          {
+            "goals": 134,
+            "probability": 1.776536496291344e-10
+          },
+          {
+            "goals": 135,
+            "probability": 3.135985705602045e-09
+          },
+          {
+            "goals": 136,
+            "probability": 3.227352374587506e-09
+          },
+          {
+            "goals": 137,
+            "probability": 5.289537237077987e-11
+          },
+          {
+            "goals": 138,
+            "probability": 6.58362979450074e-11
+          },
+          {
+            "goals": 139,
+            "probability": 3.068039493557826e-09
+          },
+          {
+            "goals": 140,
+            "probability": 1.8394273629050947e-10
+          },
+          {
+            "goals": 141,
+            "probability": 1.2489185143100808e-11
+          },
+          {
+            "goals": 142,
+            "probability": 4.6913290152430435e-11
+          },
+          {
+            "goals": 143,
+            "probability": 1.9414364627392826e-10
+          },
+          {
+            "goals": 145,
+            "probability": 2.653951842908922e-11
+          },
+          {
+            "goals": 146,
+            "probability": 7.904051653360379e-12
+          },
+          {
+            "goals": 147,
+            "probability": 1.2259324838381504e-10
+          },
+          {
+            "goals": 149,
+            "probability": 2.255859066472584e-12
+          },
+          {
+            "goals": 150,
+            "probability": 3.0263260834938393e-12
+          },
+          {
+            "goals": 153,
+            "probability": 4.793700516254242e-12
+          },
+          {
+            "goals": 154,
+            "probability": 2.9231558761020044e-14
+          },
+          {
+            "goals": 157,
+            "probability": 8.418688923173773e-14
+          },
+          {
+            "goals": 161,
+            "probability": 1.7889713961744268e-13
+          }
+        ],
+        "version": "nfl-drive-v1",
+        "assumptions": "11 possessions; scoring outcomes 3/7 points with fixed 32/68% mix. Tied regulation: 10% remain tied; 90% receive one 3/7-point settlement score. Regular season only; 2-way ML tie returns stake. Uncalibrated approximation, not a complete NFL OT simulation.",
+        "raw": {
+          "home": 0.6072828616875542,
+          "away": 0.3878741183341551,
+          "over": 0.5668409037303428,
+          "under": 0.3977870630271248
+        },
+        "calibration_versions": {}
+      },
+      "markets": {
+        "home": {
+          "probability": 0.6072828616875542,
+          "push": 0.0048430199782916105,
+          "odds": -120,
+          "implied": 0.5454545454545454,
+          "ev": 0.11819493307214102,
+          "no_vig": 0.5217391304347826,
+          "conditional": 0.6102382577614106
+        },
+        "away": {
+          "probability": 0.3878741183341551,
+          "push": 0.0048430199782916105,
+          "odds": 100,
+          "implied": 0.5,
+          "ev": -0.21940874335339822,
+          "no_vig": 0.4782608695652174,
+          "conditional": 0.38976174223859034
+        },
+        "over": {
+          "probability": 0.5668409037303428,
+          "push": 0.035372033242531686,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": 0.11752284945500435,
+          "no_vig": 0.5,
+          "conditional": 0.587626445909235
+        },
+        "under": {
+          "probability": 0.3977870630271248,
+          "push": 0.035372033242531686,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": -0.20521630097841193,
+          "no_vig": 0.5,
+          "conditional": 0.41237355409076426
+        }
+      },
+      "explanation": "Possession scoring model: eleven possessions with 0/3/7-point outcomes; explicit approximate overtime/tie settlement. Regular season only.",
+      "recommendations": []
+    },
+    {
+      "id": "demo-nfl-2026-10-13-2",
+      "home": "Green Bay Packers",
+      "away": "Detroit Lions",
+      "home_abbr": "GB",
+      "away_abbr": "DET",
+      "start": "2026-10-14T00:00:00+00:00",
+      "home_rate": 24,
+      "away_rate": 28,
+      "line": 49.5,
+      "home_odds": -120,
+      "away_odds": 100,
+      "over_odds": -110,
+      "under_odds": -110,
+      "source": "Synthetic demo",
+      "odds_source": "Illustrative odds",
+      "odds_updated": null,
+      "rates_source": "Synthetic scoring averages",
+      "sport": "nfl",
+      "mode": "demo",
+      "state": "pre",
+      "status": "Scheduled \u00b7 demo",
+      "season_type": 2,
+      "venue": "Demo stadium",
+      "city": "Demo city",
+      "indoor": false,
+      "home_score": null,
+      "away_score": null,
+      "rates_asof": "2026-10-13",
+      "provider_errors": [],
+      "home_starters": [
+        {
+          "name": "Demo starter A",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "away_starters": [
+        {
+          "name": "Demo starter B",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "lineup_source": "Synthetic fixture, not real players",
+      "injuries_checked": true,
+      "injuries_asof": "2026-10-13T14:00:00Z",
+      "injuries_source": "Synthetic fixture",
+      "injuries": {
+        "home": [
+          {
+            "name": "Demo player",
+            "status": "Questionable",
+            "report": "Synthetic report, not a real injury.",
+            "reported_at": "2026-10-13T15:58:30.987789+00:00",
+            "url": null
+          }
+        ],
+        "away": []
+      },
+      "travel": {
+        "home": {
+          "km": 490,
+          "rest_hours": 48,
+          "from": "Demo city A",
+          "previous_start": null,
+          "method": "Synthetic"
+        },
+        "away": {
+          "km": 1410,
+          "rest_hours": 72,
+          "from": "Demo city B",
+          "previous_start": null,
+          "method": "Synthetic"
+        }
+      },
+      "weather": {
+        "status": "Synthetic weather",
+        "temperature_c": 12,
+        "wind_kmh": 15,
+        "source": "Synthetic fixture"
+      },
+      "source_url": null,
+      "updated": "2026-10-13T14:00:00Z",
+      "context": {
+        "checks": {
+          "injuries": true,
+          "starters": false,
+          "travel": true,
+          "weather": true
+        },
+        "calibrated": false,
+        "ready": false,
+        "adjustments": {
+          "home": 0.0,
+          "away": 0.0
+        },
+        "applied": [],
+        "missing_impacts": [],
+        "decision": "Watch only \u00b7 inputs or calibration incomplete",
+        "note": "No public sentiment is used. Observed context only changes probabilities when a sourced, fitted effect is configured."
+      },
+      "reference_line": 49.5,
+      "prediction": {
+        "home": 0.3888073840136735,
+        "away": 0.6064858436912406,
+        "tie": 0.0047067722950873804,
+        "ml_push": 0.0047067722950873804,
+        "over": 0.5700778140247379,
+        "under": 0.429922185975261,
+        "push": 0.0,
+        "expected_total": 52.242304637751175,
+        "home_rate": 24.0,
+        "away_rate": 28.0,
+        "distribution": [
+          {
+            "goals": 0,
+            "probability": 7.80487633072705e-07
+          },
+          {
+            "goals": 3,
+            "probability": 4.1218002160748655e-05
+          },
+          {
+            "goals": 6,
+            "probability": 4.975813801361893e-05
+          },
+          {
+            "goals": 7,
+            "probability": 8.758825459159093e-05
+          },
+          {
+            "goals": 9,
+            "probability": 0.00015394253094294362
+          },
+          {
+            "goals": 10,
+            "probability": 0.0003943684198702094
+          },
+          {
+            "goals": 12,
+            "probability": 9.627031016016248e-05
+          },
+          {
+            "goals": 13,
+            "probability": 0.0009228568081013207
+          },
+          {
+            "goals": 14,
+            "probability": 0.00022468909196774804
+          },
+          {
+            "goals": 15,
+            "probability": 0.00014019440535345583
+          },
+          {
+            "goals": 16,
+            "probability": 0.0012813148810690987
+          },
+          {
+            "goals": 17,
+            "probability": 0.0019610707172153063
+          },
+          {
+            "goals": 18,
+            "probability": 5.379870447468004e-05
+          },
+          {
+            "goals": 19,
+            "probability": 0.0013414000385739988
+          },
+          {
+            "goals": 20,
+            "probability": 0.003100279538403853
+          },
+          {
+            "goals": 21,
+            "probability": 0.0015257161305178807
+          },
+          {
+            "goals": 22,
+            "probability": 0.0010024184577420265
+          },
+          {
+            "goals": 23,
+            "probability": 0.005858376027140119
+          },
+          {
+            "goals": 24,
+            "probability": 0.0057980830698771526
+          },
+          {
+            "goals": 25,
+            "probability": 0.0006205982237934582
+          },
+          {
+            "goals": 26,
+            "probability": 0.0043165521967431
+          },
+          {
+            "goals": 27,
+            "probability": 0.012456680983484396
+          },
+          {
+            "goals": 28,
+            "probability": 0.002254972001787263
+          },
+          {
+            "goals": 29,
+            "probability": 0.004171523460152399
+          },
+          {
+            "goals": 30,
+            "probability": 0.015089751356816675
+          },
+          {
+            "goals": 31,
+            "probability": 0.012990289224177652
+          },
+          {
+            "goals": 32,
+            "probability": 0.001808064961350578
+          },
+          {
+            "goals": 33,
+            "probability": 0.014317417651520989
+          },
+          {
+            "goals": 34,
+            "probability": 0.019529417804636365
+          },
+          {
+            "goals": 35,
+            "probability": 0.007170086495718735
+          },
+          {
+            "goals": 36,
+            "probability": 0.00922800084939959
+          },
+          {
+            "goals": 37,
+            "probability": 0.030433718202928336
+          },
+          {
+            "goals": 38,
+            "probability": 0.020742331227208748
+          },
+          {
+            "goals": 39,
+            "probability": 0.005101964571080767
+          },
+          {
+            "goals": 40,
+            "probability": 0.020823670849572814
+          },
+          {
+            "goals": 41,
+            "probability": 0.04015431458387789
+          },
+          {
+            "goals": 42,
+            "probability": 0.006982181171610511
+          },
+          {
+            "goals": 43,
+            "probability": 0.016656514299516246
+          },
+          {
+            "goals": 44,
+            "probability": 0.04169241552384114
+          },
+          {
+            "goals": 45,
+            "probability": 0.027615977388982547
+          },
+          {
+            "goals": 46,
+            "probability": 0.006536744260432895
+          },
+          {
+            "goals": 47,
+            "probability": 0.03540090254223261
+          },
+          {
+            "goals": 48,
+            "probability": 0.037056007849537324
+          },
+          {
+            "goals": 49,
+            "probability": 0.01273796428104927
+          },
+          {
+            "goals": 50,
+            "probability": 0.019263355564061023
+          },
+          {
+            "goals": 51,
+            "probability": 0.04900206017922467
+          },
+          {
+            "goals": 52,
+            "probability": 0.02766645351880421
+          },
+          {
+            "goals": 53,
+            "probability": 0.009364219308023801
+          },
+          {
+            "goals": 54,
+            "probability": 0.029524938480393333
+          },
+          {
+            "goals": 55,
+            "probability": 0.047726024869897125
+          },
+          {
+            "goals": 56,
+            "probability": 0.008110104438860146
+          },
+          {
+            "goals": 57,
+            "probability": 0.01989987250001859
+          },
+          {
+            "goals": 58,
+            "probability": 0.041459917159139034
+          },
+          {
+            "goals": 59,
+            "probability": 0.02414984249846677
+          },
+          {
+            "goals": 60,
+            "probability": 0.006668991522218225
+          },
+          {
+            "goals": 61,
+            "probability": 0.031105033599395097
+          },
+          {
+            "goals": 62,
+            "probability": 0.028013685903343806
+          },
+          {
+            "goals": 63,
+            "probability": 0.009484110288711697
+          },
+          {
+            "goals": 64,
+            "probability": 0.013842213290841284
+          },
+          {
+            "goals": 65,
+            "probability": 0.031418652689222365
+          },
+          {
+            "goals": 66,
+            "probability": 0.016129273982881127
+          },
+          {
+            "goals": 67,
+            "probability": 0.00581722772697221
+          },
+          {
+            "goals": 68,
+            "probability": 0.01602491836290528
+          },
+          {
+            "goals": 69,
+            "probability": 0.024725139212848666
+          },
+          {
+            "goals": 70,
+            "probability": 0.003869824077372793
+          },
+          {
+            "goals": 71,
+            "probability": 0.009019567845179571
+          },
+          {
+            "goals": 72,
+            "probability": 0.017378698311280718
+          },
+          {
+            "goals": 73,
+            "probability": 0.00963345198881178
+          },
+          {
+            "goals": 74,
+            "probability": 0.0024508222529650734
+          },
+          {
+            "goals": 75,
+            "probability": 0.01136464420257242
+          },
+          {
+            "goals": 76,
+            "probability": 0.009419186389245313
+          },
+          {
+            "goals": 77,
+            "probability": 0.003187024095331773
+          },
+          {
+            "goals": 78,
+            "probability": 0.00394295333506648
+          },
+          {
+            "goals": 79,
+            "probability": 0.008847315728267644
+          },
+          {
+            "goals": 80,
+            "probability": 0.004399491553807996
+          },
+          {
+            "goals": 81,
+            "probability": 0.0014055330858139179
+          },
+          {
+            "goals": 82,
+            "probability": 0.0036497037836262024
+          },
+          {
+            "goals": 83,
+            "probability": 0.005992654637626845
+          },
+          {
+            "goals": 84,
+            "probability": 0.0008071639618402834
+          },
+          {
+            "goals": 85,
+            "probability": 0.0016768440760336724
+          },
+          {
+            "goals": 86,
+            "probability": 0.0032391313963028604
+          },
+          {
+            "goals": 87,
+            "probability": 0.0018263771886567045
+          },
+          {
+            "goals": 88,
+            "probability": 0.0003447068678342663
+          },
+          {
+            "goals": 89,
+            "probability": 0.0018202858686273934
+          },
+          {
+            "goals": 90,
+            "probability": 0.0014541422753923292
+          },
+          {
+            "goals": 91,
+            "probability": 0.0005151522739591152
+          },
+          {
+            "goals": 92,
+            "probability": 0.0004559204509951974
+          },
+          {
+            "goals": 93,
+            "probability": 0.001116379935838588
+          },
+          {
+            "goals": 94,
+            "probability": 0.0005713916544406341
+          },
+          {
+            "goals": 95,
+            "probability": 0.0001351948781666277
+          },
+          {
+            "goals": 96,
+            "probability": 0.0003488012072667814
+          },
+          {
+            "goals": 97,
+            "probability": 0.0006904051921678038
+          },
+          {
+            "goals": 98,
+            "probability": 7.666577399001254e-05
+          },
+          {
+            "goals": 99,
+            "probability": 0.00012607768892313297
+          },
+          {
+            "goals": 100,
+            "probability": 0.00026399834571835665
+          },
+          {
+            "goals": 101,
+            "probability": 0.00016393957610105964
+          },
+          {
+            "goals": 102,
+            "probability": 1.745846351664036e-05
+          },
+          {
+            "goals": 103,
+            "probability": 0.00012602262297695346
+          },
+          {
+            "goals": 104,
+            "probability": 0.00010008497772680406
+          },
+          {
+            "goals": 105,
+            "probability": 4.2173008650868776e-05
+          },
+          {
+            "goals": 106,
+            "probability": 1.984899432717296e-05
+          },
+          {
+            "goals": 107,
+            "probability": 6.033345070921371e-05
+          },
+          {
+            "goals": 108,
+            "probability": 3.4234395842728e-05
+          },
+          {
+            "goals": 109,
+            "probability": 4.849479370574634e-06
+          },
+          {
+            "goals": 110,
+            "probability": 1.275857253524094e-05
+          },
+          {
+            "goals": 111,
+            "probability": 3.666715371712769e-05
+          },
+          {
+            "goals": 112,
+            "probability": 3.3781453395304677e-06
+          },
+          {
+            "goals": 113,
+            "probability": 3.432820036528879e-06
+          },
+          {
+            "goals": 114,
+            "probability": 8.536401604536093e-06
+          },
+          {
+            "goals": 115,
+            "probability": 6.575122502541462e-06
+          },
+          {
+            "goals": 116,
+            "probability": 2.492270861784233e-07
+          },
+          {
+            "goals": 117,
+            "probability": 3.47675206248832e-06
+          },
+          {
+            "goals": 118,
+            "probability": 2.7508765836789935e-06
+          },
+          {
+            "goals": 119,
+            "probability": 1.7665857286879617e-06
+          },
+          {
+            "goals": 120,
+            "probability": 2.5594134233898375e-07
+          },
+          {
+            "goals": 121,
+            "probability": 1.2224168592431772e-06
+          },
+          {
+            "goals": 122,
+            "probability": 8.506602981618522e-07
+          },
+          {
+            "goals": 123,
+            "probability": 5.4326685005733086e-08
+          },
+          {
+            "goals": 124,
+            "probability": 1.3701650262568961e-07
+          },
+          {
+            "goals": 125,
+            "probability": 8.228163630131555e-07
+          },
+          {
+            "goals": 126,
+            "probability": 6.471448290417938e-08
+          },
+          {
+            "goals": 127,
+            "probability": 2.5721153102587924e-08
+          },
+          {
+            "goals": 128,
+            "probability": 8.498052382349074e-08
+          },
+          {
+            "goals": 129,
+            "probability": 1.0151414676785587e-07
+          },
+          {
+            "goals": 130,
+            "probability": 3.790369127019655e-10
+          },
+          {
+            "goals": 131,
+            "probability": 3.1889102299337534e-08
+          },
+          {
+            "goals": 132,
+            "probability": 2.275083867579391e-08
+          },
+          {
+            "goals": 133,
+            "probability": 3.476840347571249e-08
+          },
+          {
+            "goals": 134,
+            "probability": 4.232807670163701e-10
+          },
+          {
+            "goals": 135,
+            "probability": 6.830740952702802e-09
+          },
+          {
+            "goals": 136,
+            "probability": 6.73228382263948e-09
+          },
+          {
+            "goals": 137,
+            "probability": 1.2602946145750568e-10
+          },
+          {
+            "goals": 138,
+            "probability": 1.5686274247591302e-10
+          },
+          {
+            "goals": 139,
+            "probability": 6.498691258632997e-09
+          },
+          {
+            "goals": 140,
+            "probability": 3.835679184139185e-10
+          },
+          {
+            "goals": 141,
+            "probability": 2.975695617746663e-11
+          },
+          {
+            "goals": 142,
+            "probability": 1.1177644523732728e-10
+          },
+          {
+            "goals": 143,
+            "probability": 4.2556864776391604e-10
+          },
+          {
+            "goals": 145,
+            "probability": 6.323353187711659e-11
+          },
+          {
+            "goals": 146,
+            "probability": 1.8832335014538984e-11
+          },
+          {
+            "goals": 147,
+            "probability": 2.5790284808490854e-10
+          },
+          {
+            "goals": 149,
+            "probability": 5.37485020955491e-12
+          },
+          {
+            "goals": 150,
+            "probability": 7.210578721782944e-12
+          },
+          {
+            "goals": 153,
+            "probability": 1.1421556695304184e-11
+          },
+          {
+            "goals": 154,
+            "probability": 6.9647635380858e-14
+          },
+          {
+            "goals": 157,
+            "probability": 2.0058518989687104e-13
+          },
+          {
+            "goals": 161,
+            "probability": 4.26243528530851e-13
+          }
+        ],
+        "version": "nfl-drive-v1",
+        "assumptions": "11 possessions; scoring outcomes 3/7 points with fixed 32/68% mix. Tied regulation: 10% remain tied; 90% receive one 3/7-point settlement score. Regular season only; 2-way ML tie returns stake. Uncalibrated approximation, not a complete NFL OT simulation.",
+        "raw": {
+          "home": 0.3888073840136735,
+          "away": 0.6064858436912406,
+          "over": 0.5700778140247379,
+          "under": 0.429922185975261
+        },
+        "calibration_versions": {}
+      },
+      "markets": {
+        "home": {
+          "probability": 0.3888073840136735,
+          "push": 0.0047067722950873804,
+          "odds": -120,
+          "implied": 0.5454545454545454,
+          "ev": -0.28247969034651116,
+          "no_vig": 0.5217391304347826,
+          "conditional": 0.39064606609475316
+        },
+        "away": {
+          "probability": 0.6064858436912406,
+          "push": 0.0047067722950873804,
+          "odds": 100,
+          "implied": 0.5,
+          "ev": 0.21767845967756855,
+          "no_vig": 0.4782608695652174,
+          "conditional": 0.6093539339052484
+        },
+        "over": {
+          "probability": 0.5700778140247379,
+          "push": 0.0,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": 0.08833037222904516,
+          "no_vig": 0.5,
+          "conditional": 0.5700778140247379
+        },
+        "under": {
+          "probability": 0.429922185975261,
+          "push": 0.0,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": -0.17923946313813804,
+          "no_vig": 0.5,
+          "conditional": 0.429922185975261
+        }
+      },
+      "explanation": "Possession scoring model: eleven possessions with 0/3/7-point outcomes; explicit approximate overtime/tie settlement. Regular season only.",
+      "recommendations": []
+    },
+    {
+      "id": "demo-nfl-2026-10-13-3",
+      "home": "Philadelphia Eagles",
+      "away": "Dallas Cowboys",
+      "home_abbr": "PHI",
+      "away_abbr": "DAL",
+      "start": "2026-10-14T00:30:00+00:00",
+      "home_rate": 28,
+      "away_rate": 22,
+      "line": 47.5,
+      "home_odds": -120,
+      "away_odds": 100,
+      "over_odds": -110,
+      "under_odds": -110,
+      "source": "Synthetic demo",
+      "odds_source": "Illustrative odds",
+      "odds_updated": null,
+      "rates_source": "Synthetic scoring averages",
+      "sport": "nfl",
+      "mode": "demo",
+      "state": "pre",
+      "status": "Scheduled \u00b7 demo",
+      "season_type": 2,
+      "venue": "Demo stadium",
+      "city": "Demo city",
+      "indoor": false,
+      "home_score": null,
+      "away_score": null,
+      "rates_asof": "2026-10-13",
+      "provider_errors": [],
+      "home_starters": [
+        {
+          "name": "Demo starter A",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "away_starters": [
+        {
+          "name": "Demo starter B",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "lineup_source": "Synthetic fixture, not real players",
+      "injuries_checked": true,
+      "injuries_asof": "2026-10-13T14:00:00Z",
+      "injuries_source": "Synthetic fixture",
+      "injuries": {
+        "home": [
+          {
+            "name": "Demo player",
+            "status": "Questionable",
+            "report": "Synthetic report, not a real injury.",
+            "reported_at": "2026-10-13T15:58:30.987795+00:00",
+            "url": null
+          }
+        ],
+        "away": []
+      },
+      "travel": {
+        "home": {
+          "km": 620,
+          "rest_hours": 48,
+          "from": "Demo city A",
+          "previous_start": null,
+          "method": "Synthetic"
+        },
+        "away": {
+          "km": 1680,
+          "rest_hours": 72,
+          "from": "Demo city B",
+          "previous_start": null,
+          "method": "Synthetic"
+        }
+      },
+      "weather": {
+        "status": "Synthetic weather",
+        "temperature_c": 12,
+        "wind_kmh": 15,
+        "source": "Synthetic fixture"
+      },
+      "source_url": null,
+      "updated": "2026-10-13T14:00:00Z",
+      "context": {
+        "checks": {
+          "injuries": true,
+          "starters": false,
+          "travel": true,
+          "weather": true
+        },
+        "calibrated": false,
+        "ready": false,
+        "adjustments": {
+          "home": 0.0,
+          "away": 0.0
+        },
+        "applied": [],
+        "missing_impacts": [],
+        "decision": "Watch only \u00b7 inputs or calibration incomplete",
+        "note": "No public sentiment is used. Observed context only changes probabilities when a sourced, fitted effect is configured."
+      },
+      "reference_line": 47.5,
+      "prediction": {
+        "home": 0.6599056133073442,
+        "away": 0.33552140442638706,
+        "tie": 0.004572982266266585,
+        "ml_push": 0.004572982266266585,
+        "over": 0.5668971980017407,
+        "under": 0.4331028019982572,
+        "push": 0.0,
+        "expected_total": 50.23541712706724,
+        "home_rate": 28.0,
+        "away_rate": 22.0,
+        "distribution": [
+          {
+            "goals": 0,
+            "probability": 1.3544305902209296e-06
+          },
+          {
+            "goals": 3,
+            "probability": 6.776113896108247e-05
+          },
+          {
+            "goals": 6,
+            "probability": 7.832793297672609e-05
+          },
+          {
+            "goals": 7,
+            "probability": 0.00014399242029230027
+          },
+          {
+            "goals": 9,
+            "probability": 0.00022501557934432153
+          },
+          {
+            "goals": 10,
+            "probability": 0.0006096161513310734
+          },
+          {
+            "goals": 12,
+            "probability": 0.0001348384268850549
+          },
+          {
+            "goals": 13,
+            "probability": 0.0013459231387424537
+          },
+          {
+            "goals": 14,
+            "probability": 0.00035369957234802874
+          },
+          {
+            "goals": 15,
+            "probability": 0.00018127842481771981
+          },
+          {
+            "goals": 16,
+            "probability": 0.0017569071599182757
+          },
+          {
+            "goals": 17,
+            "probability": 0.002860086669827714
+          },
+          {
+            "goals": 18,
+            "probability": 6.667005024038688e-05
+          },
+          {
+            "goals": 19,
+            "probability": 0.0017306334936417738
+          },
+          {
+            "goals": 20,
+            "probability": 0.0043022329430244715
+          },
+          {
+            "goals": 21,
+            "probability": 0.0022144396817724596
+          },
+          {
+            "goals": 22,
+            "probability": 0.001214033400711389
+          },
+          {
+            "goals": 23,
+            "probability": 0.007562857728651943
+          },
+          {
+            "goals": 24,
+            "probability": 0.007946784110847484
+          },
+          {
+            "goals": 25,
+            "probability": 0.0007054707520345955
+          },
+          {
+            "goals": 26,
+            "probability": 0.005289333487062424
+          },
+          {
+            "goals": 27,
+            "probability": 0.016078692453195997
+          },
+          {
+            "goals": 28,
+            "probability": 0.003060422157074999
+          },
+          {
+            "goals": 29,
+            "probability": 0.0047448894211201366
+          },
+          {
+            "goals": 30,
+            "probability": 0.018274941113551667
+          },
+          {
+            "goals": 31,
+            "probability": 0.01672495087107704
+          },
+          {
+            "goals": 32,
+            "probability": 0.001948479504677289
+          },
+          {
+            "goals": 33,
+            "probability": 0.016279367824612884
+          },
+          {
+            "goals": 34,
+            "probability": 0.02391961017211175
+          },
+          {
+            "goals": 35,
+            "probability": 0.0089479100320785
+          },
+          {
+            "goals": 36,
+            "probability": 0.009828970812618697
+          },
+          {
+            "goals": 37,
+            "probability": 0.03460167812575524
+          },
+          {
+            "goals": 38,
+            "probability": 0.025040298655004976
+          },
+          {
+            "goals": 39,
+            "probability": 0.0050892999546665145
+          },
+          {
+            "goals": 40,
+            "probability": 0.02240951452926068
+          },
+          {
+            "goals": 41,
+            "probability": 0.04564005747805158
+          },
+          {
+            "goals": 42,
+            "probability": 0.008030551651145015
+          },
+          {
+            "goals": 43,
+            "probability": 0.016617132385984043
+          },
+          {
+            "goals": 44,
+            "probability": 0.04440222203636084
+          },
+          {
+            "goals": 45,
+            "probability": 0.031200528372274685
+          },
+          {
+            "goals": 46,
+            "probability": 0.006156212051859453
+          },
+          {
+            "goals": 47,
+            "probability": 0.03531581570175343
+          },
+          {
+            "goals": 48,
+            "probability": 0.03988401685746203
+          },
+          {
+            "goals": 49,
+            "probability": 0.01363845524166213
+          },
+          {
+            "goals": 50,
+            "probability": 0.017966615978315496
+          },
+          {
+            "goals": 51,
+            "probability": 0.048869652899369447
+          },
+          {
+            "goals": 52,
+            "probability": 0.029276230219217242
+          },
+          {
+            "goals": 53,
+            "probability": 0.008161590170510578
+          },
+          {
+            "goals": 54,
+            "probability": 0.0278044035156754
+          },
+          {
+            "goals": 55,
+            "probability": 0.04755993926368032
+          },
+          {
+            "goals": 56,
+            "probability": 0.007997305993187901
+          },
+          {
+            "goals": 57,
+            "probability": 0.01734397562912675
+          },
+          {
+            "goals": 58,
+            "probability": 0.03866060429974876
+          },
+          {
+            "goals": 59,
+            "probability": 0.02386252117057854
+          },
+          {
+            "goals": 60,
+            "probability": 0.005470473719034555
+          },
+          {
+            "goals": 61,
+            "probability": 0.027110791560476574
+          },
+          {
+            "goals": 62,
+            "probability": 0.02638749201310714
+          },
+          {
+            "goals": 63,
+            "probability": 0.008811938876965115
+          },
+          {
+            "goals": 64,
+            "probability": 0.011256054759644878
+          },
+          {
+            "goals": 65,
+            "probability": 0.02737353153149668
+          },
+          {
+            "goals": 66,
+            "probability": 0.014923609871105763
+          },
+          {
+            "goals": 67,
+            "probability": 0.004412408672178835
+          },
+          {
+            "goals": 68,
+            "probability": 0.013150567591898824
+          },
+          {
+            "goals": 69,
+            "probability": 0.021523426353612922
+          },
+          {
+            "goals": 70,
+            "probability": 0.0033250196915231593
+          },
+          {
+            "goals": 71,
+            "probability": 0.006840389207591467
+          },
+          {
+            "goals": 72,
+            "probability": 0.014128663287177242
+          },
+          {
+            "goals": 73,
+            "probability": 0.008312557200057887
+          },
+          {
+            "goals": 74,
+            "probability": 0.0017437851068484638
+          },
+          {
+            "goals": 75,
+            "probability": 0.008621171749879432
+          },
+          {
+            "goals": 76,
+            "probability": 0.007734635636465478
+          },
+          {
+            "goals": 77,
+            "probability": 0.0026034958154087613
+          },
+          {
+            "goals": 78,
+            "probability": 0.0027833216291018982
+          },
+          {
+            "goals": 79,
+            "probability": 0.006707257407117327
+          },
+          {
+            "goals": 80,
+            "probability": 0.0035530908358322785
+          },
+          {
+            "goals": 81,
+            "probability": 0.0009247019329558185
+          },
+          {
+            "goals": 82,
+            "probability": 0.0025985451578307466
+          },
+          {
+            "goals": 83,
+            "probability": 0.004542639698531615
+          },
+          {
+            "goals": 84,
+            "probability": 0.0006136416046547349
+          },
+          {
+            "goals": 85,
+            "probability": 0.0011024225647894704
+          },
+          {
+            "goals": 86,
+            "probability": 0.002286161577341013
+          },
+          {
+            "goals": 87,
+            "probability": 0.0013742150905283728
+          },
+          {
+            "goals": 88,
+            "probability": 0.00021181121069248652
+          },
+          {
+            "goals": 89,
+            "probability": 0.0011981182285856697
+          },
+          {
+            "goals": 90,
+            "probability": 0.001036699930924537
+          },
+          {
+            "goals": 91,
+            "probability": 0.00037384157972814925
+          },
+          {
+            "goals": 92,
+            "probability": 0.0002781708913465185
+          },
+          {
+            "goals": 93,
+            "probability": 0.0007336197529213282
+          },
+          {
+            "goals": 94,
+            "probability": 0.00040171677709417307
+          },
+          {
+            "goals": 95,
+            "probability": 7.699602656165184e-05
+          },
+          {
+            "goals": 96,
+            "probability": 0.00021449762797006206
+          },
+          {
+            "goals": 97,
+            "probability": 0.0004545550770229063
+          },
+          {
+            "goals": 98,
+            "probability": 5.220146669027192e-05
+          },
+          {
+            "goals": 99,
+            "probability": 7.162980005588778e-05
+          },
+          {
+            "goals": 100,
+            "probability": 0.00016106484271269023
+          },
+          {
+            "goals": 101,
+            "probability": 0.0001072571026401438
+          },
+          {
+            "goals": 102,
+            "probability": 9.22265584054124e-06
+          },
+          {
+            "goals": 103,
+            "probability": 7.185660703559669e-05
+          },
+          {
+            "goals": 104,
+            "probability": 6.166534393865048e-05
+          },
+          {
+            "goals": 105,
+            "probability": 2.7250877787500203e-05
+          },
+          {
+            "goals": 106,
+            "probability": 1.0422496319469914e-05
+          },
+          {
+            "goals": 107,
+            "probability": 3.4250871973456004e-05
+          },
+          {
+            "goals": 108,
+            "probability": 2.0858812090535317e-05
+          },
+          {
+            "goals": 109,
+            "probability": 2.394076671795451e-06
+          },
+          {
+            "goals": 110,
+            "probability": 6.745325837965116e-06
+          },
+          {
+            "goals": 111,
+            "probability": 2.0942329291275522e-05
+          },
+          {
+            "goals": 112,
+            "probability": 2.0596137693125734e-06
+          },
+          {
+            "goals": 113,
+            "probability": 1.6834087687537478e-06
+          },
+          {
+            "goals": 114,
+            "probability": 4.482352384870293e-06
+          },
+          {
+            "goals": 115,
+            "probability": 3.724207918511511e-06
+          },
+          {
+            "goals": 116,
+            "probability": 1.1264231395791056e-07
+          },
+          {
+            "goals": 117,
+            "probability": 1.7203908822714646e-06
+          },
+          {
+            "goals": 118,
+            "probability": 1.4573694738196862e-06
+          },
+          {
+            "goals": 119,
+            "probability": 1.0081754173554693e-06
+          },
+          {
+            "goals": 120,
+            "probability": 1.1516820256113767e-07
+          },
+          {
+            "goals": 121,
+            "probability": 5.984267422436923e-07
+          },
+          {
+            "goals": 122,
+            "probability": 4.4662051101575985e-07
+          },
+          {
+            "goals": 123,
+            "probability": 2.3459798769212693e-08
+          },
+          {
+            "goals": 124,
+            "probability": 6.196910882171352e-08
+          },
+          {
+            "goals": 125,
+            "probability": 4.084910645885333e-07
+          },
+          {
+            "goals": 126,
+            "probability": 3.461819677530263e-08
+          },
+          {
+            "goals": 127,
+            "probability": 1.0955980108727317e-08
+          },
+          {
+            "goals": 128,
+            "probability": 3.823944225662774e-08
+          },
+          {
+            "goals": 129,
+            "probability": 4.9577679265379706e-08
+          },
+          {
+            "goals": 130,
+            "probability": 1.4554836668407408e-10
+          },
+          {
+            "goals": 131,
+            "probability": 1.3812179899894717e-08
+          },
+          {
+            "goals": 132,
+            "probability": 1.0307545386525082e-08
+          },
+          {
+            "goals": 133,
+            "probability": 1.7367431943388356e-08
+          },
+          {
+            "goals": 134,
+            "probability": 1.6253779572243568e-10
+          },
+          {
+            "goals": 135,
+            "probability": 2.8985570238404812e-09
+          },
+          {
+            "goals": 136,
+            "probability": 3.0293856392997304e-09
+          },
+          {
+            "goals": 137,
+            "probability": 4.8394712109838005e-11
+          },
+          {
+            "goals": 138,
+            "probability": 6.023454496344963e-11
+          },
+          {
+            "goals": 139,
+            "probability": 2.8253434061646896e-09
+          },
+          {
+            "goals": 140,
+            "probability": 1.7576509460223645e-10
+          },
+          {
+            "goals": 141,
+            "probability": 1.1426529248156194e-11
+          },
+          {
+            "goals": 142,
+            "probability": 4.292162186018267e-11
+          },
+          {
+            "goals": 143,
+            "probability": 1.795969406387197e-10
+          },
+          {
+            "goals": 145,
+            "probability": 2.4281374652331915e-11
+          },
+          {
+            "goals": 146,
+            "probability": 7.231526825907563e-12
+          },
+          {
+            "goals": 147,
+            "probability": 1.1279526005023687e-10
+          },
+          {
+            "goals": 149,
+            "probability": 2.0639168454482122e-12
+          },
+          {
+            "goals": 150,
+            "probability": 2.7688278387483912e-12
+          },
+          {
+            "goals": 153,
+            "probability": 4.385823296577451e-12
+          },
+          {
+            "goals": 154,
+            "probability": 2.674435980609242e-14
+          },
+          {
+            "goals": 157,
+            "probability": 7.702375624154617e-14
+          },
+          {
+            "goals": 161,
+            "probability": 1.6367548201328564e-13
+          }
+        ],
+        "version": "nfl-drive-v1",
+        "assumptions": "11 possessions; scoring outcomes 3/7 points with fixed 32/68% mix. Tied regulation: 10% remain tied; 90% receive one 3/7-point settlement score. Regular season only; 2-way ML tie returns stake. Uncalibrated approximation, not a complete NFL OT simulation.",
+        "raw": {
+          "home": 0.6599056133073442,
+          "away": 0.33552140442638706,
+          "over": 0.5668971980017407,
+          "under": 0.4331028019982572
+        },
+        "calibration_versions": {}
+      },
+      "markets": {
+        "home": {
+          "probability": 0.6599056133073442,
+          "push": 0.004572982266266585,
+          "odds": -120,
+          "implied": 0.5454545454545454,
+          "ev": 0.21439993999639773,
+          "no_vig": 0.5217391304347826,
+          "conditional": 0.6629372134279986
+        },
+        "away": {
+          "probability": 0.33552140442638706,
+          "push": 0.004572982266266585,
+          "odds": 100,
+          "implied": 0.5,
+          "ev": -0.32438420888095937,
+          "no_vig": 0.4782608695652174,
+          "conditional": 0.33706278657199923
+        },
+        "over": {
+          "probability": 0.5668971980017407,
+          "push": 0.0,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": 0.08225828709423222,
+          "no_vig": 0.5,
+          "conditional": 0.5668971980017407
+        },
+        "under": {
+          "probability": 0.4331028019982572,
+          "push": 0.0,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": -0.1731673780033271,
+          "no_vig": 0.5,
+          "conditional": 0.4331028019982572
+        }
+      },
+      "explanation": "Possession scoring model: eleven possessions with 0/3/7-point outcomes; explicit approximate overtime/tie settlement. Regular season only.",
+      "recommendations": []
+    },
+    {
+      "id": "demo-nfl-2026-10-13-4",
+      "home": "San Francisco 49ers",
+      "away": "Seattle Seahawks",
+      "home_abbr": "SF",
+      "away_abbr": "SEA",
+      "start": "2026-10-14T01:00:00+00:00",
+      "home_rate": 27,
+      "away_rate": 21,
+      "line": 46.5,
+      "home_odds": -120,
+      "away_odds": 100,
+      "over_odds": -110,
+      "under_odds": -110,
+      "source": "Synthetic demo",
+      "odds_source": "Illustrative odds",
+      "odds_updated": null,
+      "rates_source": "Synthetic scoring averages",
+      "sport": "nfl",
+      "mode": "demo",
+      "state": "pre",
+      "status": "Scheduled \u00b7 demo",
+      "season_type": 2,
+      "venue": "Demo stadium",
+      "city": "Demo city",
+      "indoor": false,
+      "home_score": null,
+      "away_score": null,
+      "rates_asof": "2026-10-13",
+      "provider_errors": [],
+      "home_starters": [
+        {
+          "name": "Demo starter A",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "away_starters": [
+        {
+          "name": "Demo starter B",
+          "confirmed": false,
+          "status": "Illustrative only"
+        }
+      ],
+      "lineup_source": "Synthetic fixture, not real players",
+      "injuries_checked": true,
+      "injuries_asof": "2026-10-13T14:00:00Z",
+      "injuries_source": "Synthetic fixture",
+      "injuries": {
+        "home": [
+          {
+            "name": "Demo player",
+            "status": "Questionable",
+            "report": "Synthetic report, not a real injury.",
+            "reported_at": "2026-10-13T15:58:30.987800+00:00",
+            "url": null
+          }
+        ],
+        "away": []
+      },
+      "travel": {
+        "home": {
+          "km": 750,
+          "rest_hours": 48,
+          "from": "Demo city A",
+          "previous_start": null,
+          "method": "Synthetic"
+        },
+        "away": {
+          "km": 1950,
+          "rest_hours": 72,
+          "from": "Demo city B",
+          "previous_start": null,
+          "method": "Synthetic"
+        }
+      },
+      "weather": {
+        "status": "Synthetic weather",
+        "temperature_c": 12,
+        "wind_kmh": 15,
+        "source": "Synthetic fixture"
+      },
+      "source_url": null,
+      "updated": "2026-10-13T14:00:00Z",
+      "context": {
+        "checks": {
+          "injuries": true,
+          "starters": false,
+          "travel": true,
+          "weather": true
+        },
+        "calibrated": false,
+        "ready": false,
+        "adjustments": {
+          "home": 0.0,
+          "away": 0.0
+        },
+        "applied": [],
+        "missing_impacts": [],
+        "decision": "Watch only \u00b7 inputs or calibration incomplete",
+        "note": "No public sentiment is used. Observed context only changes probabilities when a sourced, fitted effect is configured."
+      },
+      "reference_line": 46.5,
+      "prediction": {
+        "home": 0.6612516237035118,
+        "away": 0.334035398952573,
+        "tie": 0.0047129773439167555,
+        "ml_push": 0.0047129773439167555,
+        "over": 0.5464770278172603,
+        "under": 0.45352297218274035,
+        "push": 0.0,
+        "expected_total": 48.24262407366485,
+        "home_rate": 27.0,
+        "away_rate": 21.0,
+        "distribution": [
+          {
+            "goals": 0,
+            "probability": 2.4098050755167923e-06
+          },
+          {
+            "goals": 3,
+            "probability": 0.00011319429205601221
+          },
+          {
+            "goals": 6,
+            "probability": 0.00012198601428900545
+          },
+          {
+            "goals": 7,
+            "probability": 0.00024053787061902596
+          },
+          {
+            "goals": 9,
+            "probability": 0.00032943281032291147
+          },
+          {
+            "goals": 10,
+            "probability": 0.0009484956961920692
+          },
+          {
+            "goals": 12,
+            "probability": 0.0001836237802147869
+          },
+          {
+            "goals": 13,
+            "probability": 0.0019625165224601464
+          },
+          {
+            "goals": 14,
+            "probability": 0.0005508430957737903
+          },
+          {
+            "goals": 15,
+            "probability": 0.0002325239500268888
+          },
+          {
+            "goals": 16,
+            "probability": 0.0023899262645310135
+          },
+          {
+            "goals": 17,
+            "probability": 0.0041703476102278115
+          },
+          {
+            "goals": 18,
+            "probability": 7.936686995634199e-05
+          },
+          {
+            "goals": 19,
+            "probability": 0.00220524724656999
+          },
+          {
+            "goals": 20,
+            "probability": 0.005856001186193792
+          },
+          {
+            "goals": 21,
+            "probability": 0.0032232388127979767
+          },
+          {
+            "goals": 22,
+            "probability": 0.0014435249107548262
+          },
+          {
+            "goals": 23,
+            "probability": 0.00965420300304227
+          },
+          {
+            "goals": 24,
+            "probability": 0.010805795848538378
+          },
+          {
+            "goals": 25,
+            "probability": 0.0007856169168904444
+          },
+          {
+            "goals": 26,
+            "probability": 0.006293009634673468
+          },
+          {
+            "goals": 27,
+            "probability": 0.02052268624386707
+          },
+          {
+            "goals": 28,
+            "probability": 0.004067351552135443
+          },
+          {
+            "goals": 29,
+            "probability": 0.0053017940219683805
+          },
+          {
+            "goals": 30,
+            "probability": 0.021729156377269375
+          },
+          {
+            "goals": 31,
+            "probability": 0.02127602613142265
+          },
+          {
+            "goals": 32,
+            "probability": 0.0020258616674406664
+          },
+          {
+            "goals": 33,
+            "probability": 0.01815397559185406
+          },
+          {
+            "goals": 34,
+            "probability": 0.02844861290926525
+          },
+          {
+            "goals": 35,
+            "probability": 0.011144523755953045
+          },
+          {
+            "goals": 36,
+            "probability": 0.010213128758495685
+          },
+          {
+            "goals": 37,
+            "probability": 0.03858400430984581
+          },
+          {
+            "goals": 38,
+            "probability": 0.02969370910313389
+          },
+          {
+            "goals": 39,
+            "probability": 0.0049590672800813255
+          },
+          {
+            "goals": 40,
+            "probability": 0.023297390844185056
+          },
+          {
+            "goals": 41,
+            "probability": 0.05096824287501436
+          },
+          {
+            "goals": 42,
+            "probability": 0.009025282070929614
+          },
+          {
+            "goals": 43,
+            "probability": 0.016216043201368338
+          },
+          {
+            "goals": 44,
+            "probability": 0.04613316019825103
+          },
+          {
+            "goals": 45,
+            "probability": 0.034579486913441454
+          },
+          {
+            "goals": 46,
+            "probability": 0.005591626235611258
+          },
+          {
+            "goals": 47,
+            "probability": 0.0344624072853988
+          },
+          {
+            "goals": 48,
+            "probability": 0.04143026649298144
+          },
+          {
+            "goals": 49,
+            "probability": 0.014565128215650175
+          },
+          {
+            "goals": 50,
+            "probability": 0.016310633956202473
+          },
+          {
+            "goals": 51,
+            "probability": 0.047611222943046455
+          },
+          {
+            "goals": 52,
+            "probability": 0.030262068372617437
+          },
+          {
+            "goals": 53,
+            "probability": 0.0069590064700851325
+          },
+          {
+            "goals": 54,
+            "probability": 0.025253328583668532
+          },
+          {
+            "goals": 55,
+            "probability": 0.04647477829003138
+          },
+          {
+            "goals": 56,
+            "probability": 0.007704597377905817
+          },
+          {
+            "goals": 57,
+            "probability": 0.014788275144313382
+          },
+          {
+            "goals": 58,
+            "probability": 0.035091445608767396
+          },
+          {
+            "goals": 59,
+            "probability": 0.023058890413204823
+          },
+          {
+            "goals": 60,
+            "probability": 0.004339912083780547
+          },
+          {
+            "goals": 61,
+            "probability": 0.02315556726120718
+          },
+          {
+            "goals": 62,
+            "probability": 0.023940531831636996
+          },
+          {
+            "goals": 63,
+            "probability": 0.008183261460348907
+          },
+          {
+            "goals": 64,
+            "probability": 0.008925730866568607
+          },
+          {
+            "goals": 65,
+            "probability": 0.023302712103677767
+          },
+          {
+            "goals": 66,
+            "probability": 0.013465151717711326
+          },
+          {
+            "goals": 67,
+            "probability": 0.0032935424040560104
+          },
+          {
+            "goals": 68,
+            "probability": 0.010432528672641373
+          },
+          {
+            "goals": 69,
+            "probability": 0.018416907966616016
+          },
+          {
+            "goals": 70,
+            "probability": 0.00279402298500816
+          },
+          {
+            "goals": 71,
+            "probability": 0.0050973948959152065
+          },
+          {
+            "goals": 72,
+            "probability": 0.011201794933960606
+          },
+          {
+            "goals": 73,
+            "probability": 0.007018090577026867
+          },
+          {
+            "goals": 74,
+            "probability": 0.001208049129650343
+          },
+          {
+            "goals": 75,
+            "probability": 0.006448705940249844
+          },
+          {
+            "goals": 76,
+            "probability": 0.006130285910176668
+          },
+          {
+            "goals": 77,
+            "probability": 0.0021345688377175267
+          },
+          {
+            "goals": 78,
+            "probability": 0.0019274131271022645
+          },
+          {
+            "goals": 79,
+            "probability": 0.00499001454779822
+          },
+          {
+            "goals": 80,
+            "probability": 0.00280329319184923
+          },
+          {
+            "goals": 81,
+            "probability": 0.0006048331540011613
+          },
+          {
+            "goals": 82,
+            "probability": 0.001800208893397543
+          },
+          {
+            "goals": 83,
+            "probability": 0.003407339056986989
+          },
+          {
+            "goals": 84,
+            "probability": 0.0004567087422659609
+          },
+          {
+            "goals": 85,
+            "probability": 0.0007183034357316443
+          },
+          {
+            "goals": 86,
+            "probability": 0.0015829732643942711
+          },
+          {
+            "goals": 87,
+            "probability": 0.0010155808483905294
+          },
+          {
+            "goals": 88,
+            "probability": 0.0001281076144781737
+          },
+          {
+            "goals": 89,
+            "probability": 0.0007857920544973782
+          },
+          {
+            "goals": 90,
+            "probability": 0.0007178339974753987
+          },
+          {
+            "goals": 91,
+            "probability": 0.00027369248131689267
+          },
+          {
+            "goals": 92,
+            "probability": 0.00016818097216793505
+          },
+          {
+            "goals": 93,
+            "probability": 0.00047714490760699345
+          },
+          {
+            "goals": 94,
+            "probability": 0.00027738800545008965
+          },
+          {
+            "goals": 95,
+            "probability": 4.42222894586328e-05
+          },
+          {
+            "goals": 96,
+            "probability": 0.00012973614747851877
+          },
+          {
+            "goals": 97,
+            "probability": 0.00029931360246234737
+          },
+          {
+            "goals": 98,
+            "probability": 3.477535775412103e-05
+          },
+          {
+            "goals": 99,
+            "probability": 4.084925230523071e-05
+          },
+          {
+            "goals": 100,
+            "probability": 9.737562585805938e-05
+          },
+          {
+            "goals": 101,
+            "probability": 6.943817677135205e-05
+          },
+          {
+            "goals": 102,
+            "probability": 4.868676391747412e-06
+          },
+          {
+            "goals": 103,
+            "probability": 4.141283199008297e-05
+          },
+          {
+            "goals": 104,
+            "probability": 3.7293563947089667e-05
+          },
+          {
+            "goals": 105,
+            "probability": 1.7872149480166283e-05
+          },
+          {
+            "goals": 106,
+            "probability": 5.500339937289542e-06
+          },
+          {
+            "goals": 107,
+            "probability": 1.9489629293593264e-05
+          },
+          {
+            "goals": 108,
+            "probability": 1.259938788632662e-05
+          },
+          {
+            "goals": 109,
+            "probability": 1.212419538312663e-06
+          },
+          {
+            "goals": 110,
+            "probability": 3.5610294220417326e-06
+          },
+          {
+            "goals": 111,
+            "probability": 1.2132092775226756e-05
+          },
+          {
+            "goals": 112,
+            "probability": 1.2282536899929109e-06
+          },
+          {
+            "goals": 113,
+            "probability": 8.424725961878016e-07
+          },
+          {
+            "goals": 114,
+            "probability": 2.3654971128524905e-06
+          },
+          {
+            "goals": 115,
+            "probability": 2.1118046632007654e-06
+          },
+          {
+            "goals": 116,
+            "probability": 5.188873545973352e-08
+          },
+          {
+            "goals": 117,
+            "probability": 8.748059206407914e-07
+          },
+          {
+            "goals": 118,
+            "probability": 7.694491321702819e-07
+          },
+          {
+            "goals": 119,
+            "probability": 5.890569736441541e-07
+          },
+          {
+            "goals": 120,
+            "probability": 5.303992876514083e-08
+          },
+          {
+            "goals": 121,
+            "probability": 2.9856664587718945e-07
+          },
+          {
+            "goals": 122,
+            "probability": 2.356804126928823e-07
+          },
+          {
+            "goals": 123,
+            "probability": 1.05555705386956e-08
+          },
+          {
+            "goals": 124,
+            "probability": 2.854712528091285e-08
+          },
+          {
+            "goals": 125,
+            "probability": 2.0890589851741066e-07
+          },
+          {
+            "goals": 126,
+            "probability": 1.826001433793228e-08
+          },
+          {
+            "goals": 127,
+            "probability": 4.851628985189205e-09
+          },
+          {
+            "goals": 128,
+            "probability": 1.761091384780067e-08
+          },
+          {
+            "goals": 129,
+            "probability": 2.4635630800108587e-08
+          },
+          {
+            "goals": 130,
+            "probability": 5.848347236132724e-11
+          },
+          {
+            "goals": 131,
+            "probability": 6.236125274793726e-09
+          },
+          {
+            "goals": 132,
+            "probability": 4.748781217820629e-09
+          },
+          {
+            "goals": 133,
+            "probability": 8.9793290189856e-09
+          },
+          {
+            "goals": 134,
+            "probability": 6.531007458460366e-11
+          },
+          {
+            "goals": 135,
+            "probability": 1.2778094063174316e-09
+          },
+          {
+            "goals": 136,
+            "probability": 1.3951628569118404e-09
+          },
+          {
+            "goals": 137,
+            "probability": 1.944570641767146e-11
+          },
+          {
+            "goals": 138,
+            "probability": 2.4203125227873045e-11
+          },
+          {
+            "goals": 139,
+            "probability": 1.2810535092408998e-09
+          },
+          {
+            "goals": 140,
+            "probability": 8.102470367501809e-11
+          },
+          {
+            "goals": 141,
+            "probability": 4.591347348616876e-12
+          },
+          {
+            "goals": 142,
+            "probability": 1.72465383360293e-11
+          },
+          {
+            "goals": 143,
+            "probability": 7.865518308272007e-11
+          },
+          {
+            "goals": 145,
+            "probability": 9.756613115810861e-12
+          },
+          {
+            "goals": 146,
+            "probability": 2.9057337357220796e-12
+          },
+          {
+            "goals": 147,
+            "probability": 5.148650582419733e-11
+          },
+          {
+            "goals": 149,
+            "probability": 8.293121148439233e-13
+          },
+          {
+            "goals": 150,
+            "probability": 1.112555709623319e-12
+          },
+          {
+            "goals": 153,
+            "probability": 1.7622882440433373e-12
+          },
+          {
+            "goals": 154,
+            "probability": 1.0746276740679788e-14
+          },
+          {
+            "goals": 157,
+            "probability": 3.094927701315779e-14
+          },
+          {
+            "goals": 161,
+            "probability": 6.576721365296031e-14
+          }
+        ],
+        "version": "nfl-drive-v1",
+        "assumptions": "11 possessions; scoring outcomes 3/7 points with fixed 32/68% mix. Tied regulation: 10% remain tied; 90% receive one 3/7-point settlement score. Regular season only; 2-way ML tie returns stake. Uncalibrated approximation, not a complete NFL OT simulation.",
+        "raw": {
+          "home": 0.6612516237035118,
+          "away": 0.334035398952573,
+          "over": 0.5464770278172603,
+          "under": 0.45352297218274035
+        },
+        "calibration_versions": {}
+      },
+      "markets": {
+        "home": {
+          "probability": 0.6612516237035118,
+          "push": 0.0047129773439167555,
+          "odds": -120,
+          "implied": 0.5454545454545454,
+          "ev": 0.21700762080035507,
+          "no_vig": 0.5217391304347826,
+          "conditional": 0.6643828449996823
+        },
+        "away": {
+          "probability": 0.334035398952573,
+          "push": 0.0047129773439167555,
+          "odds": 100,
+          "implied": 0.5,
+          "ev": -0.3272162247509372,
+          "no_vig": 0.4782608695652174,
+          "conditional": 0.3356171550003193
+        },
+        "over": {
+          "probability": 0.5464770278172603,
+          "push": 0.0,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": 0.04327432583295143,
+          "no_vig": 0.5,
+          "conditional": 0.5464770278172603
+        },
+        "under": {
+          "probability": 0.45352297218274035,
+          "push": 0.0,
+          "odds": -110,
+          "implied": 0.5238095238095238,
+          "ev": -0.13418341674204115,
+          "no_vig": 0.5,
+          "conditional": 0.45352297218274035
+        }
+      },
+      "explanation": "Possession scoring model: eleven possessions with 0/3/7-point outcomes; explicit approximate overtime/tie settlement. Regular season only.",
+      "recommendations": []
+    }
+  ],
+  "updated": "2026-10-13T14:00:00Z",
+  "refresh_seconds": 600,
+  "mode": "demo",
+  "sport": "nfl",
+  "date": "2026-10-13"
+}

@@ -1,0 +1,860 @@
+{
+  "forecasts": [
+    {
+      "game_key": "demo:nba:demo-nba-2026-10-13-4",
+      "id": "demo-nba-2026-10-13-4",
+      "home": "PHX",
+      "away": "SAC",
+      "start": "2026-10-14T01:00:00+00:00",
+      "captured": "2026-10-13T14:00:00Z",
+      "model": "nba-final-gaussian-v1",
+      "line": 229.5,
+      "result": null,
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.7257468822499265,
+          "odds": -120,
+          "outcome": null
+        },
+        {
+          "name": "away",
+          "probability": 0.27425311775007355,
+          "odds": 100,
+          "outcome": null
+        },
+        {
+          "name": "over",
+          "probability": 0.5298926440528948,
+          "odds": -110,
+          "outcome": null
+        },
+        {
+          "name": "under",
+          "probability": 0.47010735594710523,
+          "odds": -110,
+          "outcome": null
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "home",
+          "probability": 0.7257468822499265,
+          "odds": -120,
+          "outcome": null,
+          "label": "PHX"
+        },
+        "total": {
+          "name": "over",
+          "probability": 0.5298926440528948,
+          "odds": -110,
+          "outcome": null,
+          "label": "Over 229.5"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nba:demo-nba-2026-10-13-3",
+      "id": "demo-nba-2026-10-13-3",
+      "home": "MIA",
+      "away": "CHI",
+      "start": "2026-10-14T00:30:00+00:00",
+      "captured": "2026-10-13T14:00:00Z",
+      "model": "nba-final-gaussian-v1",
+      "line": 224.5,
+      "result": null,
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.6796308090987296,
+          "odds": -120,
+          "outcome": null
+        },
+        {
+          "name": "away",
+          "probability": 0.32036919090127036,
+          "odds": 100,
+          "outcome": null
+        },
+        {
+          "name": "over",
+          "probability": 0.509972518195238,
+          "odds": -110,
+          "outcome": null
+        },
+        {
+          "name": "under",
+          "probability": 0.49002748180476197,
+          "odds": -110,
+          "outcome": null
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "home",
+          "probability": 0.6796308090987296,
+          "odds": -120,
+          "outcome": null,
+          "label": "MIA"
+        },
+        "total": {
+          "name": "over",
+          "probability": 0.509972518195238,
+          "odds": -110,
+          "outcome": null,
+          "label": "Over 224.5"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nba:demo-nba-2026-10-13-2",
+      "id": "demo-nba-2026-10-13-2",
+      "home": "TOR",
+      "away": "CLE",
+      "start": "2026-10-14T00:00:00+00:00",
+      "captured": "2026-10-13T14:00:00Z",
+      "model": "nba-final-gaussian-v1",
+      "line": 224.0,
+      "result": null,
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.32036919090127036,
+          "odds": -120,
+          "outcome": null
+        },
+        {
+          "name": "away",
+          "probability": 0.6796308090987296,
+          "odds": 100,
+          "outcome": null
+        },
+        {
+          "name": "over",
+          "probability": 0.509972518195238,
+          "odds": -110,
+          "outcome": null
+        },
+        {
+          "name": "under",
+          "probability": 0.47010735594710523,
+          "odds": -110,
+          "outcome": null
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "away",
+          "probability": 0.6796308090987296,
+          "odds": 100,
+          "outcome": null,
+          "label": "CLE"
+        },
+        "total": {
+          "name": "over",
+          "probability": 0.509972518195238,
+          "odds": -110,
+          "outcome": null,
+          "label": "Over 224.0"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nba:demo-nba-2026-10-13-1",
+      "id": "demo-nba-2026-10-13-1",
+      "home": "LAL",
+      "away": "DEN",
+      "start": "2026-10-13T23:30:00+00:00",
+      "captured": "2026-10-13T14:00:00Z",
+      "model": "nba-final-gaussian-v1",
+      "line": 231.5,
+      "result": null,
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.3445782583896758,
+          "odds": -120,
+          "outcome": null
+        },
+        {
+          "name": "away",
+          "probability": 0.6554217416103242,
+          "odds": 100,
+          "outcome": null
+        },
+        {
+          "name": "over",
+          "probability": 0.509972518195238,
+          "odds": -110,
+          "outcome": null
+        },
+        {
+          "name": "under",
+          "probability": 0.49002748180476197,
+          "odds": -110,
+          "outcome": null
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "away",
+          "probability": 0.6554217416103242,
+          "odds": 100,
+          "outcome": null,
+          "label": "DEN"
+        },
+        "total": {
+          "name": "over",
+          "probability": 0.509972518195238,
+          "odds": -110,
+          "outcome": null,
+          "label": "Over 231.5"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nba:demo-nba-2026-10-13-0",
+      "id": "demo-nba-2026-10-13-0",
+      "home": "BOS",
+      "away": "NYK",
+      "start": "2026-10-13T23:00:00+00:00",
+      "captured": "2026-10-13T14:00:00Z",
+      "model": "nba-final-gaussian-v1",
+      "line": 227.5,
+      "result": null,
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.6554217416103242,
+          "odds": -120,
+          "outcome": null
+        },
+        {
+          "name": "away",
+          "probability": 0.3445782583896758,
+          "odds": 100,
+          "outcome": null
+        },
+        {
+          "name": "over",
+          "probability": 0.509972518195238,
+          "odds": -110,
+          "outcome": null
+        },
+        {
+          "name": "under",
+          "probability": 0.49002748180476197,
+          "odds": -110,
+          "outcome": null
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "home",
+          "probability": 0.6554217416103242,
+          "odds": -120,
+          "outcome": null,
+          "label": "BOS"
+        },
+        "total": {
+          "name": "over",
+          "probability": 0.509972518195238,
+          "odds": -110,
+          "outcome": null,
+          "label": "Over 227.5"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nba:demo-nba-2026-10-12-4",
+      "id": "demo-nba-2026-10-12-4",
+      "home": "PHX",
+      "away": "SAC",
+      "start": "2026-10-13T01:00:00+00:00",
+      "captured": "2026-10-12T14:00:00Z",
+      "model": "nba-final-gaussian-v1",
+      "line": 229.5,
+      "result": {
+        "home_score": 122,
+        "away_score": 115,
+        "source": "Synthetic demo"
+      },
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.7257468822499265,
+          "odds": -120,
+          "outcome": "win"
+        },
+        {
+          "name": "away",
+          "probability": 0.27425311775007355,
+          "odds": 100,
+          "outcome": "loss"
+        },
+        {
+          "name": "over",
+          "probability": 0.5298926440528948,
+          "odds": -110,
+          "outcome": "win"
+        },
+        {
+          "name": "under",
+          "probability": 0.47010735594710523,
+          "odds": -110,
+          "outcome": "loss"
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "home",
+          "probability": 0.7257468822499265,
+          "odds": -120,
+          "outcome": "win",
+          "label": "PHX"
+        },
+        "total": {
+          "name": "over",
+          "probability": 0.5298926440528948,
+          "odds": -110,
+          "outcome": "win",
+          "label": "Over 229.5"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nba:demo-nba-2026-10-12-3",
+      "id": "demo-nba-2026-10-12-3",
+      "home": "MIA",
+      "away": "CHI",
+      "start": "2026-10-13T00:30:00+00:00",
+      "captured": "2026-10-12T14:00:00Z",
+      "model": "nba-final-gaussian-v1",
+      "line": 224.5,
+      "result": {
+        "home_score": 121,
+        "away_score": 114,
+        "source": "Synthetic demo"
+      },
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.6796308090987296,
+          "odds": -120,
+          "outcome": "win"
+        },
+        {
+          "name": "away",
+          "probability": 0.32036919090127036,
+          "odds": 100,
+          "outcome": "loss"
+        },
+        {
+          "name": "over",
+          "probability": 0.509972518195238,
+          "odds": -110,
+          "outcome": "win"
+        },
+        {
+          "name": "under",
+          "probability": 0.49002748180476197,
+          "odds": -110,
+          "outcome": "loss"
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "home",
+          "probability": 0.6796308090987296,
+          "odds": -120,
+          "outcome": "win",
+          "label": "MIA"
+        },
+        "total": {
+          "name": "over",
+          "probability": 0.509972518195238,
+          "odds": -110,
+          "outcome": "win",
+          "label": "Over 224.5"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nba:demo-nba-2026-10-12-2",
+      "id": "demo-nba-2026-10-12-2",
+      "home": "TOR",
+      "away": "CLE",
+      "start": "2026-10-13T00:00:00+00:00",
+      "captured": "2026-10-12T14:00:00Z",
+      "model": "nba-final-gaussian-v1",
+      "line": 224.0,
+      "result": {
+        "home_score": 120,
+        "away_score": 113,
+        "source": "Synthetic demo"
+      },
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.32036919090127036,
+          "odds": -120,
+          "outcome": "win"
+        },
+        {
+          "name": "away",
+          "probability": 0.6796308090987296,
+          "odds": 100,
+          "outcome": "loss"
+        },
+        {
+          "name": "over",
+          "probability": 0.509972518195238,
+          "odds": -110,
+          "outcome": "win"
+        },
+        {
+          "name": "under",
+          "probability": 0.47010735594710523,
+          "odds": -110,
+          "outcome": "loss"
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "away",
+          "probability": 0.6796308090987296,
+          "odds": 100,
+          "outcome": "loss",
+          "label": "CLE"
+        },
+        "total": {
+          "name": "over",
+          "probability": 0.509972518195238,
+          "odds": -110,
+          "outcome": "win",
+          "label": "Over 224.0"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nba:demo-nba-2026-10-12-1",
+      "id": "demo-nba-2026-10-12-1",
+      "home": "LAL",
+      "away": "DEN",
+      "start": "2026-10-12T23:30:00+00:00",
+      "captured": "2026-10-12T14:00:00Z",
+      "model": "nba-final-gaussian-v1",
+      "line": 231.5,
+      "result": {
+        "home_score": 119,
+        "away_score": 112,
+        "source": "Synthetic demo"
+      },
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.3445782583896758,
+          "odds": -120,
+          "outcome": "win"
+        },
+        {
+          "name": "away",
+          "probability": 0.6554217416103242,
+          "odds": 100,
+          "outcome": "loss"
+        },
+        {
+          "name": "over",
+          "probability": 0.509972518195238,
+          "odds": -110,
+          "outcome": "loss"
+        },
+        {
+          "name": "under",
+          "probability": 0.49002748180476197,
+          "odds": -110,
+          "outcome": "win"
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "away",
+          "probability": 0.6554217416103242,
+          "odds": 100,
+          "outcome": "loss",
+          "label": "DEN"
+        },
+        "total": {
+          "name": "over",
+          "probability": 0.509972518195238,
+          "odds": -110,
+          "outcome": "loss",
+          "label": "Over 231.5"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nba:demo-nba-2026-10-12-0",
+      "id": "demo-nba-2026-10-12-0",
+      "home": "BOS",
+      "away": "NYK",
+      "start": "2026-10-12T23:00:00+00:00",
+      "captured": "2026-10-12T14:00:00Z",
+      "model": "nba-final-gaussian-v1",
+      "line": 227.5,
+      "result": {
+        "home_score": 118,
+        "away_score": 111,
+        "source": "Synthetic demo"
+      },
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.6554217416103242,
+          "odds": -120,
+          "outcome": "win"
+        },
+        {
+          "name": "away",
+          "probability": 0.3445782583896758,
+          "odds": 100,
+          "outcome": "loss"
+        },
+        {
+          "name": "over",
+          "probability": 0.509972518195238,
+          "odds": -110,
+          "outcome": "win"
+        },
+        {
+          "name": "under",
+          "probability": 0.49002748180476197,
+          "odds": -110,
+          "outcome": "loss"
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "home",
+          "probability": 0.6554217416103242,
+          "odds": -120,
+          "outcome": "win",
+          "label": "BOS"
+        },
+        "total": {
+          "name": "over",
+          "probability": 0.509972518195238,
+          "odds": -110,
+          "outcome": "win",
+          "label": "Over 227.5"
+        }
+      }
+    }
+  ],
+  "metrics": {
+    "ml": {
+      "wins": 3,
+      "losses": 2,
+      "pushes": 0,
+      "pending": 5,
+      "priced": 5,
+      "profit": 0.5000000000000004,
+      "brier_count": 5,
+      "hit_rate": 0.6,
+      "roi": 0.10000000000000009,
+      "brier": 0.2376122126561874
+    },
+    "total": {
+      "wins": 4,
+      "losses": 1,
+      "pushes": 0,
+      "pending": 5,
+      "priced": 5,
+      "profit": 2.6363636363636367,
+      "brier_count": 5,
+      "hit_rate": 0.8,
+      "roi": 0.5272727272727273,
+      "brier": 0.23828053457545675
+    }
+  },
+  "all_side_metrics": {
+    "home": {
+      "settled": 5,
+      "wins": 5,
+      "pushes": 0,
+      "priced": 5,
+      "profit": 4.166666666666668,
+      "brier_count": 5,
+      "roi": 0.8333333333333336,
+      "brier": 0.2376122126561874
+    },
+    "away": {
+      "settled": 5,
+      "wins": 0,
+      "pushes": 0,
+      "priced": 5,
+      "profit": -5,
+      "brier_count": 5,
+      "roi": -1.0,
+      "brier": 0.2376122126561874
+    },
+    "over": {
+      "settled": 5,
+      "wins": 4,
+      "pushes": 0,
+      "priced": 5,
+      "profit": 2.6363636363636367,
+      "brier_count": 5,
+      "roi": 0.5272727272727273,
+      "brier": 0.23828053457545675
+    },
+    "under": {
+      "settled": 5,
+      "wins": 1,
+      "pushes": 0,
+      "priced": 5,
+      "profit": -3.090909090909091,
+      "brier_count": 5,
+      "roi": -0.6181818181818182,
+      "brier": 0.2382805345754567
+    }
+  },
+  "health": null,
+  "source": "Synthetic demo model record",
+  "cards": [
+    {
+      "key": "demo:nba:2026-10-13",
+      "day": "2026-10-13",
+      "sport": "nba",
+      "mode": "demo",
+      "created": "2026-10-13T14:00:00Z",
+      "legs": [
+        {
+          "game_key": "demo:nba:demo-nba-2026-10-13-4",
+          "id": "demo-nba-2026-10-13-4",
+          "home": "PHX",
+          "away": "SAC",
+          "start": "2026-10-14T01:00:00+00:00",
+          "side": "home",
+          "label": "PHX ML",
+          "probability": 0.7257468822499265,
+          "conditional": 0.7257468822499265,
+          "push": 0,
+          "odds": -120,
+          "ev": 0.330535950791532,
+          "line": 229.5,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nba-final-gaussian-v1",
+          "outcome": null
+        },
+        {
+          "game_key": "demo:nba:demo-nba-2026-10-13-2",
+          "id": "demo-nba-2026-10-13-2",
+          "home": "TOR",
+          "away": "CLE",
+          "start": "2026-10-14T00:00:00+00:00",
+          "side": "away",
+          "label": "CLE ML",
+          "probability": 0.6796308090987296,
+          "conditional": 0.6796308090987296,
+          "push": 0,
+          "odds": 100,
+          "ev": 0.3592616181974593,
+          "line": 224.0,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nba-final-gaussian-v1",
+          "outcome": null
+        },
+        {
+          "game_key": "demo:nba:demo-nba-2026-10-13-3",
+          "id": "demo-nba-2026-10-13-3",
+          "home": "MIA",
+          "away": "CHI",
+          "start": "2026-10-14T00:30:00+00:00",
+          "side": "home",
+          "label": "MIA ML",
+          "probability": 0.6796308090987296,
+          "conditional": 0.6796308090987296,
+          "push": 0,
+          "odds": -120,
+          "ev": 0.2459898166810044,
+          "line": 224.5,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nba-final-gaussian-v1",
+          "outcome": null
+        },
+        {
+          "game_key": "demo:nba:demo-nba-2026-10-13-0",
+          "id": "demo-nba-2026-10-13-0",
+          "home": "BOS",
+          "away": "NYK",
+          "start": "2026-10-13T23:00:00+00:00",
+          "side": "home",
+          "label": "BOS ML",
+          "probability": 0.6554217416103242,
+          "conditional": 0.6554217416103242,
+          "push": 0,
+          "odds": -120,
+          "ev": 0.2016065262855944,
+          "line": 227.5,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nba-final-gaussian-v1",
+          "outcome": null
+        },
+        {
+          "game_key": "demo:nba:demo-nba-2026-10-13-1",
+          "id": "demo-nba-2026-10-13-1",
+          "home": "LAL",
+          "away": "DEN",
+          "start": "2026-10-13T23:30:00+00:00",
+          "side": "away",
+          "label": "DEN ML",
+          "probability": 0.6554217416103242,
+          "conditional": 0.6554217416103242,
+          "push": 0,
+          "odds": 100,
+          "ev": 0.31084348322064836,
+          "line": 231.5,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nba-final-gaussian-v1",
+          "outcome": null
+        }
+      ],
+      "experimental": true,
+      "joint_probability": 0.14400347834326002,
+      "decimal_odds": 24.648148148148152,
+      "note": "Top model win probabilities, one leg per game. Joint probability assumes independence; not a validated parlay probability or an executable sportsbook ticket.",
+      "wins": 0,
+      "losses": 0,
+      "pushes": 0,
+      "pending": 5,
+      "result": "pending",
+      "hit_fraction": "0/5"
+    },
+    {
+      "key": "demo:nba:2026-10-12",
+      "day": "2026-10-12",
+      "sport": "nba",
+      "mode": "demo",
+      "created": "2026-10-12T14:00:00Z",
+      "legs": [
+        {
+          "game_key": "demo:nba:demo-nba-2026-10-12-4",
+          "id": "demo-nba-2026-10-12-4",
+          "home": "PHX",
+          "away": "SAC",
+          "start": "2026-10-13T01:00:00+00:00",
+          "side": "home",
+          "label": "PHX ML",
+          "probability": 0.7257468822499265,
+          "conditional": 0.7257468822499265,
+          "push": 0,
+          "odds": -120,
+          "ev": 0.330535950791532,
+          "line": 229.5,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nba-final-gaussian-v1",
+          "outcome": "win"
+        },
+        {
+          "game_key": "demo:nba:demo-nba-2026-10-12-2",
+          "id": "demo-nba-2026-10-12-2",
+          "home": "TOR",
+          "away": "CLE",
+          "start": "2026-10-13T00:00:00+00:00",
+          "side": "away",
+          "label": "CLE ML",
+          "probability": 0.6796308090987296,
+          "conditional": 0.6796308090987296,
+          "push": 0,
+          "odds": 100,
+          "ev": 0.3592616181974593,
+          "line": 224.0,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nba-final-gaussian-v1",
+          "outcome": "loss"
+        },
+        {
+          "game_key": "demo:nba:demo-nba-2026-10-12-3",
+          "id": "demo-nba-2026-10-12-3",
+          "home": "MIA",
+          "away": "CHI",
+          "start": "2026-10-13T00:30:00+00:00",
+          "side": "home",
+          "label": "MIA ML",
+          "probability": 0.6796308090987296,
+          "conditional": 0.6796308090987296,
+          "push": 0,
+          "odds": -120,
+          "ev": 0.2459898166810044,
+          "line": 224.5,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nba-final-gaussian-v1",
+          "outcome": "win"
+        },
+        {
+          "game_key": "demo:nba:demo-nba-2026-10-12-0",
+          "id": "demo-nba-2026-10-12-0",
+          "home": "BOS",
+          "away": "NYK",
+          "start": "2026-10-12T23:00:00+00:00",
+          "side": "home",
+          "label": "BOS ML",
+          "probability": 0.6554217416103242,
+          "conditional": 0.6554217416103242,
+          "push": 0,
+          "odds": -120,
+          "ev": 0.2016065262855944,
+          "line": 227.5,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nba-final-gaussian-v1",
+          "outcome": "win"
+        },
+        {
+          "game_key": "demo:nba:demo-nba-2026-10-12-1",
+          "id": "demo-nba-2026-10-12-1",
+          "home": "LAL",
+          "away": "DEN",
+          "start": "2026-10-12T23:30:00+00:00",
+          "side": "away",
+          "label": "DEN ML",
+          "probability": 0.6554217416103242,
+          "conditional": 0.6554217416103242,
+          "push": 0,
+          "odds": 100,
+          "ev": 0.31084348322064836,
+          "line": 231.5,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nba-final-gaussian-v1",
+          "outcome": "loss"
+        }
+      ],
+      "experimental": true,
+      "joint_probability": 0.14400347834326002,
+      "decimal_odds": 24.648148148148152,
+      "note": "Top model win probabilities, one leg per game. Joint probability assumes independence; not a validated parlay probability or an executable sportsbook ticket.",
+      "wins": 3,
+      "losses": 2,
+      "pushes": 0,
+      "pending": 0,
+      "result": "loss",
+      "hit_fraction": "3/5"
+    }
+  ],
+  "learning": {
+    "status": "Demo \u00b7 learning disabled",
+    "checks": [],
+    "versions": {},
+    "note": "Synthetic fixtures never train the live models."
+  }
+}

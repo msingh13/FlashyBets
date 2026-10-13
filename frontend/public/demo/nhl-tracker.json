@@ -1,0 +1,822 @@
+{
+  "forecasts": [
+    {
+      "game_key": "demo:nhl:demo-2026-10-13-2",
+      "id": "demo-2026-10-13-2",
+      "home": "BOS",
+      "away": "FLA",
+      "start": "2026-10-14T00:00:00+00:00",
+      "captured": "2026-10-13T14:00:00Z",
+      "model": "nhl-poisson-v1",
+      "line": 6.0,
+      "result": null,
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.4820660832012021,
+          "odds": 130,
+          "outcome": null
+        },
+        {
+          "name": "away",
+          "probability": 0.517933916798798,
+          "odds": -150,
+          "outcome": null
+        },
+        {
+          "name": "over",
+          "probability": 0.4335424206715755,
+          "odds": -110,
+          "outcome": null
+        },
+        {
+          "name": "under",
+          "probability": 0.4560135561741395,
+          "odds": -110,
+          "outcome": null
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "away",
+          "probability": 0.517933916798798,
+          "odds": -150,
+          "outcome": null,
+          "label": "FLA"
+        },
+        "total": {
+          "name": "under",
+          "probability": 0.4560135561741395,
+          "odds": -110,
+          "outcome": null,
+          "label": "Under 6.0"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nhl:demo-2026-10-13-3",
+      "id": "demo-2026-10-13-3",
+      "home": "EDM",
+      "away": "LAK",
+      "start": "2026-10-14T00:00:00+00:00",
+      "captured": "2026-10-13T14:00:00Z",
+      "model": "nhl-poisson-v1",
+      "line": 6.5,
+      "result": null,
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.5621128314030076,
+          "odds": -150,
+          "outcome": null
+        },
+        {
+          "name": "away",
+          "probability": 0.4378871685969924,
+          "odds": 130,
+          "outcome": null
+        },
+        {
+          "name": "over",
+          "probability": 0.4682131723823482,
+          "odds": -110,
+          "outcome": null
+        },
+        {
+          "name": "under",
+          "probability": 0.5317868276176511,
+          "odds": -110,
+          "outcome": null
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "home",
+          "probability": 0.5621128314030076,
+          "odds": -150,
+          "outcome": null,
+          "label": "EDM"
+        },
+        "total": {
+          "name": "under",
+          "probability": 0.5317868276176511,
+          "odds": -110,
+          "outcome": null,
+          "label": "Under 6.5"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nhl:demo-2026-10-13-0",
+      "id": "demo-2026-10-13-0",
+      "home": "TOR",
+      "away": "MTL",
+      "start": "2026-10-13T23:00:00+00:00",
+      "captured": "2026-10-13T14:00:00Z",
+      "model": "nhl-poisson-v1",
+      "line": 6.5,
+      "result": null,
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.6040635994931846,
+          "odds": -145,
+          "outcome": null
+        },
+        {
+          "name": "away",
+          "probability": 0.39593640050681544,
+          "odds": 125,
+          "outcome": null
+        },
+        {
+          "name": "over",
+          "probability": 0.5043201232549427,
+          "odds": -110,
+          "outcome": null
+        },
+        {
+          "name": "under",
+          "probability": 0.495679876745057,
+          "odds": -110,
+          "outcome": null
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "home",
+          "probability": 0.6040635994931846,
+          "odds": -145,
+          "outcome": null,
+          "label": "TOR"
+        },
+        "total": {
+          "name": "over",
+          "probability": 0.5043201232549427,
+          "odds": -110,
+          "outcome": null,
+          "label": "Over 6.5"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nhl:demo-2026-10-13-1",
+      "id": "demo-2026-10-13-1",
+      "home": "NJD",
+      "away": "CAR",
+      "start": "2026-10-13T23:00:00+00:00",
+      "captured": "2026-10-13T14:00:00Z",
+      "model": "nhl-poisson-v1",
+      "line": 5.5,
+      "result": null,
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.5344987132253883,
+          "odds": -110,
+          "outcome": null
+        },
+        {
+          "name": "away",
+          "probability": 0.46550128677461167,
+          "odds": -110,
+          "outcome": null
+        },
+        {
+          "name": "over",
+          "probability": 0.5661319902813905,
+          "odds": -110,
+          "outcome": null
+        },
+        {
+          "name": "under",
+          "probability": 0.4338680097186081,
+          "odds": -110,
+          "outcome": null
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "home",
+          "probability": 0.5344987132253883,
+          "odds": -110,
+          "outcome": null,
+          "label": "NJD"
+        },
+        "total": {
+          "name": "over",
+          "probability": 0.5661319902813905,
+          "odds": -110,
+          "outcome": null,
+          "label": "Over 5.5"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nhl:demo-nhl-2026-10-13-extra",
+      "id": "demo-nhl-2026-10-13-extra",
+      "home": "TBL",
+      "away": "SEA",
+      "start": "2026-10-13T23:00:00+00:00",
+      "captured": "2026-10-13T14:00:00Z",
+      "model": "nhl-poisson-v1",
+      "line": 6.5,
+      "result": null,
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.6643358746971303,
+          "odds": -145,
+          "outcome": null
+        },
+        {
+          "name": "away",
+          "probability": 0.3356641253028697,
+          "odds": 125,
+          "outcome": null
+        },
+        {
+          "name": "over",
+          "probability": 0.5185814566253446,
+          "odds": -110,
+          "outcome": null
+        },
+        {
+          "name": "under",
+          "probability": 0.48141854337465445,
+          "odds": -110,
+          "outcome": null
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "home",
+          "probability": 0.6643358746971303,
+          "odds": -145,
+          "outcome": null,
+          "label": "TBL"
+        },
+        "total": {
+          "name": "over",
+          "probability": 0.5185814566253446,
+          "odds": -110,
+          "outcome": null,
+          "label": "Over 6.5"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nhl:demo-2026-10-12-2",
+      "id": "demo-2026-10-12-2",
+      "home": "BOS",
+      "away": "FLA",
+      "start": "2026-10-13T00:00:00+00:00",
+      "captured": "2026-10-12T14:00:00Z",
+      "model": "nhl-poisson-v1",
+      "line": 6.0,
+      "result": {
+        "home_score": 6,
+        "away_score": 5,
+        "source": "demo"
+      },
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.4820660832012021,
+          "odds": 130,
+          "outcome": "win"
+        },
+        {
+          "name": "away",
+          "probability": 0.517933916798798,
+          "odds": -150,
+          "outcome": "loss"
+        },
+        {
+          "name": "over",
+          "probability": 0.4335424206715755,
+          "odds": -110,
+          "outcome": "win"
+        },
+        {
+          "name": "under",
+          "probability": 0.4560135561741395,
+          "odds": -110,
+          "outcome": "loss"
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "away",
+          "probability": 0.517933916798798,
+          "odds": -150,
+          "outcome": "loss",
+          "label": "FLA"
+        },
+        "total": {
+          "name": "under",
+          "probability": 0.4560135561741395,
+          "odds": -110,
+          "outcome": "loss",
+          "label": "Under 6.0"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nhl:demo-2026-10-12-3",
+      "id": "demo-2026-10-12-3",
+      "home": "EDM",
+      "away": "LAK",
+      "start": "2026-10-13T00:00:00+00:00",
+      "captured": "2026-10-12T14:00:00Z",
+      "model": "nhl-poisson-v1",
+      "line": 6.5,
+      "result": {
+        "home_score": 7,
+        "away_score": 6,
+        "source": "demo"
+      },
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.5621128314030076,
+          "odds": -150,
+          "outcome": "win"
+        },
+        {
+          "name": "away",
+          "probability": 0.4378871685969924,
+          "odds": 130,
+          "outcome": "loss"
+        },
+        {
+          "name": "over",
+          "probability": 0.4682131723823482,
+          "odds": -110,
+          "outcome": "win"
+        },
+        {
+          "name": "under",
+          "probability": 0.5317868276176511,
+          "odds": -110,
+          "outcome": "loss"
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "home",
+          "probability": 0.5621128314030076,
+          "odds": -150,
+          "outcome": "win",
+          "label": "EDM"
+        },
+        "total": {
+          "name": "under",
+          "probability": 0.5317868276176511,
+          "odds": -110,
+          "outcome": "loss",
+          "label": "Under 6.5"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nhl:demo-2026-10-12-0",
+      "id": "demo-2026-10-12-0",
+      "home": "TOR",
+      "away": "MTL",
+      "start": "2026-10-12T23:00:00+00:00",
+      "captured": "2026-10-12T14:00:00Z",
+      "model": "nhl-poisson-v1",
+      "line": 6.5,
+      "result": {
+        "home_score": 4,
+        "away_score": 3,
+        "source": "demo"
+      },
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.6040635994931846,
+          "odds": -145,
+          "outcome": "win"
+        },
+        {
+          "name": "away",
+          "probability": 0.39593640050681544,
+          "odds": 125,
+          "outcome": "loss"
+        },
+        {
+          "name": "over",
+          "probability": 0.5043201232549427,
+          "odds": -110,
+          "outcome": "win"
+        },
+        {
+          "name": "under",
+          "probability": 0.495679876745057,
+          "odds": -110,
+          "outcome": "loss"
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "home",
+          "probability": 0.6040635994931846,
+          "odds": -145,
+          "outcome": "win",
+          "label": "TOR"
+        },
+        "total": {
+          "name": "over",
+          "probability": 0.5043201232549427,
+          "odds": -110,
+          "outcome": "win",
+          "label": "Over 6.5"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nhl:demo-2026-10-12-1",
+      "id": "demo-2026-10-12-1",
+      "home": "NJD",
+      "away": "CAR",
+      "start": "2026-10-12T23:00:00+00:00",
+      "captured": "2026-10-12T14:00:00Z",
+      "model": "nhl-poisson-v1",
+      "line": 5.5,
+      "result": {
+        "home_score": 5,
+        "away_score": 4,
+        "source": "demo"
+      },
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.5344987132253883,
+          "odds": -110,
+          "outcome": "win"
+        },
+        {
+          "name": "away",
+          "probability": 0.46550128677461167,
+          "odds": -110,
+          "outcome": "loss"
+        },
+        {
+          "name": "over",
+          "probability": 0.5661319902813905,
+          "odds": -110,
+          "outcome": "win"
+        },
+        {
+          "name": "under",
+          "probability": 0.4338680097186081,
+          "odds": -110,
+          "outcome": "loss"
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "home",
+          "probability": 0.5344987132253883,
+          "odds": -110,
+          "outcome": "win",
+          "label": "NJD"
+        },
+        "total": {
+          "name": "over",
+          "probability": 0.5661319902813905,
+          "odds": -110,
+          "outcome": "win",
+          "label": "Over 5.5"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nhl:demo-nhl-2026-10-12-extra",
+      "id": "demo-nhl-2026-10-12-extra",
+      "home": "TBL",
+      "away": "SEA",
+      "start": "2026-10-12T23:00:00+00:00",
+      "captured": "2026-10-12T14:00:00Z",
+      "model": "nhl-poisson-v1",
+      "line": 6.5,
+      "result": {
+        "home_score": 8,
+        "away_score": 7,
+        "source": "demo"
+      },
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.6643358746971303,
+          "odds": -145,
+          "outcome": "win"
+        },
+        {
+          "name": "away",
+          "probability": 0.3356641253028697,
+          "odds": 125,
+          "outcome": "loss"
+        },
+        {
+          "name": "over",
+          "probability": 0.5185814566253446,
+          "odds": -110,
+          "outcome": "win"
+        },
+        {
+          "name": "under",
+          "probability": 0.48141854337465445,
+          "odds": -110,
+          "outcome": "loss"
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "home",
+          "probability": 0.6643358746971303,
+          "odds": -145,
+          "outcome": "win",
+          "label": "TBL"
+        },
+        "total": {
+          "name": "over",
+          "probability": 0.5185814566253446,
+          "odds": -110,
+          "outcome": "win",
+          "label": "Over 6.5"
+        }
+      }
+    }
+  ],
+  "metrics": {
+    "ml": {
+      "wins": 4,
+      "losses": 1,
+      "pushes": 0,
+      "pending": 5,
+      "priced": 5,
+      "profit": 1.955067920585162,
+      "brier_count": 5,
+      "hit_rate": 0.8,
+      "roi": 0.3910135841170324,
+      "brier": 0.18922564016857762
+    },
+    "total": {
+      "wins": 3,
+      "losses": 2,
+      "pushes": 0,
+      "pending": 5,
+      "priced": 5,
+      "profit": 0.7272727272727275,
+      "brier_count": 5,
+      "hit_rate": 0.6,
+      "roi": 0.1454545454545455,
+      "brier": 0.24225821984855464
+    }
+  },
+  "all_side_metrics": {
+    "home": {
+      "settled": 5,
+      "wins": 5,
+      "pushes": 0,
+      "priced": 5,
+      "profit": 4.255067920585162,
+      "brier_count": 5,
+      "roi": 0.8510135841170324,
+      "brier": 0.18922564016857762
+    },
+    "away": {
+      "settled": 5,
+      "wins": 0,
+      "pushes": 0,
+      "priced": 5,
+      "profit": -5,
+      "brier_count": 5,
+      "roi": -1.0,
+      "brier": 0.18922564016857762
+    },
+    "over": {
+      "settled": 5,
+      "wins": 5,
+      "pushes": 0,
+      "priced": 5,
+      "profit": 4.545454545454546,
+      "brier_count": 5,
+      "roi": 0.9090909090909092,
+      "brier": 0.24225821984855478
+    },
+    "under": {
+      "settled": 5,
+      "wins": 0,
+      "pushes": 0,
+      "priced": 5,
+      "profit": -5,
+      "brier_count": 5,
+      "roi": -1.0,
+      "brier": 0.2422582198485542
+    }
+  },
+  "health": null,
+  "source": "Synthetic demo model record",
+  "cards": [
+    {
+      "key": "demo:nhl:2026-10-13",
+      "day": "2026-10-13",
+      "sport": "nhl",
+      "mode": "demo",
+      "created": "2026-10-13T14:00:00Z",
+      "legs": [
+        {
+          "game_key": "demo:nhl:demo-nhl-2026-10-13-extra",
+          "id": "demo-nhl-2026-10-13-extra",
+          "home": "TBL",
+          "away": "SEA",
+          "start": "2026-10-13T23:00:00+00:00",
+          "side": "home",
+          "label": "TBL ML",
+          "probability": 0.6643358746971303,
+          "conditional": 0.6643358746971303,
+          "push": 0,
+          "odds": -145,
+          "ev": 0.12249854690204776,
+          "line": 6.5,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nhl-poisson-v1",
+          "outcome": null
+        },
+        {
+          "game_key": "demo:nhl:demo-2026-10-13-0",
+          "id": "demo-2026-10-13-0",
+          "home": "TOR",
+          "away": "MTL",
+          "start": "2026-10-13T23:00:00+00:00",
+          "side": "home",
+          "label": "TOR ML",
+          "probability": 0.6040635994931846,
+          "conditional": 0.6040635994931846,
+          "push": 0,
+          "odds": -145,
+          "ev": 0.020659185350553222,
+          "line": 6.5,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nhl-poisson-v1",
+          "outcome": null
+        },
+        {
+          "game_key": "demo:nhl:demo-2026-10-13-3",
+          "id": "demo-2026-10-13-3",
+          "home": "EDM",
+          "away": "LAK",
+          "start": "2026-10-14T00:00:00+00:00",
+          "side": "home",
+          "label": "EDM ML",
+          "probability": 0.5621128314030076,
+          "conditional": 0.5621128314030076,
+          "push": 0,
+          "odds": -150,
+          "ev": -0.0631452809949874,
+          "line": 6.5,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nhl-poisson-v1",
+          "outcome": null
+        },
+        {
+          "game_key": "demo:nhl:demo-2026-10-13-1",
+          "id": "demo-2026-10-13-1",
+          "home": "NJD",
+          "away": "CAR",
+          "start": "2026-10-13T23:00:00+00:00",
+          "side": "home",
+          "label": "NJD ML",
+          "probability": 0.5344987132253883,
+          "conditional": 0.5344987132253883,
+          "push": 0,
+          "odds": -110,
+          "ev": 0.020406634339377783,
+          "line": 5.5,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nhl-poisson-v1",
+          "outcome": null
+        }
+      ],
+      "experimental": true,
+      "joint_probability": 0.12057035361444907,
+      "decimal_odds": 9.083882823478543,
+      "note": "Top model win probabilities, one leg per game. Joint probability assumes independence; not a validated parlay probability or an executable sportsbook ticket.",
+      "wins": 0,
+      "losses": 0,
+      "pushes": 0,
+      "pending": 4,
+      "result": "pending",
+      "hit_fraction": "0/4"
+    },
+    {
+      "key": "demo:nhl:2026-10-12",
+      "day": "2026-10-12",
+      "sport": "nhl",
+      "mode": "demo",
+      "created": "2026-10-12T14:00:00Z",
+      "legs": [
+        {
+          "game_key": "demo:nhl:demo-nhl-2026-10-12-extra",
+          "id": "demo-nhl-2026-10-12-extra",
+          "home": "TBL",
+          "away": "SEA",
+          "start": "2026-10-12T23:00:00+00:00",
+          "side": "home",
+          "label": "TBL ML",
+          "probability": 0.6643358746971303,
+          "conditional": 0.6643358746971303,
+          "push": 0,
+          "odds": -145,
+          "ev": 0.12249854690204776,
+          "line": 6.5,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nhl-poisson-v1",
+          "outcome": "win"
+        },
+        {
+          "game_key": "demo:nhl:demo-2026-10-12-0",
+          "id": "demo-2026-10-12-0",
+          "home": "TOR",
+          "away": "MTL",
+          "start": "2026-10-12T23:00:00+00:00",
+          "side": "home",
+          "label": "TOR ML",
+          "probability": 0.6040635994931846,
+          "conditional": 0.6040635994931846,
+          "push": 0,
+          "odds": -145,
+          "ev": 0.020659185350553222,
+          "line": 6.5,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nhl-poisson-v1",
+          "outcome": "win"
+        },
+        {
+          "game_key": "demo:nhl:demo-2026-10-12-3",
+          "id": "demo-2026-10-12-3",
+          "home": "EDM",
+          "away": "LAK",
+          "start": "2026-10-13T00:00:00+00:00",
+          "side": "home",
+          "label": "EDM ML",
+          "probability": 0.5621128314030076,
+          "conditional": 0.5621128314030076,
+          "push": 0,
+          "odds": -150,
+          "ev": -0.0631452809949874,
+          "line": 6.5,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nhl-poisson-v1",
+          "outcome": "win"
+        },
+        {
+          "game_key": "demo:nhl:demo-2026-10-12-1",
+          "id": "demo-2026-10-12-1",
+          "home": "NJD",
+          "away": "CAR",
+          "start": "2026-10-12T23:00:00+00:00",
+          "side": "home",
+          "label": "NJD ML",
+          "probability": 0.5344987132253883,
+          "conditional": 0.5344987132253883,
+          "push": 0,
+          "odds": -110,
+          "ev": 0.020406634339377783,
+          "line": 5.5,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nhl-poisson-v1",
+          "outcome": "win"
+        }
+      ],
+      "experimental": true,
+      "joint_probability": 0.12057035361444907,
+      "decimal_odds": 9.083882823478543,
+      "note": "Top model win probabilities, one leg per game. Joint probability assumes independence; not a validated parlay probability or an executable sportsbook ticket.",
+      "wins": 4,
+      "losses": 0,
+      "pushes": 0,
+      "pending": 0,
+      "result": "win",
+      "hit_fraction": "4/4"
+    }
+  ],
+  "learning": {
+    "status": "Demo \u00b7 learning disabled",
+    "checks": [],
+    "versions": {},
+    "note": "Synthetic fixtures never train the live models."
+  }
+}

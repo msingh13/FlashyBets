@@ -1,0 +1,860 @@
+{
+  "forecasts": [
+    {
+      "game_key": "demo:nfl:demo-nfl-2026-10-13-4",
+      "id": "demo-nfl-2026-10-13-4",
+      "home": "SF",
+      "away": "SEA",
+      "start": "2026-10-14T01:00:00+00:00",
+      "captured": "2026-10-13T14:00:00Z",
+      "model": "nfl-drive-v1",
+      "line": 46.5,
+      "result": null,
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.6612516237035118,
+          "odds": -120,
+          "outcome": null
+        },
+        {
+          "name": "away",
+          "probability": 0.334035398952573,
+          "odds": 100,
+          "outcome": null
+        },
+        {
+          "name": "over",
+          "probability": 0.5464770278172603,
+          "odds": -110,
+          "outcome": null
+        },
+        {
+          "name": "under",
+          "probability": 0.45352297218274035,
+          "odds": -110,
+          "outcome": null
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "home",
+          "probability": 0.6612516237035118,
+          "odds": -120,
+          "outcome": null,
+          "label": "SF"
+        },
+        "total": {
+          "name": "over",
+          "probability": 0.5464770278172603,
+          "odds": -110,
+          "outcome": null,
+          "label": "Over 46.5"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nfl:demo-nfl-2026-10-13-3",
+      "id": "demo-nfl-2026-10-13-3",
+      "home": "PHI",
+      "away": "DAL",
+      "start": "2026-10-14T00:30:00+00:00",
+      "captured": "2026-10-13T14:00:00Z",
+      "model": "nfl-drive-v1",
+      "line": 47.5,
+      "result": null,
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.6599056133073442,
+          "odds": -120,
+          "outcome": null
+        },
+        {
+          "name": "away",
+          "probability": 0.33552140442638706,
+          "odds": 100,
+          "outcome": null
+        },
+        {
+          "name": "over",
+          "probability": 0.5668971980017407,
+          "odds": -110,
+          "outcome": null
+        },
+        {
+          "name": "under",
+          "probability": 0.4331028019982572,
+          "odds": -110,
+          "outcome": null
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "home",
+          "probability": 0.6599056133073442,
+          "odds": -120,
+          "outcome": null,
+          "label": "PHI"
+        },
+        "total": {
+          "name": "over",
+          "probability": 0.5668971980017407,
+          "odds": -110,
+          "outcome": null,
+          "label": "Over 47.5"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nfl:demo-nfl-2026-10-13-2",
+      "id": "demo-nfl-2026-10-13-2",
+      "home": "GB",
+      "away": "DET",
+      "start": "2026-10-14T00:00:00+00:00",
+      "captured": "2026-10-13T14:00:00Z",
+      "model": "nfl-drive-v1",
+      "line": 49.5,
+      "result": null,
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.3888073840136735,
+          "odds": -120,
+          "outcome": null
+        },
+        {
+          "name": "away",
+          "probability": 0.6064858436912406,
+          "odds": 100,
+          "outcome": null
+        },
+        {
+          "name": "over",
+          "probability": 0.5700778140247379,
+          "odds": -110,
+          "outcome": null
+        },
+        {
+          "name": "under",
+          "probability": 0.429922185975261,
+          "odds": -110,
+          "outcome": null
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "away",
+          "probability": 0.6064858436912406,
+          "odds": 100,
+          "outcome": null,
+          "label": "DET"
+        },
+        "total": {
+          "name": "over",
+          "probability": 0.5700778140247379,
+          "odds": -110,
+          "outcome": null,
+          "label": "Over 49.5"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nfl:demo-nfl-2026-10-13-1",
+      "id": "demo-nfl-2026-10-13-1",
+      "home": "BAL",
+      "away": "CIN",
+      "start": "2026-10-13T23:30:00+00:00",
+      "captured": "2026-10-13T14:00:00Z",
+      "model": "nfl-drive-v1",
+      "line": 47.0,
+      "result": null,
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.6072828616875542,
+          "odds": -120,
+          "outcome": null
+        },
+        {
+          "name": "away",
+          "probability": 0.3878741183341551,
+          "odds": 100,
+          "outcome": null
+        },
+        {
+          "name": "over",
+          "probability": 0.5668409037303428,
+          "odds": -110,
+          "outcome": null
+        },
+        {
+          "name": "under",
+          "probability": 0.3977870630271248,
+          "odds": -110,
+          "outcome": null
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "home",
+          "probability": 0.6072828616875542,
+          "odds": -120,
+          "outcome": null,
+          "label": "BAL"
+        },
+        "total": {
+          "name": "over",
+          "probability": 0.5668409037303428,
+          "odds": -110,
+          "outcome": null,
+          "label": "Over 47.0"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nfl:demo-nfl-2026-10-13-0",
+      "id": "demo-nfl-2026-10-13-0",
+      "home": "BUF",
+      "away": "KC",
+      "start": "2026-10-13T23:00:00+00:00",
+      "captured": "2026-10-13T14:00:00Z",
+      "model": "nfl-drive-v1",
+      "line": 48.5,
+      "result": null,
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.6064858436912403,
+          "odds": -120,
+          "outcome": null
+        },
+        {
+          "name": "away",
+          "probability": 0.3888073840136743,
+          "odds": 100,
+          "outcome": null
+        },
+        {
+          "name": "over",
+          "probability": 0.5828157783057893,
+          "odds": -110,
+          "outcome": null
+        },
+        {
+          "name": "under",
+          "probability": 0.41718422169421204,
+          "odds": -110,
+          "outcome": null
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "home",
+          "probability": 0.6064858436912403,
+          "odds": -120,
+          "outcome": null,
+          "label": "BUF"
+        },
+        "total": {
+          "name": "over",
+          "probability": 0.5828157783057893,
+          "odds": -110,
+          "outcome": null,
+          "label": "Over 48.5"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nfl:demo-nfl-2026-10-12-4",
+      "id": "demo-nfl-2026-10-12-4",
+      "home": "SF",
+      "away": "SEA",
+      "start": "2026-10-13T01:00:00+00:00",
+      "captured": "2026-10-12T14:00:00Z",
+      "model": "nfl-drive-v1",
+      "line": 46.5,
+      "result": {
+        "home_score": 31,
+        "away_score": 28,
+        "source": "Synthetic demo"
+      },
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.6612516237035118,
+          "odds": -120,
+          "outcome": "win"
+        },
+        {
+          "name": "away",
+          "probability": 0.334035398952573,
+          "odds": 100,
+          "outcome": "loss"
+        },
+        {
+          "name": "over",
+          "probability": 0.5464770278172603,
+          "odds": -110,
+          "outcome": "win"
+        },
+        {
+          "name": "under",
+          "probability": 0.45352297218274035,
+          "odds": -110,
+          "outcome": "loss"
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "home",
+          "probability": 0.6612516237035118,
+          "odds": -120,
+          "outcome": "win",
+          "label": "SF"
+        },
+        "total": {
+          "name": "over",
+          "probability": 0.5464770278172603,
+          "odds": -110,
+          "outcome": "win",
+          "label": "Over 46.5"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nfl:demo-nfl-2026-10-12-3",
+      "id": "demo-nfl-2026-10-12-3",
+      "home": "PHI",
+      "away": "DAL",
+      "start": "2026-10-13T00:30:00+00:00",
+      "captured": "2026-10-12T14:00:00Z",
+      "model": "nfl-drive-v1",
+      "line": 47.5,
+      "result": {
+        "home_score": 30,
+        "away_score": 27,
+        "source": "Synthetic demo"
+      },
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.6599056133073442,
+          "odds": -120,
+          "outcome": "win"
+        },
+        {
+          "name": "away",
+          "probability": 0.33552140442638706,
+          "odds": 100,
+          "outcome": "loss"
+        },
+        {
+          "name": "over",
+          "probability": 0.5668971980017407,
+          "odds": -110,
+          "outcome": "win"
+        },
+        {
+          "name": "under",
+          "probability": 0.4331028019982572,
+          "odds": -110,
+          "outcome": "loss"
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "home",
+          "probability": 0.6599056133073442,
+          "odds": -120,
+          "outcome": "win",
+          "label": "PHI"
+        },
+        "total": {
+          "name": "over",
+          "probability": 0.5668971980017407,
+          "odds": -110,
+          "outcome": "win",
+          "label": "Over 47.5"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nfl:demo-nfl-2026-10-12-2",
+      "id": "demo-nfl-2026-10-12-2",
+      "home": "GB",
+      "away": "DET",
+      "start": "2026-10-13T00:00:00+00:00",
+      "captured": "2026-10-12T14:00:00Z",
+      "model": "nfl-drive-v1",
+      "line": 49.5,
+      "result": {
+        "home_score": 29,
+        "away_score": 26,
+        "source": "Synthetic demo"
+      },
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.3888073840136735,
+          "odds": -120,
+          "outcome": "win"
+        },
+        {
+          "name": "away",
+          "probability": 0.6064858436912406,
+          "odds": 100,
+          "outcome": "loss"
+        },
+        {
+          "name": "over",
+          "probability": 0.5700778140247379,
+          "odds": -110,
+          "outcome": "win"
+        },
+        {
+          "name": "under",
+          "probability": 0.429922185975261,
+          "odds": -110,
+          "outcome": "loss"
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "away",
+          "probability": 0.6064858436912406,
+          "odds": 100,
+          "outcome": "loss",
+          "label": "DET"
+        },
+        "total": {
+          "name": "over",
+          "probability": 0.5700778140247379,
+          "odds": -110,
+          "outcome": "win",
+          "label": "Over 49.5"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nfl:demo-nfl-2026-10-12-1",
+      "id": "demo-nfl-2026-10-12-1",
+      "home": "BAL",
+      "away": "CIN",
+      "start": "2026-10-12T23:30:00+00:00",
+      "captured": "2026-10-12T14:00:00Z",
+      "model": "nfl-drive-v1",
+      "line": 47.0,
+      "result": {
+        "home_score": 28,
+        "away_score": 25,
+        "source": "Synthetic demo"
+      },
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.6072828616875542,
+          "odds": -120,
+          "outcome": "win"
+        },
+        {
+          "name": "away",
+          "probability": 0.3878741183341551,
+          "odds": 100,
+          "outcome": "loss"
+        },
+        {
+          "name": "over",
+          "probability": 0.5668409037303428,
+          "odds": -110,
+          "outcome": "win"
+        },
+        {
+          "name": "under",
+          "probability": 0.3977870630271248,
+          "odds": -110,
+          "outcome": "loss"
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "home",
+          "probability": 0.6072828616875542,
+          "odds": -120,
+          "outcome": "win",
+          "label": "BAL"
+        },
+        "total": {
+          "name": "over",
+          "probability": 0.5668409037303428,
+          "odds": -110,
+          "outcome": "win",
+          "label": "Over 47.0"
+        }
+      }
+    },
+    {
+      "game_key": "demo:nfl:demo-nfl-2026-10-12-0",
+      "id": "demo-nfl-2026-10-12-0",
+      "home": "BUF",
+      "away": "KC",
+      "start": "2026-10-12T23:00:00+00:00",
+      "captured": "2026-10-12T14:00:00Z",
+      "model": "nfl-drive-v1",
+      "line": 48.5,
+      "result": {
+        "home_score": 27,
+        "away_score": 24,
+        "source": "Synthetic demo"
+      },
+      "markets": [
+        {
+          "name": "home",
+          "probability": 0.6064858436912403,
+          "odds": -120,
+          "outcome": "win"
+        },
+        {
+          "name": "away",
+          "probability": 0.3888073840136743,
+          "odds": 100,
+          "outcome": "loss"
+        },
+        {
+          "name": "over",
+          "probability": 0.5828157783057893,
+          "odds": -110,
+          "outcome": "win"
+        },
+        {
+          "name": "under",
+          "probability": 0.41718422169421204,
+          "odds": -110,
+          "outcome": "loss"
+        }
+      ],
+      "picks": {
+        "ml": {
+          "name": "home",
+          "probability": 0.6064858436912403,
+          "odds": -120,
+          "outcome": "win",
+          "label": "BUF"
+        },
+        "total": {
+          "name": "over",
+          "probability": 0.5828157783057893,
+          "odds": -110,
+          "outcome": "win",
+          "label": "Over 48.5"
+        }
+      }
+    }
+  ],
+  "metrics": {
+    "ml": {
+      "wins": 4,
+      "losses": 1,
+      "pushes": 0,
+      "pending": 5,
+      "priced": 5,
+      "profit": 2.333333333333334,
+      "brier_count": 5,
+      "hit_rate": 0.8,
+      "roi": 0.4666666666666668,
+      "brier": 0.18041619565123151
+    },
+    "total": {
+      "wins": 5,
+      "losses": 0,
+      "pushes": 0,
+      "pending": 5,
+      "priced": 5,
+      "profit": 4.545454545454546,
+      "brier_count": 5,
+      "hit_rate": 1.0,
+      "roi": 0.9090909090909092,
+      "brier": 0.18443776646680218
+    }
+  },
+  "all_side_metrics": {
+    "home": {
+      "settled": 5,
+      "wins": 5,
+      "pushes": 0,
+      "priced": 5,
+      "profit": 4.166666666666668,
+      "brier_count": 5,
+      "roi": 0.8333333333333336,
+      "brier": 0.18041619565123113
+    },
+    "away": {
+      "settled": 5,
+      "wins": 0,
+      "pushes": 0,
+      "priced": 5,
+      "profit": -5,
+      "brier_count": 5,
+      "roi": -1.0,
+      "brier": 0.18041619565123193
+    },
+    "over": {
+      "settled": 5,
+      "wins": 5,
+      "pushes": 0,
+      "priced": 5,
+      "profit": 4.545454545454546,
+      "brier_count": 5,
+      "roi": 0.9090909090909092,
+      "brier": 0.18443776646680218
+    },
+    "under": {
+      "settled": 5,
+      "wins": 0,
+      "pushes": 0,
+      "priced": 5,
+      "profit": -5,
+      "brier_count": 5,
+      "roi": -1.0,
+      "brier": 0.18443776646680182
+    }
+  },
+  "health": null,
+  "source": "Synthetic demo model record",
+  "cards": [
+    {
+      "key": "demo:nfl:2026-10-13",
+      "day": "2026-10-13",
+      "sport": "nfl",
+      "mode": "demo",
+      "created": "2026-10-13T14:00:00Z",
+      "legs": [
+        {
+          "game_key": "demo:nfl:demo-nfl-2026-10-13-4",
+          "id": "demo-nfl-2026-10-13-4",
+          "home": "SF",
+          "away": "SEA",
+          "start": "2026-10-14T01:00:00+00:00",
+          "side": "home",
+          "label": "SF ML",
+          "probability": 0.6612516237035118,
+          "conditional": 0.6643828449996823,
+          "push": 0.0047129773439167555,
+          "odds": -120,
+          "ev": 0.21700762080035507,
+          "line": 46.5,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nfl-drive-v1",
+          "outcome": null
+        },
+        {
+          "game_key": "demo:nfl:demo-nfl-2026-10-13-3",
+          "id": "demo-nfl-2026-10-13-3",
+          "home": "PHI",
+          "away": "DAL",
+          "start": "2026-10-14T00:30:00+00:00",
+          "side": "home",
+          "label": "PHI ML",
+          "probability": 0.6599056133073442,
+          "conditional": 0.6629372134279986,
+          "push": 0.004572982266266585,
+          "odds": -120,
+          "ev": 0.21439993999639773,
+          "line": 47.5,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nfl-drive-v1",
+          "outcome": null
+        },
+        {
+          "game_key": "demo:nfl:demo-nfl-2026-10-13-1",
+          "id": "demo-nfl-2026-10-13-1",
+          "home": "BAL",
+          "away": "CIN",
+          "start": "2026-10-13T23:30:00+00:00",
+          "side": "home",
+          "label": "BAL ML",
+          "probability": 0.6072828616875542,
+          "conditional": 0.6102382577614106,
+          "push": 0.0048430199782916105,
+          "odds": -120,
+          "ev": 0.11819493307214102,
+          "line": 47.0,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nfl-drive-v1",
+          "outcome": null
+        },
+        {
+          "game_key": "demo:nfl:demo-nfl-2026-10-13-2",
+          "id": "demo-nfl-2026-10-13-2",
+          "home": "GB",
+          "away": "DET",
+          "start": "2026-10-14T00:00:00+00:00",
+          "side": "away",
+          "label": "DET ML",
+          "probability": 0.6064858436912406,
+          "conditional": 0.6093539339052484,
+          "push": 0.0047067722950873804,
+          "odds": 100,
+          "ev": 0.21767845967756855,
+          "line": 49.5,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nfl-drive-v1",
+          "outcome": null
+        },
+        {
+          "game_key": "demo:nfl:demo-nfl-2026-10-13-0",
+          "id": "demo-nfl-2026-10-13-0",
+          "home": "BUF",
+          "away": "KC",
+          "start": "2026-10-13T23:00:00+00:00",
+          "side": "home",
+          "label": "BUF ML",
+          "probability": 0.6064858436912403,
+          "conditional": 0.6093539339052481,
+          "push": 0.0047067722950873804,
+          "odds": -120,
+          "ev": 0.1165974857290279,
+          "line": 48.5,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nfl-drive-v1",
+          "outcome": null
+        }
+      ],
+      "experimental": true,
+      "joint_probability": 0.0974722374788583,
+      "decimal_odds": 22.594135802469143,
+      "note": "Top model win probabilities, one leg per game. Joint probability assumes independence; not a validated parlay probability or an executable sportsbook ticket.",
+      "wins": 0,
+      "losses": 0,
+      "pushes": 0,
+      "pending": 5,
+      "result": "pending",
+      "hit_fraction": "0/5"
+    },
+    {
+      "key": "demo:nfl:2026-10-12",
+      "day": "2026-10-12",
+      "sport": "nfl",
+      "mode": "demo",
+      "created": "2026-10-12T14:00:00Z",
+      "legs": [
+        {
+          "game_key": "demo:nfl:demo-nfl-2026-10-12-4",
+          "id": "demo-nfl-2026-10-12-4",
+          "home": "SF",
+          "away": "SEA",
+          "start": "2026-10-13T01:00:00+00:00",
+          "side": "home",
+          "label": "SF ML",
+          "probability": 0.6612516237035118,
+          "conditional": 0.6643828449996823,
+          "push": 0.0047129773439167555,
+          "odds": -120,
+          "ev": 0.21700762080035507,
+          "line": 46.5,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nfl-drive-v1",
+          "outcome": "win"
+        },
+        {
+          "game_key": "demo:nfl:demo-nfl-2026-10-12-3",
+          "id": "demo-nfl-2026-10-12-3",
+          "home": "PHI",
+          "away": "DAL",
+          "start": "2026-10-13T00:30:00+00:00",
+          "side": "home",
+          "label": "PHI ML",
+          "probability": 0.6599056133073442,
+          "conditional": 0.6629372134279986,
+          "push": 0.004572982266266585,
+          "odds": -120,
+          "ev": 0.21439993999639773,
+          "line": 47.5,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nfl-drive-v1",
+          "outcome": "win"
+        },
+        {
+          "game_key": "demo:nfl:demo-nfl-2026-10-12-1",
+          "id": "demo-nfl-2026-10-12-1",
+          "home": "BAL",
+          "away": "CIN",
+          "start": "2026-10-12T23:30:00+00:00",
+          "side": "home",
+          "label": "BAL ML",
+          "probability": 0.6072828616875542,
+          "conditional": 0.6102382577614106,
+          "push": 0.0048430199782916105,
+          "odds": -120,
+          "ev": 0.11819493307214102,
+          "line": 47.0,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nfl-drive-v1",
+          "outcome": "win"
+        },
+        {
+          "game_key": "demo:nfl:demo-nfl-2026-10-12-2",
+          "id": "demo-nfl-2026-10-12-2",
+          "home": "GB",
+          "away": "DET",
+          "start": "2026-10-13T00:00:00+00:00",
+          "side": "away",
+          "label": "DET ML",
+          "probability": 0.6064858436912406,
+          "conditional": 0.6093539339052484,
+          "push": 0.0047067722950873804,
+          "odds": 100,
+          "ev": 0.21767845967756855,
+          "line": 49.5,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nfl-drive-v1",
+          "outcome": "loss"
+        },
+        {
+          "game_key": "demo:nfl:demo-nfl-2026-10-12-0",
+          "id": "demo-nfl-2026-10-12-0",
+          "home": "BUF",
+          "away": "KC",
+          "start": "2026-10-12T23:00:00+00:00",
+          "side": "home",
+          "label": "BUF ML",
+          "probability": 0.6064858436912403,
+          "conditional": 0.6093539339052481,
+          "push": 0.0047067722950873804,
+          "odds": -120,
+          "ev": 0.1165974857290279,
+          "line": 48.5,
+          "market_line": true,
+          "context_ready": false,
+          "model": "nfl-drive-v1",
+          "outcome": "win"
+        }
+      ],
+      "experimental": true,
+      "joint_probability": 0.0974722374788583,
+      "decimal_odds": 22.594135802469143,
+      "note": "Top model win probabilities, one leg per game. Joint probability assumes independence; not a validated parlay probability or an executable sportsbook ticket.",
+      "wins": 4,
+      "losses": 1,
+      "pushes": 0,
+      "pending": 0,
+      "result": "loss",
+      "hit_fraction": "4/5"
+    }
+  ],
+  "learning": {
+    "status": "Demo \u00b7 learning disabled",
+    "checks": [],
+    "versions": {},
+    "note": "Synthetic fixtures never train the live models."
+  }
+}
