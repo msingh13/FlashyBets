@@ -1,6 +1,6 @@
 # Verification — October 13, 2026
 
-- Backend: 30 tests passed, including sport probability mass, settlement, immutable forecasts/cards, no postgame backfill, model-only API, missing context, provider matching and synthetic-data exclusion from learning.
+- Backend: 32 tests passed, including sport probability mass, settlement, immutable forecasts/cards, no postgame backfill, model-only API, missing context, provider matching and synthetic-data exclusion from learning.
 - Frontend: TypeScript checking passed. Static demo and production builds passed.
 - Live public feeds were checked for NHL/NBA/NFL schedules, prior results, injuries, travel and NFL weather. Missing sportsbook credentials leave prices and EV blank. ESPN endpoints are undocumented and have no SLA.
 - Paid odds and confirmed-starter providers have no supplied credentials and remain unverified against subscribed accounts. Canadian Bet365 coverage is not claimed.
@@ -11,3 +11,9 @@
 - Docker configuration supplied but not executed here.
 
 Local preview servers are used for verification only. Follow README.md to start the full application. No GitHub upload or public deployment has been performed.
+
+## GitHub Pages adaptation
+- Scheduled publisher ran successfully against public feeds for all three sports and seven dates, with no failed board updates. Today: 16 NHL, 5 NBA and 0 NFL games. No paid odds were fetched.
+- Round-trip model state, failure retention and refusing invalid state resets tested.
+- Static Pages build uses /FlashyBets and published JSON, with no localhost API dependency.
+- Actual GitHub Actions/Pages deployment remains blocked by repository write access; local verification does not establish remote deployment.

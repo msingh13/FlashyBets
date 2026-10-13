@@ -2,6 +2,9 @@
 
 A daily NHL, NBA and NFL scorebook with transparent model probabilities, game context, an automatic model record and daily favorite cards. Next.js / TypeScript / Tailwind, FastAPI / Python, SQLite. MLB and soccer remain deferred.
 
+## GitHub deployment (current default)
+Read [GITHUB-PAGES.md](GITHUB-PAGES.md). The scheduled Pages version needs no running server. Python runs in GitHub Actions; the model-data branch preserves forecasts and results. The earlier static-demo/Render instructions below are alternative configurations.
+
 ## Start locally
 Node 22 and Python 3.9+ (3.12 recommended). Use two terminals:
 
