@@ -23,9 +23,9 @@ with tempfile.TemporaryDirectory() as scratch:
         for i,g in enumerate(past):
             g['state']='pre';g['home_score']=None;g['away_score']=None;service.enrich(g)
             store.capture(g,db,at='2026-10-12T14:00:00Z')
-            g.update(state='post',home_score={'nhl':4,'nba':118,'nfl':27}[sport]+i,away_score={'nhl':3,'nba':111,'nfl':24}[sport]+i)
+            g.update(state='post',home_score={'nhl':4,'nba':118,'nfl':27,'ucl':2}[sport]+i,away_score={'nhl':3,'nba':111,'nfl':24,'ucl':1}[sport]+i)
             store.settle(g,db)
         picks.build(sport,'2026-10-12','demo',db,at='2026-10-12T14:00:00Z')
         ledger=store.ledger(sport,'demo',db);ledger['cards']=picks.settled_cards(sport,'demo',db);ledger['learning']=learning.status(sport,'demo',db)
         (out/(sport+'-tracker.json')).write_text(json.dumps(ledger,indent=2))
-print('Exported synthetic demo boards and trackers for NHL, NBA, NFL.')
+print('Exported synthetic demo boards and trackers for NHL, NBA, NFL and UCL.')
