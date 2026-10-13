@@ -91,3 +91,15 @@ def test_lineups_require_event_team_and_eleven_unique_starters():
     attach_lineups(g,{'header':{'id':'1'},'rosters':[roster]});assert len(g['home_starters'])==11
     g['home_starters']=[];roster['roster'][0]['athlete']['id']='1'
     attach_lineups(g,{'header':{'id':'1'},'rosters':[roster]});assert not g['home_starters']
+
+
+def test_live_clock_and_score_do_not_settle_regulation():
+    from app.soccer import espn_match,rows_from_matches
+    e=espn_event(state='in',name='STATUS_SECOND_HALF',period=2)
+    e['competitions'][0]['status']['displayClock']="74'"
+    e['competitions'][0]['status']['type']['description']='Second Half'
+    m=espn_match(e)
+    assert regular_score(m) is None
+    g=rows_from_matches([m],'2026-10-13','ESPN','https://www.espn.com/')[0]
+    assert g['state']=='in' and g['clock']=="74'" and g['display_home_score']==2 and g['display_away_score']==1
+    assert g['home_score'] is None and g['away_score'] is None
