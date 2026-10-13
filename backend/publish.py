@@ -48,6 +48,11 @@ async def publish(out,state,db):
             except Exception:
                 errors.append({'sport':sport,'day':day,'message':'Provider update failed; any prior published snapshot remains unchanged.'})
                 if (out/sport/(day+'.json')).exists():available[sport].append(day)
+                elif sport=='ucl':
+                    reason='Champions League live data is not connected or is unavailable. No real fixtures or predictions have been fabricated.'
+                    write(out/sport/(day+'.json'),{'games':[],'updated':None,'refresh_seconds':1800,'warning':reason})
+                    write(out/sport/(day+'-favorites.json'),{'moneylines':[],'totals':[],'btts':[],'card':None,'reason':reason})
+                    available[sport].append(day)
         ledger=store.ledger(sport,'live',db);ledger['cards']=picks.settled_cards(sport,'live',db);ledger['learning']=learning.status(sport,'live',db)
         write(out/(sport+'-tracker.json'),ledger)
     save(state,db)
