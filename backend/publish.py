@@ -30,7 +30,7 @@ def public_board(board):
     # Distribution arrays are unnecessary on the static dashboard.
     for g in board['games']:
         if g.get('prediction'):g['prediction']={k:v for k,v in g['prediction'].items() if k!='distribution'}
-    board['refresh_seconds']=1800
+    board['refresh_seconds']=600
     return board
 
 async def publish(out,state,db):
@@ -50,13 +50,13 @@ async def publish(out,state,db):
                 if (out/sport/(day+'.json')).exists():available[sport].append(day)
                 elif sport=='ucl':
                     reason='Champions League live data is not connected or is unavailable. No real fixtures or predictions have been fabricated.'
-                    write(out/sport/(day+'.json'),{'games':[],'updated':None,'refresh_seconds':1800,'warning':reason})
+                    write(out/sport/(day+'.json'),{'games':[],'updated':None,'refresh_seconds':600,'warning':reason})
                     write(out/sport/(day+'-favorites.json'),{'moneylines':[],'totals':[],'btts':[],'card':None,'reason':reason})
                     available[sport].append(day)
         ledger=store.ledger(sport,'live',db);ledger['cards']=picks.settled_cards(sport,'live',db);ledger['learning']=learning.status(sport,'live',db);ledger['validation']=validation.report(sport,'live',db)
         write(out/(sport+'-tracker.json'),ledger)
     save(state,db)
-    write(out/'manifest.json',{'generated':store.now(),'today':current,'dates':available,'errors':errors,'cadence_minutes':30})
+    write(out/'manifest.json',{'generated':store.now(),'today':current,'dates':available,'errors':errors,'cadence_minutes':10})
     print(f'Published scheduled snapshots; {len(errors)} provider updates failed.')
 
 if __name__=='__main__':
