@@ -6,3 +6,5 @@
 .favorite-summary{max-width:440px;line-height:1.6!important;color:#c6cbd5!important;margin-top:8px!important;font-size:10px!important}.favorite-line{align-items:flex-start!important}.btts-section{grid-column:1/-1;border-top:1px solid var(--rule);padding-top:14px}.sports{flex-wrap:wrap}
 
 .scoreboard{margin:16px 22px 0;padding:18px 22px;border:1px solid #474331;background:#222016;display:flex;flex-direction:column;gap:8px}.scoreboard>span{font-size:11px;letter-spacing:1px;color:#ffdb58}.scoreboard>strong{font-size:clamp(22px,3vw,35px);color:#fff}.scoreboard i{font-style:normal;color:#857e66;padding:0 10px}.scoreboard small{font-size:10px;color:#bcb8a8}
+
+.nfl-summary{padding:20px 26px;border-top:1px solid #34302d;background:rgba(255,211,64,.035)}.nfl-summary p{font-size:14px;line-height:1.7;margin:9px 0;color:#e2dbd1}.nfl-summary small{color:#aaa49a;font-size:11px}.depth-list{padding-left:0;list-style:none;font-size:13px;line-height:1.8}.depth-list b{color:#f6d254;margin-right:7px}
