@@ -65,6 +65,9 @@ async def board(sport,day,mode,force=False,path=None):
                 g['explanation']='Stored pregame forecast.' if saved else 'No pregame forecast was recorded. Results will not be backfilled into predictions.'
                 g['updated']=store.now();g['recommendations']=[]
                 store.settle(g,path)
+            if sport=='nfl':
+                from .nfl import summary
+                g['matchup_summary']=summary(g)
             with store.connect(path) as c:c.execute('INSERT OR REPLACE INTO snapshots VALUES(?,?,?)',(g['id'],g['updated'],json.dumps(g)))
         picks.build(sport,day,mode,path)
         result={'games':rows,'mode':mode,'sport':sport,'updated':store.now(),'date':day,'refresh_seconds':TTL,

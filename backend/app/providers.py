@@ -174,7 +174,7 @@ async def live_games(sport,day):
             for side in ('home','away'):
                 t=injury_teams.get(normalize(g[side]))
                 g['injuries'][side]=[{'name':r.get('athlete',{}).get('displayName','Unknown'),
-                    'status':r.get('status','Unknown'),'report':r.get('shortComment',''),'reported_at':r.get('date'),
+                    'position':r.get('athlete',{}).get('position',{}).get('abbreviation'),'id':str(r.get('athlete',{}).get('id','')),'status':r.get('status','Unknown'),'report':r.get('shortComment',''),'reported_at':r.get('date'),
                     'url':next((x['href'] for x in r.get('athlete',{}).get('links',[]) if 'playercard' in x.get('rel',[])),None)} for r in (t or {}).get('injuries',[]) if r.get('status') not in ('Active','Healthy')]
             g['injuries_checked']=not ierr and normalize(g['home']) in injury_teams and normalize(g['away']) in injury_teams
             g['injuries_asof']=(injuries or {}).get('timestamp');g['injuries_source']='ESPN public injuries'
@@ -201,6 +201,9 @@ async def live_games(sport,day):
                     g['weather']={'status':'Kickoff-hour city forecast','temperature_c':hourly['temperature_2m'][ix],
                         'wind_kmh':hourly['wind_speed_10m'][ix],'source':'Open-Meteo forecast; city location, not stadium sensor',
                         'asof':datetime.now(timezone.utc).isoformat()}
+        if sport=='nfl':
+            from .nfl import attach
+            await attach(client,games)
         await attach_odds(client,games,sport)
         await sportsdata_context(client,games,sport,day)
     return games
