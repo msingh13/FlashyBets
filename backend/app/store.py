@@ -26,6 +26,7 @@ def connect(path=None):
     CREATE TABLE IF NOT EXISTS model_checks (
       sport TEXT,day TEXT,kind TEXT,payload TEXT,PRIMARY KEY(sport,day,kind));
     CREATE TABLE IF NOT EXISTS updates (sport TEXT PRIMARY KEY, updated TEXT, error TEXT);
+    CREATE TABLE IF NOT EXISTS daily_plays (play_key TEXT PRIMARY KEY,mode TEXT,day TEXT,created TEXT,payload TEXT);
     CREATE TABLE IF NOT EXISTS snapshots (id TEXT,created TEXT,payload TEXT,PRIMARY KEY(id,created));
     """)
     try: yield c;c.commit()

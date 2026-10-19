@@ -91,6 +91,9 @@ async def tick(mode=None,path=None):
         except Exception:
             if mode=='live':learning.audit(sport,today(),path)
             with store.connect(path) as c:c.execute('INSERT OR REPLACE INTO updates VALUES(?,?,?)',(sport,store.now(),'Update failed; check data providers'))
+    from . import spotlight
+    spotlight.build(today(),mode,path)
+
 async def worker():
     while True:
         await tick()

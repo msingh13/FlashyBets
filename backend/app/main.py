@@ -48,3 +48,8 @@ def favorites(day:Optional[date]=None,sport:Literal['nhl','nba','nfl','ucl']='nh
 def snapshot(game_id:str):
     with store.connect(DB) as c:rows=c.execute('SELECT payload FROM snapshots WHERE id=? ORDER BY created DESC LIMIT 10',(game_id,)).fetchall()
     return [json.loads(r['payload']) for r in rows]
+
+@app.get('/api/flashy-ai')
+def flashy_ai(mode:Literal['demo','live']='live'):
+    from . import spotlight
+    return spotlight.record(mode,DB)
