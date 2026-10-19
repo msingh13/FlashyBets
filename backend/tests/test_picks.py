@@ -46,3 +46,23 @@ def test_chronological_promotion_and_daily_idempotence(tmp_path):
     assert ml['candidate']['brier']<ml['champion']['brier']
     assert learning.audit('nba','2026-02-01',db)==report
     assert learning.active('nba','ml',db)['temperature']!=1
+
+def test_champion_not_applied_before_creation(tmp_path):
+    import json
+    db=str(tmp_path/'db')
+    with store.connect(db) as c:
+        c.execute('INSERT INTO model_versions VALUES(?,?,?,?,?,?,?,1)',('future','nba','ml',2.,'2099-01-01T00:00:00Z','2025-01-01T00:00:00Z',json.dumps({})))
+    g=games('nba','2026-01-01')[0];g['mode']='live';service.enrich(g,db)
+    assert g['prediction']['calibration_versions']['ml']=='baseline'
+
+def test_new_day_does_not_reuse_old_holdout(tmp_path):
+    db=str(tmp_path/'db');first=datetime(2026,1,1,tzinfo=timezone.utc)
+    for i in range(120):
+        start=first+timedelta(days=i//10,hours=18,minutes=i%10)
+        g=games('nba',start.date().isoformat())[0];g.update(id=f'fresh-{i}',mode='live',state='pre',start=start.isoformat())
+        service.enrich(g,db);store.capture(g,db,at=(start-timedelta(hours=1)).isoformat())
+        g.update(state='post',home_score=120,away_score=110);store.settle(g,db)
+    first_report=learning.audit('nba','2026-02-01',db)
+    assert all(r.get('holdout_through') for r in first_report)
+    again=learning.audit('nba','2026-02-02',db)
+    assert all(r['status']=='Waiting for fresh holdout' and not r['promoted'] for r in again)
