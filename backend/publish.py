@@ -3,7 +3,7 @@ import asyncio,json,os,tempfile
 from datetime import date,timedelta
 from pathlib import Path
 from app import service,store,picks,learning,validation
-TABLES=('forecasts','cards','model_versions','model_checks','updates')
+TABLES=('forecasts','cards','model_versions','model_checks','updates','daily_plays')
 
 def restore(path,db):
     if not path.exists():return
@@ -14,7 +14,7 @@ def restore(path,db):
             columns=[row['name'] for row in c.execute(f'PRAGMA table_info({table})')]
             for row in data['tables'].get(table,[]):
                 if set(row)!=set(columns):raise ValueError('Invalid state columns')
-                if table in ('forecasts','cards') and row['mode']!='live':continue
+                if table in ('forecasts','cards','daily_plays') and row['mode']!='live':continue
                 c.execute(f'INSERT OR IGNORE INTO {table} ({",".join(columns)}) VALUES ({",".join("?" for _ in columns)})',[row[x] for x in columns])
 
 def save(path,db):
@@ -55,6 +55,9 @@ async def publish(out,state,db):
                     available[sport].append(day)
         ledger=store.ledger(sport,'live',db);ledger['cards']=picks.settled_cards(sport,'live',db);ledger['learning']=learning.status(sport,'live',db);ledger['validation']=validation.report(sport,'live',db)
         write(out/(sport+'-tracker.json'),ledger)
+    from app import spotlight
+    spotlight.build(current,'live',db)
+    write(out/'flashy-ai.json',spotlight.record('live',db))
     save(state,db)
     write(out/'manifest.json',{'generated':store.now(),'today':current,'dates':available,'errors':errors,'cadence_minutes':10})
     print(f'Published scheduled snapshots; {len(errors)} provider updates failed.')
