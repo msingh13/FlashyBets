@@ -16,13 +16,14 @@ def test_static_publication_and_durable_history(tmp_path,monkeypatch):
     monkeypatch.setattr(providers,'live_games',fetch)
     out=tmp_path/'data';state=tmp_path/'state.json';db=str(tmp_path/'one.db')
     asyncio.run(publish(out,state,db))
+    assert json.loads((out/'flashy-ai.json').read_text())['days']==[] # future test day is not retroactively selected
     first=store.ledger('nhl','live',db)
     second=str(tmp_path/'two.db');restore(state,second)
     assert store.ledger('nhl','live',second)['forecasts']==first['forecasts']
     assert len(json.loads((out/'manifest.json').read_text())['dates']['nfl'])==7
     board=json.loads((out/'nhl'/(day+'.json')).read_text())
     assert board['mode']=='live' and 'distribution' not in board['games'][0]['prediction']
-    assert set(json.loads(state.read_text())['tables'])=={'forecasts','cards','model_versions','model_checks','updates'}
+    assert set(json.loads(state.read_text())['tables'])=={'forecasts','cards','model_versions','model_checks','updates','daily_plays'}
     async def fail(*args):raise ValueError('provider failed')
     monkeypatch.setattr(providers,'live_games',fail)
     asyncio.run(publish(out,state,second))
