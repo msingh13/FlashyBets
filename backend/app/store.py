@@ -71,9 +71,10 @@ def ledger(sport,mode,path=None):
     with connect(path) as c:
         fs=c.execute('SELECT * FROM forecasts WHERE sport=? AND mode=? ORDER BY start DESC',(sport,mode)).fetchall()
         health=c.execute('SELECT * FROM updates WHERE sport=?',(sport,)).fetchone()
+    payloads={f['game_key']:json.loads(f['payload']) for f in fs}
     rows=[];metrics={n:{'settled':0,'wins':0,'pushes':0,'priced':0,'profit':0,'brier_sum':0,'brier_count':0} for n in (['home','away','draw','over','under','btts_yes','btts_no'] if sport=='ucl' else ['home','away','over','under'])}
     for f in fs:
-        g=json.loads(f['payload']);r=json.loads(f['result']) if f['result'] else None
+        g=payloads[f['game_key']];r=json.loads(f['result']) if f['result'] else None
         row={'game_key':f['game_key'],'id':g['id'],'home':g['home_abbr'],'away':g['away_abbr'],'start':f['start'],
              'captured':f['captured'],'model':g['prediction']['version'],'line':g['reference_line'],'result':r,'markets':[]}
         for n in metrics:
@@ -103,7 +104,7 @@ def ledger(sport,mode,path=None):
                 sm['priced']+=1;sm['profit']+=profit(result,picked['odds'])
             if result in ('win','loss'):
                 # Use the original forecast's push probability, not current market lines.
-                original=next(json.loads(f['payload']) for f in fs if f['game_key']==row['game_key'])
+                original=payloads[row['game_key']]
                 pp=original['prediction'].get('ml_push',0) if kind=='ml' else 0 if kind=='btts' else original['prediction']['push']
                 sm['brier_sum']+=(picked['probability']/(1-pp)-int(result=='win'))**2;sm['brier_count']+=1
     for sm in selection_metrics.values():

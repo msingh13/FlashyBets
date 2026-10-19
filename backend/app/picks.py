@@ -60,7 +60,7 @@ def settled_cards(sport,mode,path=None):
     return cards
 
 def favorites(sport,day,mode,path=None):
-    record=store.ledger(sport,mode,path);ml=[];totals=[];btts=[]
+    ml=[];totals=[];btts=[]
     with store.connect(path) as c:fs=c.execute('SELECT payload,result FROM forecasts WHERE sport=? AND mode=?',(sport,mode)).fetchall()
     from zoneinfo import ZoneInfo
     for f in fs:
