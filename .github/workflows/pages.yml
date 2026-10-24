@@ -53,6 +53,12 @@ jobs:
       - name: Update schedules, predictions and results
         working-directory: backend
         env:
+          X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
+          X_NEWS_ACCOUNTS: ${{ vars.X_NEWS_ACCOUNTS || 'Underdog__NBA' }}
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+          ODDS_BOOKMAKER: ${{ vars.ODDS_BOOKMAKER || 'draftkings' }}
+          ODDS_REGION: ${{ vars.ODDS_REGION || 'us' }}
+          SPORTSDATAIO_KEY: ${{ secrets.SPORTSDATAIO_KEY }}
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
           MODEL_STATE: ${{ runner.temp }}/flashybets-state/model-state.json
           PUBLISH_DIR: ../frontend/public/data
