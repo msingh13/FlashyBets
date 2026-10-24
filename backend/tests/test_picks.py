@@ -29,7 +29,7 @@ def test_calibration_preserves_mass(tmp_path):
     assert abs(p['home']+p['away']+p['ml_push']-1)<1e-9
     assert abs(p['over']+p['under']+p['push']-1)<1e-9
 
-def test_chronological_promotion_and_daily_idempotence(tmp_path):
+def test_chronological_promotion_and_refresh_does_not_reuse_holdout(tmp_path):
     db=str(tmp_path/'db');first=datetime(2026,1,1,tzinfo=timezone.utc)
     for i in range(120):
         start=first+timedelta(days=i//10,hours=18,minutes=i%10)
@@ -44,7 +44,10 @@ def test_chronological_promotion_and_daily_idempotence(tmp_path):
     ml=next(r for r in report if r['kind']=='ml')
     assert ml['promoted'] and ml['training_through']<ml['holdout_from']
     assert ml['candidate']['brier']<ml['champion']['brier']
-    assert learning.audit('nba','2026-02-01',db)==report
+    again=learning.audit('nba','2026-02-01',db)
+    assert all(not r['promoted'] for r in again)
+    assert next(r for r in again if r['kind']=='ml')['status']=='Waiting for fresh holdout'
+    assert learning.active('nba','ml',db)['version']==ml['version']
     assert learning.active('nba','ml',db)['temperature']!=1
 
 def test_champion_not_applied_before_creation(tmp_path):

@@ -24,10 +24,10 @@ def test_market_reference_is_no_vig_not_fake_model():
     assert reference({'odds':[]},'2026-10-24T18:00Z') is None
     assert reference({'odds':None},'2026-10-24T18:00Z') is None
 
-def test_roster_blind_sparse_forecast_withdrawn_without_rewriting_probability():
+def test_independent_reference_remains_visible_with_context_note():
     p={'home':.59,'away':.41};g={'mode':'live','sport':'nba','state':'pre','prediction':p.copy(),'sample_sizes':{'home':2,'away':2},'injuries':{'home':[{'name':'Unavailable player','status':'Out'}]},'context':{'calibrated':False,'ready':False},'markets':{}}
     review(g)
-    assert g['prediction'] is None and g['forecast_review']['baseline_home']==.59
+    assert g['prediction']==p and 'model_note' in g and 'forecast_review' not in g
     assert g['context']['ready'] is False and p=={'home':.59,'away':.41}
     g['state']='post';g['prediction']=p.copy();review(g)
     assert g['prediction']==p
