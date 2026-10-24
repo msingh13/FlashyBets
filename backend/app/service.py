@@ -38,7 +38,9 @@ def enrich(g,path=None):
     if g.get('odds_updated'):
         try:odds_fresh=abs((datetime.now(timezone.utc)-store.instant(g['odds_updated'])).total_seconds())<=TTL*2
         except ValueError:pass
-    if g['context']['ready'] and g['state']=='pre' and odds_fresh:
+    from .market_reference import review
+    review(g)
+    if g['prediction'] and g['context']['ready'] and g['state']=='pre' and odds_fresh:
         g['recommendations']=[n for n,m in markets.items() if m and m['ev']>0]
     return g
 
@@ -65,6 +67,8 @@ async def board(sport,day,mode,force=False,path=None):
                 g['explanation']='Stored pregame forecast.' if saved else 'No pregame forecast was recorded. Results will not be backfilled into predictions.'
                 g['updated']=store.now();g['recommendations']=[]
                 store.settle(g,path)
+            from .market_reference import review
+            review(g)
             if sport=='nfl':
                 from .nfl import summary
                 g['matchup_summary']=summary(g)

@@ -51,10 +51,12 @@ def record(mode,path=None):
     with store.connect(path) as c:
         rows=c.execute('SELECT payload FROM daily_plays WHERE mode=? ORDER BY day DESC',(mode,)).fetchall()
         results={r['game_key']:json.loads(r['result']) for r in c.execute('SELECT game_key,result FROM forecasts WHERE mode=? AND result IS NOT NULL',(mode,))}
+    blocked=picks.withheld_keys(path)
     cards=[];wins=losses=pushes=pending=priced=0;profit=0.
     for row in rows:
         card=json.loads(row['payload'])
         for p in card['legs']:
+            if p['game_key'] in blocked:p['current_warning']='Withdrawn from current model guidance; original selection retained for tracking only.'
             r=results.get(p['game_key']);side='soccer_'+p['side'] if p['sport']=='ucl' and p['side'] in ('home','away') else p['side']
             p['outcome']=store.outcome(side,r['home_score'],r['away_score'],p['line']) if r else None
             p['final']=r

@@ -28,7 +28,8 @@ def game_from_event(e,sport):
     def probable(t):
         return [{'name':p.get('athlete',{}).get('displayName','Unknown'),
             'status':p.get('status',{}).get('name','Expected'),'confirmed':p.get('status',{}).get('type','').lower()=='confirmed'} for p in t.get('probables',[])]
-    return {'id':e['id'],'sport':sport,'mode':'live','home':h['team']['displayName'],'away':a['team']['displayName'],
+    from .market_reference import reference
+    return {'market_reference':reference(c,datetime.now(timezone.utc).isoformat()),'id':e['id'],'sport':sport,'mode':'live','home':h['team']['displayName'],'away':a['team']['displayName'],
       'home_abbr':abbr(h['team']['abbreviation'],sport),'away_abbr':abbr(a['team']['abbreviation'],sport),'home_id':h['id'],'away_id':a['id'],
       'start':e['date'],'state':state,'status':c['status']['type']['description'],
       'clock':c['status'].get('displayClock'),'period':c['status'].get('period'),
@@ -204,6 +205,8 @@ async def live_games(sport,day):
         if sport=='nfl':
             from .nfl import attach
             await attach(client,games)
+        from .newsfeeds import attach
+        await attach(client,games,sport,day)
         await attach_odds(client,games,sport)
         await sportsdata_context(client,games,sport,day)
     return games

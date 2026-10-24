@@ -2,6 +2,17 @@
 import json,math
 from . import store
 
+def withheld_keys(path=None):
+    # Latest live review gates current recommendations without editing old records.
+    with store.connect(path) as c:rows=c.execute('SELECT payload FROM snapshots ORDER BY created DESC').fetchall()
+    seen=set();blocked=set()
+    for r in rows:
+        g=json.loads(r['payload']);key=store.key(g)
+        if key in seen:continue
+        seen.add(key)
+        if g.get('forecast_review',{}).get('withheld'):blocked.add(key)
+    return blocked
+
 def explain(g,side):
     p=g['prediction'];unit='goals' if g['sport'] in ('nhl','ucl') else 'points'
     basis=f"Projected {g['home_abbr']} {p['home_rate']:.2f} vs {g['away_abbr']} {p['away_rate']:.2f} {unit}. "
@@ -26,10 +37,12 @@ def build(sport,day,mode,path=None,at=None):
         if old:return json.loads(old['payload'])
         fs=c.execute('SELECT * FROM forecasts WHERE sport=? AND mode=?',(sport,mode)).fetchall()
     from zoneinfo import ZoneInfo
+    blocked=withheld_keys(path)
     candidates=[]
     for f in fs:
         g=json.loads(f['payload'])
         if store.instant(g['start']).astimezone(ZoneInfo('America/Toronto')).date().isoformat()!=day or store.instant(g['start'])<=store.instant(at):continue
+        if store.key(g) in blocked:continue
         pick=chosen(g,'ml')
         if pick['conditional']>=.52:candidates.append(pick)
     legs=sorted(candidates,key=lambda x:(-x['probability'],x['start'],x['game_key']))[:5]
@@ -60,18 +73,21 @@ def settled_cards(sport,mode,path=None):
     return cards
 
 def favorites(sport,day,mode,path=None):
-    ml=[];totals=[];btts=[]
+    ml=[];totals=[];btts=[];blocked=withheld_keys(path)
     with store.connect(path) as c:fs=c.execute('SELECT payload,result FROM forecasts WHERE sport=? AND mode=?',(sport,mode)).fetchall()
     from zoneinfo import ZoneInfo
     for f in fs:
         g=json.loads(f['payload'])
         if store.instant(g['start']).astimezone(ZoneInfo('America/Toronto')).date().isoformat()!=day:continue
         r=json.loads(f['result']) if f['result'] else None
+        if not r and store.instant(g['start'])>store.instant(store.now()) and store.key(g) in blocked:continue
         for kind,target in ([('ml',ml),('total',totals),('btts',btts)] if sport=='ucl' else [('ml',ml),('total',totals)]):
             p=chosen(g,kind)
             if r:p['outcome']=store.outcome('soccer_'+p['side'] if sport=='ucl' and p['side'] in ('home','away') else p['side'],r['home_score'],r['away_score'],p['line'])
             target.append(p)
     ml.sort(key=lambda x:-x['probability']);totals.sort(key=lambda x:-x['conditional'])
     cards=settled_cards(sport,mode,path)
+    for card in cards:
+        if any(p['game_key'] in blocked for p in card['legs']):card['current_warning']='Some frozen selections are now withheld from current guidance. This historical card is preserved for honest scoring.'
     return {'moneylines':ml[:5],'totals':totals[:5],'btts':sorted(btts,key=lambda x:-x['probability'])[:5],'card':next((c for c in cards if c['day']==day),None),
         'reason':'At least four recorded pregame ML favorites above 52% conditional probability are needed to create a card.'}
