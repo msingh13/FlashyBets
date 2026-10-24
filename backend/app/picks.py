@@ -75,11 +75,14 @@ def settled_cards(sport,mode,path=None):
 def favorites(sport,day,mode,path=None):
     ml=[];totals=[];btts=[];blocked=withheld_keys(path)
     with store.connect(path) as c:fs=c.execute('SELECT payload,result FROM forecasts WHERE sport=? AND mode=?',(sport,mode)).fetchall()
+    with store.connect(path) as c:snaps=c.execute('SELECT payload FROM snapshots ORDER BY created').fetchall()
+    latest={store.key(g):g for row in snaps if (g:=json.loads(row['payload'])).get('prediction') and g.get('state')=='pre'}
     from zoneinfo import ZoneInfo
     for f in fs:
         g=json.loads(f['payload'])
         if store.instant(g['start']).astimezone(ZoneInfo('America/Toronto')).date().isoformat()!=day:continue
         r=json.loads(f['result']) if f['result'] else None
+        if not r and store.instant(g['start'])>store.instant(store.now()):g=latest.get(store.key(g),g)
         if not r and store.instant(g['start'])>store.instant(store.now()) and store.key(g) in blocked:continue
         for kind,target in ([('ml',ml),('total',totals),('btts',btts)] if sport=='ucl' else [('ml',ml),('total',totals)]):
             p=chosen(g,kind)

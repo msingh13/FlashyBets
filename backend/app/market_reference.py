@@ -14,17 +14,13 @@ def reference(comp,fetched):
     return None
 
 def review(g):
-    if g.get('mode')!='live' or g.get('sport')!='nba' or g.get('state')!='pre':return
-    p=g.get('prediction')
-    if not p:return
-    samples=g.get('sample_sizes',{});reasons=[]
-    if samples and min(samples.get('home',0),samples.get('away',0))<10:reasons.append('Fewer than ten current-season games per team; sparse scoring baseline')
-    absent=[x['name'] for side in ('home','away') for x in g.get('injuries',{}).get(side,[]) if x.get('status','').lower() in ('out','injured reserve','ir','doubtful')]
-    if absent and not g.get('context',{}).get('calibrated'):reasons.append('Unavailable players have no validated replacement/minutes effects: '+', '.join(absent[:6]))
+    """Expose uncertainty without removing the independent model reference."""
+    g.pop('forecast_review',None)
+    if g.get('mode')!='live' or g.get('state')!='pre' or not g.get('prediction'):return
+    reasons=[]
+    samples=g.get('sample_sizes',{})
+    if samples and min(samples.values())<10:reasons.append('Limited current-season sample; historical games are weighted when available')
+    if not g.get('context',{}).get('calibrated'):reasons.append('Player and goalie effects are not fitted')
     ref=g.get('market_reference')
-    if ref and abs(p['home']-ref['home'])>.2:reasons.append('Model and current book reference disagree by more than 20 percentage points')
-    if reasons:
-        g['forecast_review']={'withheld':True,'reasons':reasons,'baseline_home':p['home'],'baseline_away':p['away']}
-        g['prediction']=None;g['markets']={};g['recommendations']=[]
-        g['context']['ready']=False;g['context']['decision']='Model withheld · insufficient roster-aware evidence'
-        g['explanation']='Current NBA model withheld: '+'. '.join(reasons)+'. Book probabilities below are separate market estimates; no outcome is guaranteed.'
+    if ref and abs(g['prediction']['home']-ref['home'])>.2:reasons.append('Large model–sportsbook disagreement; this is not evidence of betting value')
+    g['model_note']='. '.join(reasons)

@@ -39,8 +39,7 @@ def audit(sport,day,path=None):
     # Real prospective forecasts only; never learn from synthetic demo fixtures.
     with store.connect(path) as c:
         existing=c.execute('SELECT kind,payload FROM model_checks WHERE sport=? AND day=?',(sport,day)).fetchall()
-        if len(existing)==2:return [json.loads(r['payload']) for r in existing]
-        prior_checks=c.execute('SELECT payload FROM model_checks WHERE sport=? AND day<?',(sport,day)).fetchall()
+        prior_checks=c.execute('SELECT payload FROM model_checks WHERE sport=? AND day<=?',(sport,day)).fetchall()
         forecasts=c.execute("SELECT * FROM forecasts WHERE sport=? AND mode='live' AND result IS NOT NULL ORDER BY start",(sport,)).fetchall()
     reports=[]
     for kind in ('ml','total'):
@@ -55,7 +54,10 @@ def audit(sport,day,path=None):
             rows.append({'p':raw[n]/(1-push),'y':int(result=='win'),'start':f['start'],
                 'day':store.instant(f['start']).astimezone(ZoneInfo('America/Toronto')).date().isoformat()})
         report={'kind':kind,'day':day,'samples':len(rows),'status':'Collecting results','promoted':False,
-          'minimum':MIN_GAMES,'note':'No automatic guarantee of improvement. Synthetic games are excluded.'}
+          'evaluated_at':store.now(),'minimum':MIN_GAMES,'note':'No automatic guarantee of improvement. Synthetic games are excluded.'}
+        watermarks=[json.loads(r['payload']).get('holdout_through') for r in prior_checks if json.loads(r['payload']).get('kind')==kind]
+        watermarks=[x for x in watermarks if x]
+        if watermarks:report['holdout_through']=max(watermarks,key=store.instant)
         distinct=sorted({r['day'] for r in rows})
         if len(rows)>=MIN_GAMES and len(distinct)>=10:
             split=distinct[max(1,int(len(distinct)*.7))];train=[r for r in rows if r['day']<split];valid=[r for r in rows if r['day']>=split]
@@ -99,6 +101,6 @@ def status(sport,mode,path=None):
     if mode=='demo':return {'status':'Demo · learning disabled','checks':[],'versions':{},'note':'Synthetic fixtures never train the live models.'}
     with store.connect(path) as c:
         rs=c.execute('SELECT payload FROM model_checks WHERE sport=? ORDER BY day DESC,kind LIMIT 2',(sport,)).fetchall()
-    return {'status':'Daily evaluation','checks':[json.loads(r['payload']) for r in rs],
+    return {'status':'Evaluated every refresh','checks':[json.loads(r['payload']) for r in rs],
         'versions':{k:active(sport,k,path)['version'] for k in ('ml','total')},
-        'note':'Daily data refresh is active. Model promotion needs 100 settled games, fresh, non-overlapping dated holdouts and improvement in both Brier score and log loss.'}
+        'note':'Every successful refresh settles results and evaluates calibration. Model promotion needs 100 settled games, fresh, non-overlapping dated holdouts and improvement in both Brier score and log loss.'}

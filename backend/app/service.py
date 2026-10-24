@@ -19,6 +19,7 @@ def enrich(g,path=None):
     line=g['line'] if g['line'] is not None else {'nhl':6.5,'nba':228.5,'nfl':44.5,'ucl':2.5}[g['sport']]
     g['reference_line']=line
     p=MODELS[g['sport']].predict(hr,ar,line);p.setdefault('ml_push',0);g['prediction']=p
+    if g.get('scoring_evidence'):p['version']+=' / weighted-history-v2'
     learning.apply(g,path)
     markets={}
     for n in (('home','away','draw','over','under','btts_yes','btts_no') if g['sport']=='ucl' else ('home','away','over','under')):

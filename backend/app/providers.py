@@ -136,6 +136,8 @@ async def live_games(sport,day):
             if not error:TEAM_CACHE[cache_key]=(datetime.now(timezone.utc),body)
             return body,error
         requests={(g[side+'_id'],g['season_year'],g['season_type']) for g in games for side in ('home','away')}
+        if sport in ('nba','nfl'):
+            requests.update((g[side+'_id'],g['season_year']-1,2) for g in games for side in ('home','away') if g.get('season_year') and g['season_type']==2)
         histories=await asyncio.gather(*(team_history(*args) for args in requests))
         err=any(error for _,error in histories);event_map={}
         for body,error in histories:
@@ -160,6 +162,15 @@ async def live_games(sport,day):
                 ga=sum(r['away_score'] if r['home_id']==team_id else r['home_score'] for r in rows)
                 return (gf+baseline*prior)/(len(rows)+prior),(ga+baseline*prior)/(len(rows)+prior)
             hf,ha=rates(hs,g['home_id']);af,aa=rates(aws,g['away_id'])
+            if sport in ('nba','nfl') and g['season_type']==2:
+                from .scoring_history import weighted_rates
+                evidence={}
+                for side in ('home','away'):
+                    rows=sorted([e for e in relevant if g[side+'_id'] in (e['home_id'],e['away_id'])],key=lambda e:instant(e['start']))[-100:]
+                    rf,ra,evidence[side]=weighted_rates(rows,g[side+'_id'],g['start'],g['season_year'],baseline,prior)
+                    if side=='home':hf,ha=rf,ra
+                    else:af,aa=rf,ra
+                g['scoring_evidence']=evidence
             if sport=='nhl' and g['home_abbr'] in standings and g['away_abbr'] in standings:
                 def nhlr(abbr):
                     r=standings[abbr];n=r['gamesPlayed']+20
@@ -167,8 +178,9 @@ async def live_games(sport,day):
                 hf,ha=nhlr(g['home_abbr']);af,aa=nhlr(g['away_abbr'])
             adv=0 if g['neutral'] else {'nhl':.12,'nba':1.5,'nfl':1.}[sport]
             g['home_rate']=(hf+aa)/2+adv;g['away_rate']=(af+ha)/2-adv
-            g['sample_sizes']={'home':len(hs),'away':len(aws)}
+            g['sample_sizes']={'home':sum(r.get('season_year')==g['season_year'] for r in hs),'away':sum(r.get('season_year')==g['season_year'] for r in aws)}
             g['rates_source']='Prior-day NHL standings' if sport=='nhl' and standings else 'Prior completed ESPN games; shrunk scoring/conceding averages'
+            if g.get('scoring_evidence'):g['rates_source']='ESPN completed regular-season games, current and previous season; 120-day half-life, previous season ×0.5, league-prior shrinkage'
             g['rates_asof']=(startdate-timedelta(days=1)).isoformat();g['lineup_source']='ESPN starting-goalie status; Expected and Confirmed remain distinct'
             injury_teams={normalize(t['displayName']):t for t in (injuries or {}).get('injuries',[])}
             g['injuries']={}
