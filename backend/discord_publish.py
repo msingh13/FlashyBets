@@ -49,10 +49,12 @@ def prepare(state,feed,now,force=False):
         if key in state['sent']:return None
         previous=(local.date()-timedelta(days=1)).isoformat();slate=state['slates'].get(previous)
         lines=[f"AI Play results — {previous}"]
-        if slate and slate['legs']:
-            for p in slate['legs']:lines.append(label(p)+' — '+(p.get('outcome') or 'pending').upper())
+        legs=(slate or {}).get('legs',[])
+        if legs:
+            lines += [MARKS.get(p.get('outcome'),'⏳')+' '+label(p) for p in legs]
+            lines += ['',result_summary(legs)]
         else:lines.append('No tracked plays.')
-        record=state['record'];lines.append(f"AI Play {record['wins']}-{record['losses']}")
+        record=state['record'];lines.append(f"Running AI Play {record['wins']}-{record['losses']}")
         if record['pushes']:lines.append(f"Pushes: {record['pushes']}")
         if record['pending']:lines.append(f"Pending: {record['pending']}")
         return key,'\n'.join(lines),None
@@ -84,6 +86,9 @@ def top_plans(state,feeds,now,force=False,football=''):
 THEMES={'NBA':('🏀',0xF59E0B),'NHL':('🏒',0x38BDF8),'NFL':('🏈',0x22C55E),
         'CFB':('🏟️',0xA78BFA),'SOCCER':('⚽',0x14B8A6)}
 def card_message(key,content,slate,record):
+    if key.startswith('recap:'):
+        sport=slate['sport'];icon,color=THEMES.get(sport,('🏁',0xE5E7EB))
+        return {'embeds':[{'title':f'{icon} '+('GRAND TOTAL' if sport=='TOTAL' else sport+' • RESULTS'),'description':slate['day']+'\n\n'+content,'color':color}]}
     if key.startswith('results:'):
         return {'embeds':[{'title':'📊 AI PLAY • RESULTS','description':content,
                           'color':0xF5C542,'footer':{'text':'Only announced AI plays count toward this record'}}]}
@@ -99,6 +104,49 @@ def card_message(key,content,slate,record):
            'fields':fields,'footer':{'text':f"AI record {record['wins']}-{record['losses']} • {record['pending']} pending" if ai else 'Moneylines above 53.6% model win probability'}}
     if not legs:embed['description']='No qualifying AI play today.'
     return {'embeds':[embed]}
+
+MARKS={'win':'✅','loss':'❌','push':'↔️',None:'⏳'}
+def result_summary(legs):
+    w=sum(p.get('outcome')=='win' for p in legs);l=sum(p.get('outcome')=='loss' for p in legs)
+    pushes=sum(p.get('outcome')=='push' for p in legs);pending=sum(p.get('outcome') is None for p in legs)
+    rate=f'{w/(w+l):.0%}' if w+l else '—'
+    text=f'**{w} ✅ / {l} ❌ | {rate} Win Rate**'
+    if pushes:text+=f' · {pushes} push'
+    if pending:text+=f' · {pending} pending'
+    return text
+
+def sync_top(state,trackers):
+    actual={}
+    for tracker in trackers.values():
+        for g in tracker.get('forecasts',[]):
+            for m in g.get('markets',[]):
+                if m.get('outcome') in ('win','loss','push'):actual[(g['game_key'],m['name'])]=(m['outcome'],g.get('result'))
+    for slate in state.get('top_slates',{}).values():
+        for p in slate['legs']:
+            result=actual.get((p['game_key'],p['side']))
+            if result:p['outcome'],p['final']=result
+
+def recap_jobs(state,now):
+    local=now.astimezone(TORONTO)
+    if local.hour!=3:return []
+    day=local.date().isoformat();previous=(local.date()-timedelta(days=1)).isoformat();jobs=[];all_legs=[]
+    for title in ('NBA','NHL','NFL','CFB','SOCCER'):
+        slate=next((v for v in state.get('top_slates',{}).values() if v['day']==previous and v['sport']==title),None)
+        if not slate or not slate['legs']:continue
+        legs=slate['legs'];all_legs+=legs;key='recap:'+title+':'+day
+        if key in state['sent']:continue
+        text='\n'.join(MARKS.get(p.get('outcome'),'⏳')+' '+label(p) for p in legs)+'\n\n'+result_summary(legs)
+        jobs.append((key,text,{'sport':title,'day':previous,'legs':[]}))
+    ai=state['slates'].get(previous,{}).get('legs',[]);all_legs+=ai
+    unique={}
+    for p in all_legs:
+        identity=(p['game_key'],p['side'],p.get('line') if p['side'] in ('over','under') else None)
+        if identity not in unique or p.get('outcome') is not None:unique[identity]=p
+    key='recap:TOTAL:'+day
+    if key not in state['sent']:
+        legs=list(unique.values());text=result_summary(legs)+'\n'+f"{len(legs)} unique selections · AI + sport lists"
+        jobs.append((key,text,{'sport':'TOTAL','day':previous,'legs':[]}))
+    return jobs
 
 def send(url,content):
     p=urlsplit(url)
@@ -141,6 +189,14 @@ def main():
                 with urlopen(SITE+f'data/{sport}/{day}-favorites.json',timeout=20) as r:feeds[sport]=json.load(r)
             except (HTTPError,URLError):print(f'{sport}: current favorites unavailable; no fabricated selections')
         jobs+=top_plans(state,feeds,now,force,os.getenv('FOOTBALL_LEAGUE',''))
+    if now.astimezone(TORONTO).hour==3 and not force:
+        trackers={}
+        sports={p.get('sport') for v in state.get('top_slates',{}).values() for p in v['legs'] if p.get('sport')}
+        for sport in sports:
+            try:
+                with urlopen(SITE+f'data/{sport}-tracker.json',timeout=20) as r:trackers[sport]=json.load(r)
+            except (HTTPError,URLError):print(f'{sport}: results unavailable; keeping pending')
+        sync_top(state,trackers);jobs+=recap_jobs(state,now)
     for key,content,slate in jobs:
         url=os.getenv('DISCORD_WEBHOOK_URL','')
         if not url:raise RuntimeError('DISCORD_WEBHOOK_URL is not configured')
@@ -148,7 +204,7 @@ def main():
         send(url,card_message(key,content,slate,state['record']))
         if slate is not None:
             if key.startswith('slip:'):state['slates'].setdefault(slate['day'],slate)
-            else:state.setdefault('top_slates',{})[key]=slate
+            elif key.startswith('top:'):state.setdefault('top_slates',{})[key]=slate
         state['sent'][key]=now.isoformat();sync(state,feed)
         print('Discord accepted a plain selection message. No link, mention or command included.')
         path.parent.mkdir(parents=True,exist_ok=True);temp=path.with_suffix('.tmp');temp.write_text(json.dumps(state,sort_keys=True));temp.replace(path)

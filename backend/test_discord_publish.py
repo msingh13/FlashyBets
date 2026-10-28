@@ -45,3 +45,14 @@ class StyledMessagesTests(unittest.TestCase):
   out=card_message(*jobs[0],state['record']);e=out['embeds'][0]
   self.assertIn('NBA',e['title']);self.assertEqual(e['color'],0xF59E0B);self.assertEqual(len(e['fields']),2)
   self.assertNotIn('http',json.dumps(out))
+
+class RecapTests(unittest.TestCase):
+ def test_totals_deduplicate_and_pending(self):
+  from discord_publish import recap_jobs,result_summary,sync_top
+  s=fresh_state();p={'game_key':'a','side':'home','label':'CLE ML','home':'CLE','away':'WSH','sport':'nba','outcome':None}
+  s['top_slates']={'top:NBA:2026-10-27':{'day':'2026-10-27','sport':'NBA','legs':[dict(p)]}}
+  s['slates']['2026-10-27']={'legs':[dict(p)]}
+  sync_top(s,{'nba':{'forecasts':[{'game_key':'a','result':{},'markets':[{'name':'home','outcome':'win'}]}]}})
+  s['slates']['2026-10-27']['legs'][0]['outcome']='win'
+  jobs=recap_jobs(s,datetime(2026,10,28,7,tzinfo=timezone.utc))
+  self.assertIn('✅',jobs[0][1]);self.assertIn('100% Win Rate',jobs[0][1]);self.assertIn('1 unique selections',jobs[-1][1]);self.assertIn('pending',result_summary([p]))
