@@ -63,16 +63,6 @@ jobs:
           MODEL_STATE: ${{ runner.temp }}/flashybets-state/model-state.json
           PUBLISH_DIR: ../frontend/public/data
         run: python publish.py
-      - name: Post new picks and results to Discord
-        id: discord
-        continue-on-error: true
-        working-directory: backend
-        env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          GAMBLY_BOT_USER_ID: ${{ vars.GAMBLY_BOT_USER_ID || '1338973806383071392' }}
-          DISCORD_STATE: ${{ runner.temp }}/flashybets-state/discord-state.json
-          PUBLISH_DIR: ../frontend/public/data
-        run: python discord_publish.py
       - name: Preserve model record
         shell: bash
         run: |
@@ -82,7 +72,6 @@ jobs:
           git -C "$state_dir" config user.name 'github-actions[bot]'
           git -C "$state_dir" config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git -C "$state_dir" add model-state.json data
-          if [ -f "$state_dir/discord-state.json" ]; then git -C "$state_dir" add discord-state.json; fi
           if ! git -C "$state_dir" diff --cached --quiet; then
             git -C "$state_dir" commit -m 'Update prospective model record and public snapshots'
             git -C "$state_dir" push origin HEAD:refs/heads/model-data
@@ -106,8 +95,3 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
-      - name: Report Discord delivery failure
-        if: steps.discord.outcome == 'failure'
-        run: |
-          echo 'Discord delivery failed. The site was still published. Check the Discord step for a redacted error.'
-          exit 1

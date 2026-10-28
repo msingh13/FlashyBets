@@ -1,0 +1,50 @@
+name: AI Play morning slip and results
+on:
+  workflow_dispatch:
+  schedule:
+    # Both UTC offsets cover Toronto daylight-saving changes.
+    # Python only sends at local 03:xx or 06:xx, once per day.
+    - cron: '0 7,8,10,11 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: discord-ai-morning
+  cancel-in-progress: false
+jobs:
+  discord:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Restore separate AI tracker
+        run: |
+          state_dir="$RUNNER_TEMP/discord-ai-state"
+          if git ls-remote --exit-code --heads origin discord-data >/dev/null; then
+            git fetch origin discord-data
+            git worktree add --detach "$state_dir" FETCH_HEAD
+          else
+            git worktree add --detach "$state_dir" HEAD
+            git -C "$state_dir" switch --orphan discord-data
+          fi
+      - name: Verify message timing and tracking
+        working-directory: backend
+        run: python -m unittest test_discord_publish -q
+      - name: Post only due morning message
+        working-directory: backend
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DISCORD_STATE: ${{ runner.temp }}/discord-ai-state/ai-play-tracker.json
+        run: python discord_publish.py
+      - name: Preserve fresh AI series
+        run: |
+          state_dir="$RUNNER_TEMP/discord-ai-state"
+          git -C "$state_dir" config user.name 'github-actions[bot]'
+          git -C "$state_dir" config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git -C "$state_dir" add ai-play-tracker.json
+          if ! git -C "$state_dir" diff --cached --quiet; then
+            git -C "$state_dir" commit -m 'Track announced AI plays and morning delivery'
+            git -C "$state_dir" push origin HEAD:refs/heads/discord-data
+          fi
