@@ -178,6 +178,7 @@ def main():
     if os.getenv('REPLACE_POSTS','false').lower()=='true':
         today=now.astimezone(TORONTO).date().isoformat()
         state['sent']={k:v for k,v in state['sent'].items() if not (k=='slip:'+today or k.startswith('top:') and k.endswith(':'+today))}
+        state['top_slates']={k:v for k,v in state.get('top_slates',{}).items() if v['day']!=today}
     job=prepare(state,feed,now,force);jobs=[job] if job else []
     if now.astimezone(TORONTO).hour==6 or force:
         # One freshness check gates all pick lists.
