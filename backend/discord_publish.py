@@ -87,12 +87,12 @@ THEMES={'NBA':('🏀',0xF59E0B),'NHL':('🏒',0x38BDF8),'NFL':('🏈',0x22C55E),
         'CFB':('🏟️',0xA78BFA),'SOCCER':('⚽',0x14B8A6)}
 def card_message(key,content,slate,record):
     if key.startswith('results:'):
-        return '🤖 AI Play of the Day — Results\n'+content.replace('**','')
+        return '⚡ FlashyBet Play of the Day — Results\n'+content.replace('**','')
     if key.startswith('recap:'):
         sport=slate['sport'];icon=THEMES.get(sport,('🏁',0))[0]
         return icon+' '+('GRAND TOTAL' if sport=='TOTAL' else sport+' — Results')+'\n'+slate['day']+'\n\n'+content.replace('**','')
     if key.startswith('slip:'):
-        return '🤖 AI Play of the Day\n\n'+(slip((slate or {}).get('legs',[])) or 'No qualifying AI play today.')
+        return '⚡ FlashyBet Play of the Day\n\n'+(slip((slate or {}).get('legs',[])) or 'No qualifying AI play today.')
     sport=slate['sport'];icon=THEMES[sport][0]
     return icon+' '+sport+' — Top ML\n\n'+slip(slate['legs'])
 
