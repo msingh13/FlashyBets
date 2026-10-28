@@ -86,15 +86,24 @@ def top_plans(state,feeds,now,force=False,football=''):
 THEMES={'NBA':('🏀',0xF59E0B),'NHL':('🏒',0x38BDF8),'NFL':('🏈',0x22C55E),
         'CFB':('🏟️',0xA78BFA),'SOCCER':('⚽',0x14B8A6)}
 def card_message(key,content,slate,record):
-    if key.startswith('results:'):
-        return '⚡ FlashyBet Play of the Day — Results\n'+content.replace('**','')
     if key.startswith('recap:'):
-        sport=slate['sport'];icon=THEMES.get(sport,('🏁',0))[0]
-        return icon+' '+('GRAND TOTAL' if sport=='TOTAL' else sport+' — Results')+'\n'+slate['day']+'\n\n'+content.replace('**','')
-    if key.startswith('slip:'):
-        return '⚡ FlashyBet Play of the Day\n\n'+(slip((slate or {}).get('legs',[])) or 'No qualifying AI play today.')
-    sport=slate['sport'];icon=THEMES[sport][0]
-    return icon+' '+sport+' — Top ML\n\n'+slip(slate['legs'])
+        sport=slate['sport'];icon,color=THEMES.get(sport,('🏁',0xE5E7EB))
+        return {'embeds':[{'title':f'{icon} '+('GRAND TOTAL' if sport=='TOTAL' else sport+' • RESULTS'),'description':slate['day']+'\n\n'+content,'color':color}]}
+    if key.startswith('results:'):
+        return {'embeds':[{'title':'⚡ FLASHYBET • RESULTS','description':content,
+                          'color':0xF5C542,'footer':{'text':'Only announced AI plays count toward this record'}}]}
+    ai=key.startswith('slip:');sport=(slate or {}).get('sport','')
+    icon,color=('⚡',0xF5C542) if ai else THEMES[sport]
+    title='⚡ FLASHYBET PLAY OF THE DAY' if ai else f'{icon} {sport} • TOP MONEYLINES'
+    legs=(slate or {}).get('legs',[]);fields=[]
+    for i,p in enumerate(legs,1):
+        pct=p.get('probability',0)*100
+        start=instant(p['start']).astimezone(TORONTO).strftime('%I:%M %p').lstrip('0')
+        fields.append({'name':f"{i:02d}  {label(p)}",'value':f"{p['away']} vs {p['home']}\n**Model: {pct:.1f}%**  ·  {start} ET",'inline':False})
+    embed={'title':title,'color':color,'description':(slate or {}).get('day',''),
+           'fields':fields,'footer':{'text':f"TRACKER  {record['wins']} W · {record['losses']} L · {record['pushes']} push · {record['pending']} pending" if ai else 'Moneylines above 53.6% model win probability'}}
+    if not legs:embed['description']='No qualifying AI play today.'
+    return {'embeds':[embed]}
 
 MARKS={'win':'✅','loss':'❌','push':'↔️',None:'⏳'}
 def result_summary(legs):

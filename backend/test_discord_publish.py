@@ -42,9 +42,9 @@ class StyledMessagesTests(unittest.TestCase):
   picks=[dict(base,game_key=str(i),probability=p) for i,p in enumerate([.536,.535,.537,.70])]
   state=fresh_state();jobs=top_plans(state,{'nba':{'moneylines':picks}},now)
   self.assertEqual(len(jobs),1);self.assertEqual(len(jobs[0][2]['legs']),2)
-  out=card_message(*jobs[0],state['record'])
-  self.assertTrue(out.startswith('🏀 NBA'));self.assertEqual(out.count('CLE ML'),2)
-  self.assertNotIn('http',out);self.assertNotIn('embeds',out);self.assertNotIn('**',out)
+  out=card_message(*jobs[0],state['record']);e=out['embeds'][0]
+  self.assertIn('NBA',e['title']);self.assertEqual(e['color'],0xF59E0B);self.assertEqual(len(e['fields']),2)
+  self.assertNotIn('http',json.dumps(out))
 
 class RecapTests(unittest.TestCase):
  def test_totals_deduplicate_and_pending(self):
