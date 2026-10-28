@@ -34,11 +34,12 @@ def prepare(state,feed,now,force=False):
         # Stale snapshots cannot create a new prospective slip.
         updated=feed.get('updated')
         if not updated or not 0<=(now-instant(updated)).total_seconds()<=7200:raise RuntimeError('AI snapshot is stale; no picks sent')
-        card=next((c for c in feed.get('days',[]) if c['day']==day),None)
+        card=state['slates'].get(day) or next((c for c in feed.get('days',[]) if c['day']==day),None)
         legs=[];seen=set()
         for p in (card or {}).get('legs',[]):
             if p['game_key'] in seen or p.get('current_warning') or p.get('outcome') or instant(p['start'])<=now:continue
             if p.get('conditional',p.get('probability',0))<.60:continue
+            if p['side'] in ('home','away','draw') and p.get('probability',0)<=.536:continue
             seen.add(p['game_key']);legs.append(dict(p,outcome=None))
             if len(legs)==3:break
         content=slip(legs) if legs else 'No AI play today.'
@@ -71,19 +72,42 @@ def top_plans(state,feeds,now,force=False,football=''):
         for league in leagues:
             for p in feeds.get(league,{}).get('moneylines',[]):
                 if p.get('current_warning') or p.get('outcome') or instant(p['start'])<=now:continue
-                if p['game_key'] in seen:continue
+                if p['game_key'] in seen or p.get('probability',0)<=.536:continue
                 seen.add(p['game_key']);options.append(dict(p,sport=league))
-        options.sort(key=lambda p:-p.get('conditional',p.get('probability',0)))
+        options.sort(key=lambda p:-p.get('probability',0))
         legs=options[:5]
+        if not legs:continue
         text=title+' TOP ML\n'+(slip(legs) if legs else 'No upcoming selections today.' if any(league in feeds for league in leagues) else 'Selections currently unavailable.')
         jobs.append((key,text,{'day':day,'sport':title,'legs':legs}))
     return jobs
 
+THEMES={'NBA':('🏀',0xF59E0B),'NHL':('🏒',0x38BDF8),'NFL':('🏈',0x22C55E),
+        'CFB':('🏟️',0xA78BFA),'SOCCER':('⚽',0x14B8A6)}
+def card_message(key,content,slate,record):
+    if key.startswith('results:'):
+        return {'embeds':[{'title':'📊 AI PLAY • RESULTS','description':content,
+                          'color':0xF5C542,'footer':{'text':'Only announced AI plays count toward this record'}}]}
+    ai=key.startswith('slip:');sport=(slate or {}).get('sport','')
+    icon,color=('⚡',0xF5C542) if ai else THEMES[sport]
+    title='⚡ AI PLAY OF THE DAY' if ai else f'{icon} {sport} • TOP MONEYLINES'
+    legs=(slate or {}).get('legs',[]);fields=[]
+    for i,p in enumerate(legs,1):
+        pct=p.get('probability',0)*100
+        start=instant(p['start']).astimezone(TORONTO).strftime('%I:%M %p').lstrip('0')
+        fields.append({'name':f"{i:02d}  {label(p)}",'value':f"{p['away']} vs {p['home']}\n**Model: {pct:.1f}%**  ·  {start} ET",'inline':False})
+    embed={'title':title,'color':color,'description':(slate or {}).get('day',''),
+           'fields':fields,'footer':{'text':f"AI record {record['wins']}-{record['losses']} • {record['pending']} pending" if ai else 'Moneylines above 53.6% model win probability'}}
+    if not legs:embed['description']='No qualifying AI play today.'
+    return {'embeds':[embed]}
+
 def send(url,content):
     p=urlsplit(url)
     if p.scheme!='https' or p.hostname not in ('discord.com','discordapp.com') or not p.path.startswith('/api/webhooks/'):raise RuntimeError('Invalid webhook configuration; value not logged')
-    if 'http' in content.lower() or '@' in content or '/betslip' in content:raise RuntimeError('Discord message contains prohibited source or command text')
-    body=json.dumps({'content':content,'allowed_mentions':{'parse':[]},'username':'FlashyBets'}).encode()
+    payload=dict(content) if isinstance(content,dict) else {'content':content}
+    serialized=json.dumps(payload).lower()
+    if 'http' in serialized or '<@' in serialized or '/betslip' in serialized:raise RuntimeError('Discord message contains prohibited source or command text')
+    payload.update(allowed_mentions={'parse':[]},username='FlashyBets')
+    body=json.dumps(payload).encode()
     for attempt in range(3):
         try:
             req=Request(url,data=body,headers={'Content-Type':'application/json','User-Agent':'FlashyBets-Discord/1.0'},method='POST')
@@ -103,6 +127,9 @@ def main():
     if state.get('version')!=3:raise RuntimeError('Use a new tracker state file for the new AI series')
     with urlopen(SITE+'data/flashy-ai.json',timeout=30) as r:feed=json.load(r)
     now=datetime.now(timezone.utc);force=os.getenv('POST_NOW','false').lower()=='true'
+    if os.getenv('REPLACE_POSTS','false').lower()=='true':
+        today=now.astimezone(TORONTO).date().isoformat()
+        state['sent']={k:v for k,v in state['sent'].items() if not (k=='slip:'+today or k.startswith('top:') and k.endswith(':'+today))}
     job=prepare(state,feed,now,force);jobs=[job] if job else []
     if now.astimezone(TORONTO).hour==6 or force:
         # One freshness check gates all pick lists.
@@ -118,9 +145,9 @@ def main():
         url=os.getenv('DISCORD_WEBHOOK_URL','')
         if not url:raise RuntimeError('DISCORD_WEBHOOK_URL is not configured')
         if key.startswith('slip:'):content='AI PLAY OF THE DAY\n'+content
-        send(url,content)
+        send(url,card_message(key,content,slate,state['record']))
         if slate is not None:
-            if key.startswith('slip:'):state['slates'][slate['day']]=slate
+            if key.startswith('slip:'):state['slates'].setdefault(slate['day'],slate)
             else:state.setdefault('top_slates',{})[key]=slate
         state['sent'][key]=now.isoformat();sync(state,feed)
         print('Discord accepted a plain selection message. No link, mention or command included.')

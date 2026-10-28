@@ -1,4 +1,4 @@
-import unittest
+import unittest,json
 from datetime import datetime,timezone
 from discord_publish import fresh_state,prepare,sync
 class MorningTests(unittest.TestCase):
@@ -28,8 +28,20 @@ class TopListsTests(unittest.TestCase):
   now=datetime(2026,10,28,10,tzinfo=timezone.utc)
   legs=[{'game_key':str(i),'side':'home','home':'CLE','away':'WSH','label':'CLE ML','start':'2026-10-28T23:00Z','probability':.5+i*.02} for i in range(8)]
   jobs=top_plans(fresh_state(),{'nba':{'moneylines':legs},'ucl':{'moneylines':legs[:3]},'epl':{'moneylines':legs[3:]}},now)
-  self.assertEqual(len(jobs),4);self.assertEqual(len(jobs[0][2]['legs']),5);self.assertEqual(jobs[0][2]['legs'][0]['game_key'],'7');self.assertEqual(len(jobs[-1][2]['legs']),5)
+  self.assertEqual(len(jobs),2);self.assertEqual(len(jobs[0][2]['legs']),5);self.assertEqual(jobs[0][2]['legs'][0]['game_key'],'7');self.assertEqual(len(jobs[-1][2]['legs']),5)
  def test_no_fabricated_five(self):
   from discord_publish import top_plans
   jobs=top_plans(fresh_state(),{},datetime(2026,10,28,10,tzinfo=timezone.utc))
-  self.assertTrue(all(len(j[2]['legs'])==0 for j in jobs))
+  self.assertEqual(jobs,[])
+
+class StyledMessagesTests(unittest.TestCase):
+ def test_threshold_strict_and_style(self):
+  from discord_publish import top_plans,card_message
+  now=datetime(2026,10,28,10,tzinfo=timezone.utc)
+  base={'game_key':'a','side':'home','home':'CLE','away':'WSH','label':'CLE ML','start':'2026-10-28T23:00Z'}
+  picks=[dict(base,game_key=str(i),probability=p) for i,p in enumerate([.536,.535,.537,.70])]
+  state=fresh_state();jobs=top_plans(state,{'nba':{'moneylines':picks}},now)
+  self.assertEqual(len(jobs),1);self.assertEqual(len(jobs[0][2]['legs']),2)
+  out=card_message(*jobs[0],state['record']);e=out['embeds'][0]
+  self.assertIn('NBA',e['title']);self.assertEqual(e['color'],0xF59E0B);self.assertEqual(len(e['fields']),2)
+  self.assertNotIn('http',json.dumps(out))
