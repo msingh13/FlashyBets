@@ -69,6 +69,7 @@ jobs:
         working-directory: backend
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          GAMBLY_BOT_USER_ID: ${{ vars.GAMBLY_BOT_USER_ID || '1338973806383071392' }}
           DISCORD_STATE: ${{ runner.temp }}/flashybets-state/discord-state.json
           PUBLISH_DIR: ../frontend/public/data
         run: python discord_publish.py
