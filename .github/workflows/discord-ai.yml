@@ -1,6 +1,11 @@
 name: AI Play morning slip and results
 on:
   workflow_dispatch:
+    inputs:
+      post_now:
+        description: 'Post today’s AI and top ML lists now (once per day)'
+        type: boolean
+        default: false
   schedule:
     # Both UTC offsets cover Toronto daylight-saving changes.
     # Python only sends at local 03:xx or 06:xx, once per day.
@@ -35,6 +40,8 @@ jobs:
       - name: Post only due morning message
         working-directory: backend
         env:
+          POST_NOW: ${{ inputs.post_now || 'false' }}
+          FOOTBALL_LEAGUE: ${{ vars.FOOTBALL_LEAGUE || 'ncaaf' }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           DISCORD_STATE: ${{ runner.temp }}/discord-ai-state/ai-play-tracker.json
         run: python discord_publish.py
