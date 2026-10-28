@@ -28,10 +28,12 @@ jobs:
           p=urlsplit(url)
           if p.scheme!='https' or p.hostname not in ('discord.com','discordapp.com') or not p.path.startswith('/api/webhooks/'):
               raise SystemExit('DISCORD_WEBHOOK_URL is missing or invalid; value not logged')
-          with urlopen(SITE+'data/flashy-ai.json',timeout=20) as response:
+          with urlopen(SITE+'data/manifest.json',timeout=20) as response:
+              manifest=json.load(response)
+          with urlopen(SITE+'data/nba/'+manifest['today']+'-favorites.json',timeout=20) as response:
               data=json.load(response)
           now=datetime.now(timezone.utc)
-          legs=[p for c in data.get('days',[]) for p in c.get('legs',[]) if not p.get('outcome') and not p.get('current_warning') and instant(p['start'])>now][:3]
+          legs=[dict(p,sport='nba') for p in data.get('moneylines',[]) if not p.get('outcome') and not p.get('current_warning') and instant(p['start'])>now][:1]
           bot_id=os.getenv('GAMBLY_BOT_USER_ID','')
           if not bot_id.isdigit():raise SystemExit('Set GAMBLY_BOT_USER_ID before sending a mention.')
           if not legs:raise SystemExit('No upcoming selections available; no test message sent.')
