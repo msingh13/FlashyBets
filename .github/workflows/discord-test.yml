@@ -1,0 +1,38 @@
+name: Send Discord test slip
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test-discord:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Send labeled test slip
+        working-directory: backend
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from datetime import datetime, timezone
+          from urllib.request import urlopen
+          from urllib.parse import urlsplit
+          from discord_publish import send, label, instant, SITE
+          url=os.getenv('DISCORD_WEBHOOK_URL','')
+          p=urlsplit(url)
+          if p.scheme!='https' or p.hostname not in ('discord.com','discordapp.com') or not p.path.startswith('/api/webhooks/'):
+              raise SystemExit('DISCORD_WEBHOOK_URL is missing or invalid; value not logged')
+          with urlopen(SITE+'data/flashy-ai.json',timeout=20) as response:
+              data=json.load(response)
+          now=datetime.now(timezone.utc)
+          legs=[p for c in data.get('days',[]) for p in c.get('legs',[]) if not p.get('outcome') and not p.get('current_warning') and instant(p['start'])>now][:3]
+          lines='\n'.join(label(p) for p in legs) or 'No eligible future picks in the published snapshot. Connection test only.'
+          content='**TEST SLIP — FlashyBets Discord delivery**\n'+lines+'\n\nSource: published Play of the Day snapshot. Delivery test only; selections may be stale and are not a new recommendation. No Gambly sportsbook link is connected.\n'+SITE
+          send(url,content)
+          print('Discord accepted the test slip. No webhook secret was logged.')
+          PY
