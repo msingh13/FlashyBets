@@ -26,9 +26,9 @@ def sync(state,feed):
                 p['outcome']=latest['outcome'];p['final']=latest.get('final')
     all_legs=[p for s in state['slates'].values() for p in s['legs']]
     state['record']={key:sum(p.get('outcome')==outcome for p in all_legs) for key,outcome in [('wins','win'),('losses','loss'),('pushes','push'),('pending',None)]}
-def prepare(state,feed,now):
+def prepare(state,feed,now,force=False):
     local=now.astimezone(TORONTO);day=local.date().isoformat();sync(state,feed)
-    if local.hour==6:
+    if local.hour==6 or force:
         key='slip:'+day
         if key in state['sent']:return None
         # Stale snapshots cannot create a new prospective slip.
@@ -57,6 +57,28 @@ def prepare(state,feed,now):
         return key,'\n'.join(lines),None
     return None
 
+SOCCER=('ucl','epl','laliga','ligue1','bundesliga','seriea')
+def top_plans(state,feeds,now,force=False,football=''):
+    local=now.astimezone(TORONTO)
+    if local.hour!=6 and not force:return []
+    day=local.date().isoformat();jobs=[]
+    groups=[('NBA',('nba',)),('NHL',('nhl',)),('NFL',('nfl',)),('SOCCER',SOCCER)]
+    if football=='ncaaf':groups.insert(3,('CFB',('ncaaf',)))
+    for title,leagues in groups:
+        key='top:'+title+':'+day
+        if key in state['sent']:continue
+        options=[];seen=set()
+        for league in leagues:
+            for p in feeds.get(league,{}).get('moneylines',[]):
+                if p.get('current_warning') or p.get('outcome') or instant(p['start'])<=now:continue
+                if p['game_key'] in seen:continue
+                seen.add(p['game_key']);options.append(dict(p,sport=league))
+        options.sort(key=lambda p:-p.get('conditional',p.get('probability',0)))
+        legs=options[:5]
+        text=title+' TOP ML\n'+(slip(legs) if legs else 'No upcoming selections today.' if any(league in feeds for league in leagues) else 'Selections currently unavailable.')
+        jobs.append((key,text,{'day':day,'sport':title,'legs':legs}))
+    return jobs
+
 def send(url,content):
     p=urlsplit(url)
     if p.scheme!='https' or p.hostname not in ('discord.com','discordapp.com') or not p.path.startswith('/api/webhooks/'):raise RuntimeError('Invalid webhook configuration; value not logged')
@@ -80,15 +102,31 @@ def main():
     path=Path(os.environ['DISCORD_STATE']);state=read(path,fresh_state())
     if state.get('version')!=3:raise RuntimeError('Use a new tracker state file for the new AI series')
     with urlopen(SITE+'data/flashy-ai.json',timeout=30) as r:feed=json.load(r)
-    now=datetime.now(timezone.utc);job=prepare(state,feed,now)
-    if job:
+    now=datetime.now(timezone.utc);force=os.getenv('POST_NOW','false').lower()=='true'
+    job=prepare(state,feed,now,force);jobs=[job] if job else []
+    if now.astimezone(TORONTO).hour==6 or force:
+        # One freshness check gates all pick lists.
+        if not feed.get('updated') or not 0<=(now-instant(feed['updated'])).total_seconds()<=7200:
+            raise RuntimeError('Snapshot is stale; no pick lists sent')
+        day=now.astimezone(TORONTO).date().isoformat();feeds={}
+        for sport in ('nba','nhl','nfl','ncaaf')+SOCCER:
+            try:
+                with urlopen(SITE+f'data/{sport}/{day}-favorites.json',timeout=20) as r:feeds[sport]=json.load(r)
+            except (HTTPError,URLError):print(f'{sport}: current favorites unavailable; no fabricated selections')
+        jobs+=top_plans(state,feeds,now,force,os.getenv('FOOTBALL_LEAGUE',''))
+    for key,content,slate in jobs:
         url=os.getenv('DISCORD_WEBHOOK_URL','')
         if not url:raise RuntimeError('DISCORD_WEBHOOK_URL is not configured')
-        key,content,slate=job;send(url,content)
-        if slate is not None:state['slates'][slate['day']]=slate
+        if key.startswith('slip:'):content='AI PLAY OF THE DAY\n'+content
+        send(url,content)
+        if slate is not None:
+            if key.startswith('slip:'):state['slates'][slate['day']]=slate
+            else:state.setdefault('top_slates',{})[key]=slate
         state['sent'][key]=now.isoformat();sync(state,feed)
-        print('Discord accepted the scheduled message. No source link or mention was included.')
-    else:print('Tracker refreshed; no scheduled message due, or already delivered.')
+        print('Discord accepted a plain selection message. No link, mention or command included.')
+        path.parent.mkdir(parents=True,exist_ok=True);temp=path.with_suffix('.tmp');temp.write_text(json.dumps(state,sort_keys=True));temp.replace(path)
+        time.sleep(.5)
+    if not jobs:print('Tracker refreshed; no new message due.')
     path.parent.mkdir(parents=True,exist_ok=True);temp=path.with_suffix('.tmp');temp.write_text(json.dumps(state,sort_keys=True));temp.replace(path)
 if __name__=='__main__':
     try:main()

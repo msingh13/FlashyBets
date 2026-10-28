@@ -21,3 +21,15 @@ class MorningTests(unittest.TestCase):
  def test_pending_not_a_loss(self):
   s=fresh_state();s['slates']['2026-10-27']={'legs':[dict(self.legs[0])]};sync(s,self.feed);self.assertEqual(s['record']['pending'],1);self.assertEqual(s['record']['losses'],0)
 if __name__=='__main__':unittest.main()
+
+class TopListsTests(unittest.TestCase):
+ def test_rank_five_and_soccer_combined(self):
+  from discord_publish import top_plans
+  now=datetime(2026,10,28,10,tzinfo=timezone.utc)
+  legs=[{'game_key':str(i),'side':'home','home':'CLE','away':'WSH','label':'CLE ML','start':'2026-10-28T23:00Z','probability':.5+i*.02} for i in range(8)]
+  jobs=top_plans(fresh_state(),{'nba':{'moneylines':legs},'ucl':{'moneylines':legs[:3]},'epl':{'moneylines':legs[3:]}},now)
+  self.assertEqual(len(jobs),4);self.assertEqual(len(jobs[0][2]['legs']),5);self.assertEqual(jobs[0][2]['legs'][0]['game_key'],'7');self.assertEqual(len(jobs[-1][2]['legs']),5)
+ def test_no_fabricated_five(self):
+  from discord_publish import top_plans
+  jobs=top_plans(fresh_state(),{},datetime(2026,10,28,10,tzinfo=timezone.utc))
+  self.assertTrue(all(len(j[2]['legs'])==0 for j in jobs))
