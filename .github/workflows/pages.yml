@@ -85,6 +85,7 @@ jobs:
           NEXT_PUBLIC_BASE_PATH: /FlashyBets
         run: |
           npm ci
+          node lib/board.test.cjs
           npm run build
           touch out/.nojekyll
       - uses: actions/configure-pages@v5
