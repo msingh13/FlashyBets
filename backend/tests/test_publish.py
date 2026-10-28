@@ -7,6 +7,9 @@ from app.demo import games
 from publish import publish,restore,save
 
 def test_static_publication_and_durable_history(tmp_path,monkeypatch):
+    from app import news
+    async def news_stub(sport):return {'articles':[],'injuries':[],'sport':sport,'fetched':None,'status':'Test fixture'}
+    monkeypatch.setattr(news,'fetch',news_stub)
     day=(datetime.now(timezone.utc)+timedelta(days=2)).date().isoformat()
     monkeypatch.setattr(service,'today',lambda:day)
     async def fetch(sport,selected):
@@ -27,7 +30,7 @@ def test_static_publication_and_durable_history(tmp_path,monkeypatch):
     async def fail(*args):raise ValueError('provider failed')
     monkeypatch.setattr(providers,'live_games',fail)
     asyncio.run(publish(out,state,second))
-    assert len(json.loads((out/'manifest.json').read_text())['errors'])==28
+    assert len(json.loads((out/'manifest.json').read_text())['errors'])==7*len(service.MODELS)
     assert json.loads((out/'nhl'/(day+'.json')).read_text())==board
     assert store.ledger('nhl','live',second)['forecasts']==first['forecasts']
 
