@@ -3,6 +3,10 @@ from .data import demo as nhl_demo
 from .store import now,instant
 
 def games(sport,day):
+    if sport in ('epl','laliga','ligue1','bundesliga','seriea','ncaaf'):
+        rows=games('nfl' if sport=='ncaaf' else 'ucl',day)
+        for g in rows:g['sport']=sport;g['id']=sport+'-'+g['id']
+        return rows
     if sport in ('nhl','ucl'):
         rows=nhl_demo(day)
         extra=dict(rows[0]);extra.update(id=f'demo-nhl-{day}-extra',home='Demo Lightning',away='Demo Kraken',home_abbr='TBL',away_abbr='SEA',home_rate=3.8,away_rate=2.7);rows.append(extra)

@@ -1,3 +1,4 @@
+from .sports import SOCCER
 """Frozen model-favorite cards; not sportsbook tickets or public-consensus picks."""
 import json,math
 from . import store
@@ -14,14 +15,14 @@ def withheld_keys(path=None):
     return blocked
 
 def explain(g,side):
-    p=g['prediction'];unit='goals' if g['sport'] in ('nhl','ucl') else 'points'
+    p=g['prediction'];unit='goals' if (g['sport']=='nhl' or g['sport'] in SOCCER) else 'points'
     basis=f"Projected {g['home_abbr']} {p['home_rate']:.2f} vs {g['away_abbr']} {p['away_rate']:.2f} {unit}. "
-    why=('Highest three-way result probability. ' if g['sport']=='ucl' else 'Higher modeled win probability. ') if side in ('home','away','draw') else 'Both teams’ scoring rates imply this BTTS probability. ' if side.startswith('btts') else f"Expected total {p['expected_total']:.2f} versus {'market' if g['line'] is not None else 'reference'} line {g['reference_line']}. "
+    why=('Highest three-way result probability. ' if g['sport'] in SOCCER else 'Higher modeled win probability. ') if side in ('home','away','draw') else 'Both teams’ scoring rates imply this BTTS probability. ' if side.startswith('btts') else f"Expected total {p['expected_total']:.2f} versus {'market' if g['line'] is not None else 'reference'} line {g['reference_line']}. "
     missing=', '.join(k for k,v in g['context']['checks'].items() if not v)
     return why+basis+('Pending checks: '+missing+'. ' if missing else '')+'Experimental baseline; context effects require fitted coefficients. No verified price means no confirmed betting edge.'
 
 def chosen(g,kind):
-    p=g['prediction'];sides=(('home','away','draw') if g['sport']=='ucl' else ('home','away')) if kind=='ml' else ('btts_yes','btts_no') if kind=='btts' else ('over','under');side=max(sides,key=lambda n:p[n])
+    p=g['prediction'];sides=(('home','away','draw') if g['sport'] in SOCCER else ('home','away')) if kind=='ml' else ('btts_yes','btts_no') if kind=='btts' else ('over','under');side=max(sides,key=lambda n:p[n])
     m=g['markets'].get(side);push=p.get('ml_push',0) if kind=='ml' else 0 if kind=='btts' else p['push']
     return {'game_key':store.key(g),'id':g['id'],'home':g['home_abbr'],'away':g['away_abbr'],'start':g['start'],
       'side':side,'label':('Draw' if side=='draw' else g[side+'_abbr']+' ML') if kind=='ml' else side.replace('_',' ').upper() if kind=='btts' else side.title()+' '+str(g['reference_line']),
@@ -61,7 +62,7 @@ def settled_cards(sport,mode,path=None):
     for row in cs:
         card=json.loads(row['payload']);wins=losses=pushes=pending=0
         for leg in card['legs']:
-            r=fs.get(leg['game_key']);leg['outcome']=store.outcome('soccer_'+leg['side'] if sport=='ucl' and leg['side'] in ('home','away') else leg['side'],r['home_score'],r['away_score']) if r else None
+            r=fs.get(leg['game_key']);leg['outcome']=store.outcome('soccer_'+leg['side'] if sport in SOCCER and leg['side'] in ('home','away') else leg['side'],r['home_score'],r['away_score']) if r else None
             if leg['outcome']=='win':wins+=1
             elif leg['outcome']=='loss':losses+=1
             elif leg['outcome']=='push':pushes+=1
@@ -84,9 +85,9 @@ def favorites(sport,day,mode,path=None):
         r=json.loads(f['result']) if f['result'] else None
         if not r and store.instant(g['start'])>store.instant(store.now()):g=latest.get(store.key(g),g)
         if not r and store.instant(g['start'])>store.instant(store.now()) and store.key(g) in blocked:continue
-        for kind,target in ([('ml',ml),('total',totals),('btts',btts)] if sport=='ucl' else [('ml',ml),('total',totals)]):
+        for kind,target in ([('ml',ml),('total',totals),('btts',btts)] if sport in SOCCER else [('ml',ml),('total',totals)]):
             p=chosen(g,kind)
-            if r:p['outcome']=store.outcome('soccer_'+p['side'] if sport=='ucl' and p['side'] in ('home','away') else p['side'],r['home_score'],r['away_score'],p['line'])
+            if r:p['outcome']=store.outcome('soccer_'+p['side'] if sport in SOCCER and p['side'] in ('home','away') else p['side'],r['home_score'],r['away_score'],p['line'])
             target.append(p)
     ml.sort(key=lambda x:-x['probability']);totals.sort(key=lambda x:-x['conditional'])
     cards=settled_cards(sport,mode,path)

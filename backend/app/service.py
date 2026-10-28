@@ -1,3 +1,4 @@
+from .sports import SOCCER
 import asyncio,os,json
 from datetime import datetime,date,timedelta,timezone
 from zoneinfo import ZoneInfo
@@ -16,16 +17,17 @@ def enrich(g,path=None):
         g.update(prediction=None,markets={},reference_line=g['line'],recommendations=[],explanation='NFL preseason/playoff modeling is not supported by the regular-season adapter. No forecast is issued.')
         return g
     adj=g['context']['adjustments'];hr=g['home_rate']+adj['home'];ar=g['away_rate']+adj['away']
-    line=g['line'] if g['line'] is not None else {'nhl':6.5,'nba':228.5,'nfl':44.5,'ucl':2.5}[g['sport']]
+    line=g['line'] if g['line'] is not None else (2.5 if g['sport'] in SOCCER else {'nhl':6.5,'nba':228.5,'nfl':44.5,'ncaaf':55.5}[g['sport']])
     g['reference_line']=line
     p=MODELS[g['sport']].predict(hr,ar,line);p.setdefault('ml_push',0);g['prediction']=p
+    if g['sport'] in SOCCER:p['version']=g['sport']+'-90min-poisson-v1'
     if g.get('scoring_evidence'):p['version']+=' / weighted-history-v2'
     learning.apply(g,path)
     markets={}
-    for n in (('home','away','draw','over','under','btts_yes','btts_no') if g['sport']=='ucl' else ('home','away','over','under')):
+    for n in (('home','away','draw','over','under','btts_yes','btts_no') if g['sport'] in SOCCER else ('home','away','over','under')):
         odds=g.get(n+'_odds');push=p['ml_push'] if n in ('home','away') else p['push'] if n in ('over','under') else 0
         markets[n]=market(p[n],push,odds) if odds is not None else None
-    for sides in ([('home','away','draw'),('over','under'),('btts_yes','btts_no')] if g['sport']=='ucl' else [('home','away'),('over','under')]):
+    for sides in ([('home','away','draw'),('over','under'),('btts_yes','btts_no')] if g['sport'] in SOCCER else [('home','away'),('over','under')]):
         if all(markets[n] for n in sides):
             vig=sum(markets[n]['implied'] for n in sides)
             for n in sides:markets[n]['no_vig']=markets[n]['implied']/vig;markets[n]['conditional']=markets[n]['probability']/(1-markets[n]['push'])
@@ -33,7 +35,8 @@ def enrich(g,path=None):
     g['explanation']={'nhl':'Independent Poisson regulation goals; ties split 50/50, with one OT/shootout settlement goal added.',
       'ucl':'Independent Poisson 90-minute goals including stoppage time. Three-way ML includes draw; BTTS requires both teams to score. Extra time and penalties excluded. Champions League history only; domestic form and player effects are not fitted.',
       'nba':'Final-score Gaussian model: shrunk scoring/conceding means, 15-point margin and 20-point total standard deviations. Historical inputs include overtime.',
-      'nfl':'Possession scoring model: eleven possessions with 0/3/7-point outcomes; explicit approximate overtime/tie settlement. Regular season only.'}[g['sport']]
+      'ncaaf':'College final-score Gaussian baseline, including overtime with no final tie. Margin/total variability are initial assumptions. Opponent-strength and player effects need validation.',
+      'nfl':'Possession scoring model: eleven possessions with 0/3/7-point outcomes; explicit approximate overtime/tie settlement. Regular season only.'}.get(g['sport'],'Independent 90-minute Poisson goals with an explicit draw. Extra time and penalties excluded; league-specific completed results, with player effects not fitted.')
     g['recommendations']=[]
     odds_fresh=False
     if g.get('odds_updated'):
@@ -46,7 +49,7 @@ def enrich(g,path=None):
     return g
 
 async def board(sport,day,mode,force=False,path=None):
-    if sport not in MODELS:raise ValueError('Supported sports: NHL, NBA, NFL')
+    if sport not in MODELS:raise ValueError('Unsupported league')
     if mode not in ('demo','live'):raise ValueError('mode must be demo or live')
     date.fromisoformat(day);cache_key=(sport,day,mode)
     lock=LOCKS.setdefault(cache_key,asyncio.Lock())
@@ -54,7 +57,7 @@ async def board(sport,day,mode,force=False,path=None):
         old=CACHE.get(cache_key)
         if old and not force and (datetime.now(timezone.utc)-old[0]).total_seconds()<TTL:
             return old[1]
-        rows=demo_games(sport,day) if mode=='demo' else await providers.live_games(sport,day)
+        rows=demo_games('ucl' if sport in SOCCER else 'nfl' if sport=='ncaaf' else sport,day) if mode=='demo' else await providers.live_games(sport,day)
         for g in rows:
             g['mode']=mode;g['sport']=sport
             if g['state']=='pre' and store.instant(g['start'])>datetime.now(timezone.utc):

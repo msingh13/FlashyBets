@@ -1,3 +1,4 @@
+from .sports import SOCCER
 """Prospective validation of immutable forecasts; neutral probability benchmarks."""
 import math
 from zoneinfo import ZoneInfo
@@ -6,13 +7,13 @@ from . import store
 
 def report(sport,mode,path=None):
     ledger=store.ledger(sport,mode,path);rows=ledger['forecasts'];groups={'ml':[],'total':[]}
-    if sport=='ucl':groups['btts']=[]
+    if sport in SOCCER:groups['btts']=[]
     dates=set()
     for r in rows:
         if not r['result']:continue
         dates.add(store.instant(r['start']).astimezone(ZoneInfo('America/Toronto')).date().isoformat())
         for kind in groups:
-            sides=('home','away','draw') if kind=='ml' and sport=='ucl' else ('home','away') if kind=='ml' else ('over','under') if kind=='total' else ('btts_yes','btts_no')
+            sides=('home','away','draw') if kind=='ml' and sport in SOCCER else ('home','away') if kind=='ml' else ('over','under') if kind=='total' else ('btts_yes','btts_no')
             markets=[m for n in sides for m in r['markets'] if m['name']==n]
             if any(m['outcome']=='push' for m in markets):continue
             mass=sum(m['probability'] for m in markets)

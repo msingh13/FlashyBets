@@ -1,3 +1,4 @@
+from .sports import Sport
 import os,json,asyncio
 from contextlib import asynccontextmanager,suppress
 from datetime import date
@@ -21,7 +22,7 @@ app.add_middleware(CORSMiddleware,allow_origins=list(origins),allow_methods=['GE
 @app.get('/health')
 def health():return {'status':'ok','sports':list(service.MODELS),'auto_refresh':os.getenv('AUTO_REFRESH','1')=='1','interval':service.TTL}
 @app.get('/api/games')
-async def games(day:Optional[date]=None,mode:Literal['demo','live']='demo',sport:Literal['nhl','nba','nfl','ucl']='nhl'):
+async def games(day:Optional[date]=None,mode:Literal['demo','live']='demo',sport:Sport='nhl'):
     try:return await service.board(sport,day.isoformat() if day else service.today(),mode,path=DB)
     except ValueError as e:raise HTTPException(422,str(e))
     except Exception:raise HTTPException(502,'Live provider unavailable. No demo fallback was applied.')
@@ -33,7 +34,7 @@ def history():
     result['source']='User historical CSV' if os.getenv('BACKTEST_CSV') else 'Synthetic NHL replay · not real historical accuracy'
     return result
 @app.get('/api/tracker')
-def tracker(sport:Literal['nhl','nba','nfl','ucl']='nhl',mode:Literal['demo','live']='demo'):
+def tracker(sport:Sport='nhl',mode:Literal['demo','live']='demo'):
     from . import picks,learning,validation
     if mode=='demo':service.seed_demo(sport,DB)
     result=store.ledger(sport,mode,DB)
@@ -41,7 +42,7 @@ def tracker(sport:Literal['nhl','nba','nfl','ucl']='nhl',mode:Literal['demo','li
     result['learning']=learning.status(sport,mode,DB);result['validation']=validation.report(sport,mode,DB)
     return result
 @app.get('/api/favorites')
-def favorites(day:Optional[date]=None,sport:Literal['nhl','nba','nfl','ucl']='nhl',mode:Literal['demo','live']='demo'):
+def favorites(day:Optional[date]=None,sport:Sport='nhl',mode:Literal['demo','live']='demo'):
     from . import picks
     return picks.favorites(sport,day.isoformat() if day else service.today(),mode,DB)
 @app.get('/api/snapshots/{game_id}')
@@ -53,3 +54,8 @@ def snapshot(game_id:str):
 def flashy_ai(mode:Literal['demo','live']='live'):
     from . import spotlight
     return spotlight.record(mode,DB)
+
+@app.get('/api/news')
+async def news_feed(sport:Sport='nhl'):
+    from . import news
+    return await news.fetch(sport)

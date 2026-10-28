@@ -1,3 +1,4 @@
+from .sports import SOCCER
 """Daily, chronological temperature-calibration audit. No promise of daily improvement."""
 import json,math
 from datetime import datetime,timezone
@@ -24,7 +25,7 @@ def active(sport,kind,path=None):
 def apply(g,path=None):
     p=g['prediction'];raw={n:p[n] for n in ('home','away','over','under')};p['raw']=raw
     versions={}
-    if g['mode']=='live' and g['sport']!='ucl':
+    if g['mode']=='live' and g['sport'] not in SOCCER:
         for kind,sides in [('ml',('home','away')),('total',('over','under'))]:
             model=active(g['sport'],kind,path)
             if model.get('created') and store.instant(model['created'])>=store.instant(g['start']):model={'temperature':1.,'version':'baseline'}
@@ -35,7 +36,7 @@ def apply(g,path=None):
     if any(v!='baseline' for v in versions.values()):p['version']+=' / temperature-calibrated'
 
 def audit(sport,day,path=None):
-    if sport=='ucl':return []
+    if sport in SOCCER:return []
     # Real prospective forecasts only; never learn from synthetic demo fixtures.
     with store.connect(path) as c:
         existing=c.execute('SELECT kind,payload FROM model_checks WHERE sport=? AND day=?',(sport,day)).fetchall()
@@ -97,7 +98,7 @@ def audit(sport,day,path=None):
     return reports
 
 def status(sport,mode,path=None):
-    if sport=='ucl':return {'status':'Baseline · collecting results','checks':[],'versions':{},'note':'Three-way and BTTS calibration need a separate chronological evaluation; binary moneyline calibration is not applied.'}
+    if sport in SOCCER:return {'status':'Baseline · collecting results','checks':[],'versions':{},'note':'Three-way and BTTS calibration need a separate chronological evaluation; binary moneyline calibration is not applied.'}
     if mode=='demo':return {'status':'Demo · learning disabled','checks':[],'versions':{},'note':'Synthetic fixtures never train the live models.'}
     with store.connect(path) as c:
         rs=c.execute('SELECT payload FROM model_checks WHERE sport=? ORDER BY day DESC,kind LIMIT 2',(sport,)).fetchall()

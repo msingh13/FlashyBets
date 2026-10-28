@@ -1,3 +1,4 @@
+from .sports import SOCCER
 """Context is checked and exposed. Effects require externally fitted, sourced coefficients.
 Never infer an arbitrary player penalty from the number of injury reports.
 """
@@ -8,7 +9,7 @@ from .store import instant
 def context_for(g):
     starters=all(g.get(s+'_starters') and all(x.get('confirmed') for x in g[s+'_starters']) for s in ('home','away'))
     travel=all(g.get('travel',{}).get(s,{}).get('km') is not None for s in ('home','away'))
-    weather=g['sport'] not in ('nfl','ucl') or g.get('indoor') is True or g.get('weather',{}).get('temperature_c') is not None
+    weather=g['sport'] not in ('nfl','ncaaf',*SOCCER) or g.get('indoor') is True or g.get('weather',{}).get('temperature_c') is not None
     checked=g.get('injuries_checked',False)
     # An old injury endpoint timestamp cannot establish current gameday availability.
     fresh=False
@@ -41,7 +42,7 @@ def context_for(g):
                     impact=impacts.get(player['name'])
                     if impact is None:missing.append(player['name'])
                     else:adjustments[side]+=float(impact)
-        if g['sport']=='nfl' and not g.get('indoor') and checks['weather']:
+        if g['sport'] in ('nfl','ncaaf') and not g.get('indoor') and checks['weather']:
             temperature=g['weather']['temperature_c'];wind=g['weather']['wind_kmh']
             delta=coeff.get('wind_per_kmh',0)*wind+coeff.get('cold_per_degree_below_10c',0)*max(0,10-temperature)
             adjustments['home']+=delta;adjustments['away']+=delta

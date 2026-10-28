@@ -60,4 +60,12 @@ class NFLModel:
 
 from .soccer import SoccerModel
 
-MODELS={'ucl':SoccerModel(),'nhl':NHLModel(),'nba':NBAModel(),'nfl':NFLModel()}
+class CollegeFootballModel:
+    def predict(self,home_rate,away_rate,line,ot_home=.5):
+        if not all(math.isfinite(x) for x in (home_rate,away_rate,line)) or not (0<home_rate<100 and 0<away_rate<100 and 0<=line<=200):raise ValueError('Invalid college football inputs')
+        home=1-cdf(0,home_rate-away_rate,20);mean=home_rate+away_rate
+        under=cdf(line-.5 if float(line).is_integer() else line,mean,24)
+        over=1-cdf(line+.5,mean,24) if float(line).is_integer() else 1-under
+        return dict(home=home,away=1-home,tie=0,ml_push=0,over=over,under=under,push=max(0,1-over-under),expected_total=mean,home_rate=home_rate,away_rate=away_rate,distribution=[],version='ncaaf-final-gaussian-v1',assumptions='Final-score Gaussian margin sigma=20, total sigma=24; includes overtime, no final tie. Starting assumptions, not fitted estimates. No opponent-strength adjustment; large college mismatches need further modeling.')
+from .sports import SOCCER
+MODELS={**{s:SoccerModel() for s in SOCCER},'nhl':NHLModel(),'nba':NBAModel(),'nfl':NFLModel(),'ncaaf':CollegeFootballModel()}

@@ -6,8 +6,9 @@ from datetime import datetime,date,timedelta,timezone
 from zoneinfo import ZoneInfo
 import httpx
 from .store import instant
-PATHS={'nhl':'hockey/nhl','nba':'basketball/nba','nfl':'football/nfl'}
-ODDS_SPORT={'nhl':'icehockey_nhl','nba':'basketball_nba','nfl':'americanfootball_nfl'}
+from .sports import SOCCER
+PATHS={'ncaaf':'football/college-football','nhl':'hockey/nhl','nba':'basketball/nba','nfl':'football/nfl'}
+ODDS_SPORT={'ncaaf':'americanfootball_ncaaf','nhl':'icehockey_nhl','nba':'basketball_nba','nfl':'americanfootball_nfl'}
 BASE='https://site.api.espn.com/apis/site/v2/sports/'
 CITY_CACHE={};GEO_LOCKS={};TEAM_CACHE={}
 def normalize(name):
@@ -88,7 +89,7 @@ async def attach_odds(client,games,sport):
 
 async def sportsdata_context(client,games,sport,day):
     key=os.getenv('SPORTSDATAIO_KEY')
-    if not key or not games:return
+    if not key or not games or sport=='ncaaf':return
     headers={'Ocp-Apim-Subscription-Key':key};base=f'https://api.sportsdata.io/v3/{sport}'
     kind={'nhl':f'StartingGoaltendersByDate/{day}','nba':f'StartingLineupsByDate/{day}','nfl':None}[sport]
     if kind:
@@ -117,12 +118,12 @@ async def sportsdata_context(client,games,sport,day):
                 g['depth_chart']=depth;g['lineup_source']='SportsDataIO depth chart; inactives still required'
 
 async def live_games(sport,day):
-    if sport=='ucl':
+    if sport in SOCCER:
         from .soccer import live_games as soccer_games
-        return await soccer_games(day)
+        return await soccer_games(day,sport)
     startdate=date.fromisoformat(day);past=startdate-timedelta(days=120 if sport=='nfl' else 45)
     async with httpx.AsyncClient(timeout=25) as client:
-        scheduled=await get(client,BASE+PATHS[sport]+'/scoreboard',{'dates':startdate.strftime('%Y%m%d'),'limit':1000})
+        scheduled=await get(client,BASE+PATHS[sport]+'/scoreboard',{'dates':startdate.strftime('%Y%m%d'),'limit':1000,**({'groups':80} if sport=='ncaaf' else {})})
         games=[game_from_event(e,sport) for e in scheduled.get('events',[]) if localday(e['date'])==day]
         if not games:return games
         # ESPN's multi-date scoreboard can reject cross-season ranges. Team schedule
@@ -136,7 +137,7 @@ async def live_games(sport,day):
             if not error:TEAM_CACHE[cache_key]=(datetime.now(timezone.utc),body)
             return body,error
         requests={(g[side+'_id'],g['season_year'],g['season_type']) for g in games for side in ('home','away')}
-        if sport in ('nba','nfl'):
+        if sport in ('nba','nfl','ncaaf'):
             requests.update((g[side+'_id'],g['season_year']-1,2) for g in games for side in ('home','away') if g.get('season_year') and g['season_type']==2)
         histories=await asyncio.gather(*(team_history(*args) for args in requests))
         err=any(error for _,error in histories);event_map={}
@@ -153,7 +154,7 @@ async def live_games(sport,day):
             body,serr=await optional(client,f'https://api-web.nhle.com/v1/standings/{(startdate-timedelta(days=1)).isoformat()}')
             standings={r['teamAbbrev']['default']:r for r in (body or {}).get('standings',[])}
         for g in games:
-            baseline={'nhl':3.,'nba':114.,'nfl':22.}[sport];prior={'nhl':20,'nba':12,'nfl':6}[sport]
+            baseline={'nhl':3.,'nba':114.,'nfl':22.,'ncaaf':28.}[sport];prior={'nhl':20,'nba':12,'nfl':6,'ncaaf':6}[sport]
             relevant=[e for e in events if e['season_type']==g['season_type'] and instant(e['start'])<instant(g['start'])]
             def samples(side):return sorted([e for e in relevant if g[side+'_id'] in (e['home_id'],e['away_id'])],key=lambda e:instant(e['start']))[-20:]
             hs,aws=samples('home'),samples('away')
@@ -162,7 +163,7 @@ async def live_games(sport,day):
                 ga=sum(r['away_score'] if r['home_id']==team_id else r['home_score'] for r in rows)
                 return (gf+baseline*prior)/(len(rows)+prior),(ga+baseline*prior)/(len(rows)+prior)
             hf,ha=rates(hs,g['home_id']);af,aa=rates(aws,g['away_id'])
-            if sport in ('nba','nfl') and g['season_type']==2:
+            if sport in ('nba','nfl','ncaaf') and g['season_type']==2:
                 from .scoring_history import weighted_rates
                 evidence={}
                 for side in ('home','away'):
@@ -176,7 +177,7 @@ async def live_games(sport,day):
                     r=standings[abbr];n=r['gamesPlayed']+20
                     return (r['goalFor']+60)/n,(r['goalAgainst']+60)/n
                 hf,ha=nhlr(g['home_abbr']);af,aa=nhlr(g['away_abbr'])
-            adv=0 if g['neutral'] else {'nhl':.12,'nba':1.5,'nfl':1.}[sport]
+            adv=0 if g['neutral'] else {'nhl':.12,'nba':1.5,'nfl':1.,'ncaaf':1.5}[sport]
             g['home_rate']=(hf+aa)/2+adv;g['away_rate']=(af+ha)/2-adv
             g['sample_sizes']={'home':sum(r.get('season_year')==g['season_year'] for r in hs),'away':sum(r.get('season_year')==g['season_year'] for r in aws)}
             g['rates_source']='Prior-day NHL standings' if sport=='nhl' and standings else 'Prior completed ESPN games; shrunk scoring/conceding averages'
@@ -205,7 +206,7 @@ async def live_games(sport,day):
                     'from':last['city'] if last else None,'previous_start':last['start'] if last else None,
                     'method':'City-to-city great-circle estimate; start-to-start rest, not actual itinerary'}
             g['weather']={'status':'Indoor venue' if g['indoor'] else 'Unavailable','temperature_c':None,'wind_kmh':None,'source':None}
-            if sport=='nfl' and g['indoor'] is False and destination and instant(g['start'])>=datetime.now(timezone.utc):
+            if sport in ('nfl','ncaaf') and g['indoor'] is False and destination and instant(g['start'])>=datetime.now(timezone.utc):
                 body,werr=await optional(client,'https://api.open-meteo.com/v1/forecast',{'latitude':destination[0],'longitude':destination[1],
                     'hourly':'temperature_2m,wind_speed_10m','timezone':'UTC','forecast_days':16})
                 hourly=(body or {}).get('hourly',{});hour=instant(g['start']).astimezone(timezone.utc).strftime('%Y-%m-%dT%H:00')

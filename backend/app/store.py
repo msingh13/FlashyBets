@@ -1,3 +1,4 @@
+from .sports import SOCCER
 """Immutable pregame model forecasts and settlements."""
 import json,sqlite3,os,math,uuid
 from contextlib import contextmanager
@@ -63,7 +64,7 @@ def profit(result,odds,stake=1):
 def settle(g,path=None):
     if g.get('state')!='post' or g.get('home_score') is None or g.get('away_score') is None:return
     h,a=g['home_score'],g['away_score']
-    if min(h,a)<0 or (h==a and g['sport'] not in ('nfl','ucl')):return
+    if min(h,a)<0 or (h==a and g['sport'] not in ('nfl',*SOCCER)):return
     with connect(path) as c:
         c.execute('UPDATE forecasts SET result=?,settled_at=? WHERE game_key=? AND result IS NULL',
             (json.dumps({'home_score':h,'away_score':a,'source':g['source']}),now(),key(g)))
@@ -73,13 +74,13 @@ def ledger(sport,mode,path=None):
         fs=c.execute('SELECT * FROM forecasts WHERE sport=? AND mode=? ORDER BY start DESC',(sport,mode)).fetchall()
         health=c.execute('SELECT * FROM updates WHERE sport=?',(sport,)).fetchone()
     payloads={f['game_key']:json.loads(f['payload']) for f in fs}
-    rows=[];metrics={n:{'settled':0,'wins':0,'pushes':0,'priced':0,'profit':0,'brier_sum':0,'brier_count':0} for n in (['home','away','draw','over','under','btts_yes','btts_no'] if sport=='ucl' else ['home','away','over','under'])}
+    rows=[];metrics={n:{'settled':0,'wins':0,'pushes':0,'priced':0,'profit':0,'brier_sum':0,'brier_count':0} for n in (['home','away','draw','over','under','btts_yes','btts_no'] if sport in SOCCER else ['home','away','over','under'])}
     for f in fs:
         g=payloads[f['game_key']];r=json.loads(f['result']) if f['result'] else None
         row={'game_key':f['game_key'],'id':g['id'],'home':g['home_abbr'],'away':g['away_abbr'],'start':f['start'],
              'captured':f['captured'],'model':g['prediction']['version'],'line':g['reference_line'],'result':r,'markets':[]}
         for n in metrics:
-            p=g['prediction'][n];odds=g['markets'].get(n);result=outcome('soccer_'+n if sport=='ucl' and n in ('home','away') else n,r['home_score'],r['away_score'],g['reference_line']) if r else None
+            p=g['prediction'][n];odds=g['markets'].get(n);result=outcome('soccer_'+n if sport in SOCCER and n in ('home','away') else n,r['home_score'],r['away_score'],g['reference_line']) if r else None
             row['markets'].append({'name':n,'probability':p,'odds':odds['odds'] if odds else None,'outcome':result})
             if r:
                 m=metrics[n];m['settled']+=1;m['wins']+=result=='win';m['pushes']+=result=='push'
@@ -91,10 +92,10 @@ def ledger(sport,mode,path=None):
     for m in metrics.values():
         m['roi']=m['profit']/m['priced'] if m['priced'] else None
         m['brier']=m.pop('brier_sum')/m['brier_count'] if m['brier_count'] else None
-    selection_metrics={kind:{'wins':0,'losses':0,'pushes':0,'pending':0,'priced':0,'profit':0.,'brier_sum':0.,'brier_count':0} for kind in (('ml','total','btts') if sport=='ucl' else ('ml','total'))}
+    selection_metrics={kind:{'wins':0,'losses':0,'pushes':0,'pending':0,'priced':0,'profit':0.,'brier_sum':0.,'brier_count':0} for kind in (('ml','total','btts') if sport in SOCCER else ('ml','total'))}
     for row in rows:
         row['picks']={}
-        for kind,sides in ([('ml',('home','away','draw')),('total',('over','under')),('btts',('btts_yes','btts_no'))] if sport=='ucl' else [('ml',('home','away')),('total',('over','under'))]):
+        for kind,sides in ([('ml',('home','away','draw')),('total',('over','under')),('btts',('btts_yes','btts_no'))] if sport in SOCCER else [('ml',('home','away')),('total',('over','under'))]):
             picked=max((m for m in row['markets'] if m['name'] in sides),key=lambda m:m['probability'])
             picked=dict(picked)
             picked['label']=('Draw' if picked['name']=='draw' else row[picked['name']]) if kind=='ml' else picked['name'].replace('_',' ').upper() if kind=='btts' else picked['name'].title()+' '+str(row['line'])

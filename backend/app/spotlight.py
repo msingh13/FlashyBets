@@ -1,9 +1,10 @@
+from .sports import SOCCER
 """Up to three global daily model plays, frozen prospectively and scored separately."""
 import json
 from datetime import datetime,timezone
 from zoneinfo import ZoneInfo
 from . import store,picks
-RULE='flashy-ai-v1'
+RULE='flashy-ai-v2'
 
 def build(day,mode,path=None,at=None):
     at=at or store.now();moment=store.instant(at)
@@ -23,9 +24,15 @@ def build(day,mode,path=None,at=None):
         if store.instant(g['start']).astimezone(ZoneInfo('America/Toronto')).date().isoformat()!=day:continue
         if not 0<=(moment-store.instant(row['created'])).total_seconds()<=1200:continue
         if g['sport']=='nfl' and g.get('season_type')!=2:continue
-        options=[picks.chosen(g,k) for k in (('ml','total','btts') if g['sport']=='ucl' else ('ml','total'))]
+        samples=g.get('sample_sizes')
+        minimum=4 if g['sport']=='ncaaf' else 5
+        if samples and min(samples.get('home',0),samples.get('away',0))<minimum:continue
+        if (store.instant(g['start'])-moment).total_seconds()<2700 and not g.get('context',{}).get('checks',{}).get('starters'):continue
+        options=[picks.chosen(g,k) for k in (('ml','total','btts') if g['sport'] in SOCCER else ('ml','total'))]
         for p in options:
-            if p['conditional']<.58:continue
+            if p['conditional']<.60:continue
+            ref=g.get('market_reference')
+            if ref and p['side'] in ('home','away') and abs(p['probability']-ref[p['side']])>.15:continue
             fresh=False
             if g.get('odds_updated'):
                 fresh=0<=(moment-store.instant(g['odds_updated'])).total_seconds()<=1200
@@ -41,7 +48,7 @@ def build(day,mode,path=None,at=None):
         if len(legs)==3:break
     if not legs:return None
     card={'key':key,'day':day,'mode':mode,'created':at,'rule':RULE,'legs':legs,
-          'note':'Maximum three individual plays across all sports per Toronto day, one per game. Frozen when selected; not a parlay. Ranked by verified positive EV when eligible, otherwise by conditional model probability ≥58%. Research selections are not verified betting value; no LLM invents probabilities.'}
+          'note':'Maximum three individual plays across all sports per Toronto day, one per game. Frozen when selected; not a parlay. Ranked by verified positive EV when eligible, otherwise by conditional model probability ≥60%, with sample-size, near-start lineup and model/market-disagreement checks. Research selections are not verified betting value; no LLM invents probabilities.'}
     with store.connect(path) as c:
         c.execute('INSERT OR IGNORE INTO daily_plays VALUES(?,?,?,?,?)',(key,mode,day,at,json.dumps(card)))
         saved=c.execute('SELECT payload FROM daily_plays WHERE play_key=?',(key,)).fetchone()
@@ -57,7 +64,7 @@ def record(mode,path=None):
         card=json.loads(row['payload'])
         for p in card['legs']:
             if p['game_key'] in blocked:p['current_warning']='Withdrawn from current model guidance; original selection retained for tracking only.'
-            r=results.get(p['game_key']);side='soccer_'+p['side'] if p['sport']=='ucl' and p['side'] in ('home','away') else p['side']
+            r=results.get(p['game_key']);side='soccer_'+p['side'] if p['sport'] in SOCCER and p['side'] in ('home','away') else p['side']
             p['outcome']=store.outcome(side,r['home_score'],r['away_score'],p['line']) if r else None
             p['final']=r
             if p['outcome']=='win':wins+=1
