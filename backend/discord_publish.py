@@ -15,11 +15,17 @@ def read(path, default):
 
 def instant(value):return datetime.fromisoformat(value.replace('Z','+00:00'))
 def label(p):
-    probability=p.get('conditional',p.get('probability',0))
-    price=f" | odds {p['odds']:+g}" if p.get('odds') is not None else ' | price unavailable'
-    return f"{p.get('away','?')} @ {p.get('home','?')} — **{p.get('label','Selection')}** | model {probability:.1%}{price}"
+    start=instant(p['start']).strftime('%Y-%m-%d %H:%M UTC')
+    sport=p.get('sport','').upper()
+    return f"{sport} {p.get('away','?')} at {p.get('home','?')} ({start}): {p.get('label','Selection')}"
 
-def plans(data,state,now):
+def slip(legs,bot_id,parlay=False):
+    if not bot_id.isdigit():raise ValueError('GAMBLY_BOT_USER_ID must be a numeric Discord user ID')
+    action='Create a bet365 parlay with these selections:' if parlay else 'Create bet365 straight-bet slips for these selections:'
+    return f"<@{bot_id}> {action}\n"+'\n'.join(label(p) for p in legs)
+
+def plans(data,state,now,bot_id=""):
+    state.setdefault("tracker",{})
     result=[];today=read(data/'manifest.json',{}).get('today');ai=read(data/'flashy-ai.json',{})
     cards=[]
     for c in ai.get('days',[]):cards.append(('ai',c))
@@ -39,24 +45,29 @@ def plans(data,state,now):
         if c.get('day')!=today:continue
         legs=[p for p in c.get('legs',[]) if not p.get('current_warning') and not c.get('current_warning') and not p.get('outcome') and instant(p['start'])>now]
         if key not in state['posted'] and legs:
-            title='Flashy AI · Play of the Day' if kind=='ai' else f"{c.get('sport','').upper()} · Model Favorites"
-            body='\n'.join(label(p) for p in legs)
-            content=f"**{title} — {today}**\n{body}\n\nExperimental model selections. Prices and lineups can change; these are not guaranteed wins.\n{SITE}"
-            result.append((key,content,{'legs':[p['game_key']+'|'+p['side'] for p in legs]}))
+            prepared=[dict(p,sport=p.get('sport',c.get('sport',''))) for p in legs]
+            content=slip(prepared,bot_id,parlay=kind=='favorites')
+            result.append((key,content,{'legs':[p['game_key']+'|'+p['side'] for p in legs],
+                                      'day':c['day'],'selections':prepared}))
+    # Track outcomes silently. Discord receives only mention + slip messages.
     for key,posted in state['posted'].items():
         if key not in known or key.startswith('result:'):continue
-        c=known[key]
+        c=known[key];selected=set(posted.get('legs',[]))
+        tracked=[]
         for p in c.get('legs',[]):
-            leg=p['game_key']+'|'+p['side'];outcome=p.get('outcome')
-            identity='result:'+key+':'+leg
-            if leg not in posted.get('legs',[]) or outcome not in ('win','loss','push') or identity in state['posted']:continue
-            title='Flashy AI result' if key.startswith('ai:') else 'Model Favorites result'
-            result.append((identity,f"**{title} · {outcome.upper()}**\n{label(p)}\nOriginal selection: {c['day']}\n{SITE}",{}))
+            if p['game_key']+'|'+p['side'] not in selected:continue
+            tracked.append({'game_key':p['game_key'],'side':p['side'],'label':p.get('label'),
+                            'outcome':p.get('outcome'),'final':p.get('final')})
+        state['tracker'][key]={'day':c['day'],'legs':tracked,
+          'wins':sum(p['outcome']=='win' for p in tracked),
+          'losses':sum(p['outcome']=='loss' for p in tracked),
+          'pushes':sum(p['outcome']=='push' for p in tracked),
+          'pending':sum(p['outcome'] is None for p in tracked)}
     return result
 
 def send(url,content):
     # Do not echo request objects or errors: they can contain the secret webhook URL.
-    body=json.dumps({'content':content[:1990],'allowed_mentions':{'parse':[]},'username':'FlashyBets'}).encode()
+    body=json.dumps({'content':content[:1990],'allowed_mentions':{'parse':[],'users':[os.environ['GAMBLY_BOT_USER_ID']] if os.getenv('GAMBLY_BOT_USER_ID','').isdigit() else []},'username':'FlashyBets'}).encode()
     for attempt in range(3):
         req=Request(url,data=body,headers={'Content-Type':'application/json','User-Agent':'FlashyBets-Discord/1.0'},method='POST')
         try:
@@ -78,16 +89,17 @@ def main():
     parsed=urlsplit(url)
     if parsed.scheme!='https' or parsed.hostname not in ('discord.com','discordapp.com') or not parsed.path.startswith('/api/webhooks/'):
         raise RuntimeError('Invalid Discord webhook configuration; value not logged')
+    bot_id=os.getenv('GAMBLY_BOT_USER_ID','')
+    if not bot_id.isdigit():print('Discord skipped: configure GAMBLY_BOT_USER_ID before posting.');return
     data=Path(os.getenv('PUBLISH_DIR','../frontend/public/data'));path=Path(os.environ['DISCORD_STATE'])
     state=read(path,{'posted':{}})
-    jobs=plans(data,state,datetime.now(timezone.utc))
-    # Initial delivery proves the configured channel works, even without eligible picks.
-    if 'connected:v1' not in state['posted']:
-        jobs.insert(0,('connected:v1',f'**FlashyBets is connected.**\nUpcoming Play of the Day and Model Favorites selections, followed by their results, will post here automatically when available. Updates follow the website refresh cycle.\n{SITE}',{}))
+    jobs=plans(data,state,datetime.now(timezone.utc),bot_id)
     for key,content,record in jobs:
         send(url,content);state['posted'][key]=record
         path.parent.mkdir(parents=True,exist_ok=True);temp=path.with_suffix('.tmp');temp.write_text(json.dumps(state,sort_keys=True));temp.replace(path)
         time.sleep(.5)
+    # Save tracker changes even when there are no new announcements.
+    path.parent.mkdir(parents=True,exist_ok=True);temp=path.with_suffix('.tmp');temp.write_text(json.dumps(state,sort_keys=True));temp.replace(path)
     print(f'Discord delivery complete: {len(jobs)} new messages. Existing posts were not repeated.')
 if __name__=='__main__':
     try:main()
