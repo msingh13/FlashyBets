@@ -31,3 +31,11 @@ def test_independent_reference_remains_visible_with_context_note():
     assert g['context']['ready'] is False and p=={'home':.59,'away':.41}
     g['state']='post';g['prediction']=p.copy();review(g)
     assert g['prediction']==p
+
+def test_soccer_reference_requires_draw_and_normalizes_three_outcomes():
+    comp={'odds':[{'moneyline':{'home':{'close':{'odds':-130}},'away':{'close':{'odds':310}}}}]}
+    assert reference(comp,'2026-10-28T00:00Z',require_draw=True) is None
+    comp['odds'][0]['drawOdds']={'moneyLine':300}
+    r=reference(comp,'2026-10-28T00:00Z',require_draw=True)
+    assert r['home']+r['away']+r['draw']==pytest.approx(1)
+    assert r['home']<.6 and r['draw']>0
