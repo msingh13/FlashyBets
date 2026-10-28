@@ -23,7 +23,7 @@ jobs:
           from datetime import datetime, timezone
           from urllib.request import urlopen
           from urllib.parse import urlsplit
-          from discord_publish import send, slip, instant, SITE
+          from discord_publish import send, slip, label, instant, SITE
           url=os.getenv('DISCORD_WEBHOOK_URL','')
           p=urlsplit(url)
           if p.scheme!='https' or p.hostname not in ('discord.com','discordapp.com') or not p.path.startswith('/api/webhooks/'):
@@ -37,7 +37,7 @@ jobs:
           bot_id=os.getenv('GAMBLY_BOT_USER_ID','')
           if not bot_id.isdigit():raise SystemExit('Set GAMBLY_BOT_USER_ID before sending a mention.')
           if not legs:raise SystemExit('No upcoming selections available; no test message sent.')
-          content=slip(legs,bot_id)
+          content='/betslip '+ '; '.join(label(p) for p in legs)
           send(url,content)
           print('Discord accepted the test slip. No webhook secret was logged.')
           PY
