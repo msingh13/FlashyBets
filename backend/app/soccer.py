@@ -56,7 +56,7 @@ def rows_from_matches(matches,day,source,source_url,sport='ucl'):
                 gf+=hs if ishome else aws;ga+=aws if ishome else hs
             return (gf+15)/(len(samples)+10),(ga+15)/(len(samples)+10),len(samples)
         hf,ha,hn=rates(h['id']);af,aa,an=rates(a['id'])
-        g=dict(id=str(m['id']),sport=sport,mode='live',home=h['name'],away=a['name'],home_abbr=h.get('tla') or h['shortName'],away_abbr=a.get('tla') or a['shortName'],
+        g=dict(market_reference=m.get('market_reference'),id=str(m['id']),sport=sport,mode='live',home=h['name'],away=a['name'],home_abbr=h.get('tla') or h['shortName'],away_abbr=a.get('tla') or a['shortName'],
             home_id=h['id'],away_id=a['id'],start=m['utcDate'],state=state,status=m.get('display_status') or m['status'],
             clock=m.get('clock'),period=m.get('period'),display_home_score=m.get('display_home_score',score[0] if score else None),display_away_score=m.get('display_away_score',score[1] if score else None),score_updated=store.now(),season_type=2,venue=m.get('venue') or 'Venue not supplied',
             home_score=score[0] if state=='post' else None,away_score=score[1] if state=='post' else None,
@@ -85,7 +85,8 @@ def espn_match(event):
     def display(t):
         score=t.get('score');return int(score['value'] if isinstance(score,dict) else score) if score is not None and status.get('state') in ('in','post') else None
     def goals(t):return display(t) if final else None
-    return {'id':'espn-'+str(event['id']),'utcDate':event['date'],'status':state,'homeTeam':team(h),'awayTeam':team(a),
+    from .market_reference import reference
+    return {'market_reference':reference(c,store.now(),require_draw=True),'id':'espn-'+str(event['id']),'utcDate':event['date'],'status':state,'homeTeam':team(h),'awayTeam':team(a),
         'clock':c['status'].get('displayClock'),'period':c['status'].get('period'),'display_status':status.get('description'),'display_home_score':display(h),'display_away_score':display(a),
         'venue':c.get('venue',{}).get('fullName'),'score':{'duration':'REGULAR','fullTime':{'home':goals(h),'away':goals(a)}},
         'source_url':next((l['href'] for l in event.get('links',[]) if 'desktop' in l.get('rel',[])), 'https://www.espn.com/soccer/scoreboard/_/league/uefa.champions')}
