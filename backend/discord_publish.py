@@ -26,7 +26,7 @@ def sync(state,feed):
                 p['outcome']=latest['outcome'];p['final']=latest.get('final')
     all_legs=[p for s in state['slates'].values() for p in s['legs']]
     state['record']={key:sum(p.get('outcome')==outcome for p in all_legs) for key,outcome in [('wins','win'),('losses','loss'),('pushes','push'),('pending',None)]}
-def prepare(state,feed,now,force=False):
+def _prepare_exact(state,feed,now,force=False):
     local=now.astimezone(TORONTO);day=local.date().isoformat();sync(state,feed)
     if local.hour==3 or force:
         key='slip:'+day
@@ -60,10 +60,18 @@ def prepare(state,feed,now,force=False):
         return key,'\n'.join(lines),None
     return None
 
+def prepare(state,feed,now,force=False):
+    local=now.astimezone(TORONTO);day=local.date().isoformat()
+    if force:return _prepare_exact(state,feed,now,True)
+    if local.hour>=2 and 'results:'+day not in state['sent']:
+        return _prepare_exact(state,feed,local.replace(hour=2).astimezone(timezone.utc))
+    if local.hour>=3:return _prepare_exact(state,feed,now,True)
+    sync(state,feed);return None
+
 SOCCER=('ucl','epl','laliga','ligue1','bundesliga','seriea')
 def top_plans(state,feeds,now,force=False,football=''):
     local=now.astimezone(TORONTO)
-    if local.hour!=3 and not force:return []
+    if local.hour<3 and not force:return []
     day=local.date().isoformat();jobs=[]
     groups=[('NBA',('nba',)),('NHL',('nhl',)),('NFL',('nfl',)),('SOCCER',SOCCER)]
     if football=='ncaaf':groups.insert(3,('CFB',('ncaaf',)))
@@ -128,7 +136,7 @@ def sync_top(state,trackers):
 
 def recap_jobs(state,now):
     local=now.astimezone(TORONTO)
-    if local.hour!=2:return []
+    if local.hour<2:return []
     day=local.date().isoformat();previous=(local.date()-timedelta(days=1)).isoformat();jobs=[];all_legs=[]
     for title in ('NBA','NHL','NFL','CFB','SOCCER'):
         slate=next((v for v in state.get('top_slates',{}).values() if v['day']==previous and v['sport']==title),None)
@@ -170,6 +178,37 @@ def send(url,content):
             raise RuntimeError(f'Discord delivery failed (HTTP {e.code}); secret not logged') from None
         except URLError:raise RuntimeError('Discord connection failed; secret not logged') from None
     raise RuntimeError('Discord rate limit persisted')
+SCOREBOARDS={'nhl':('hockey','nhl'),'nba':('basketball','nba'),'nfl':('football','nfl'),'ncaaf':('football','college-football')}
+def apply_finals(state,sport,events):
+    finals={}
+    for e in events:
+        for comp in e.get('competitions',[]):
+            status=comp.get('status',e.get('status',{})).get('type',{})
+            if not status.get('completed'):continue
+            teams={c['homeAway']:c for c in comp.get('competitors',[]) if c.get('homeAway') in ('home','away')}
+            if len(teams)!=2:continue
+            try:h=int(teams['home']['score']);a=int(teams['away']['score'])
+            except (ValueError,KeyError,TypeError):continue
+            if sport=='nhl' and h==a:continue
+            finals[str(e['id'])]=(h,a)
+    for slate in state.get('top_slates',{}).values():
+        for p in slate['legs']:
+            if p.get('sport')!=sport or p['side'] not in ('home','away','draw'):continue
+            result=finals.get(str(p.get('id',p['game_key'].rsplit(':',1)[-1])))
+            if not result:continue
+            h,a=result
+            p['outcome']='push' if h==a else ('win' if (h>a)==(p['side']=='home') else 'loss')
+            p['final']={'home_score':h,'away_score':a,'source':'ESPN confirmed final'}
+def refresh_finals(state):
+    for sport,(category,league) in SCOREBOARDS.items():
+        days={v['day'] for v in state.get('top_slates',{}).values() if any(p.get('sport')==sport and p.get('outcome') is None for p in v['legs'])}
+        for day in days:
+            url=f"https://site.api.espn.com/apis/site/v2/sports/{category}/{league}/scoreboard?dates={day.replace('-','')}&limit=1000"
+            try:
+                with urlopen(url,timeout=20) as r:data=json.load(r)
+                apply_finals(state,sport,data.get('events',[]))
+            except (HTTPError,URLError):print(f'{sport}: final scoreboard unavailable; preserving pending status')
+
 def main():
     path=Path(os.environ['DISCORD_STATE']);state=read(path,fresh_state())
     if state.get('version')!=3:raise RuntimeError('Use a new tracker state file for the new AI series')
@@ -179,8 +218,11 @@ def main():
         today=now.astimezone(TORONTO).date().isoformat()
         state['sent']={k:v for k,v in state['sent'].items() if not (k=='slip:'+today or k.startswith('top:') and k.endswith(':'+today))}
         state['top_slates']={k:v for k,v in state.get('top_slates',{}).items() if v['day']!=today}
+    if os.getenv('CORRECT_RECAP','false').lower()=='true':
+        today=now.astimezone(TORONTO).date().isoformat()
+        state['sent']={k:v for k,v in state['sent'].items() if not ((k.startswith('results:') or k.startswith('recap:')) and k.endswith(':'+today))}
     job=prepare(state,feed,now,force);jobs=[job] if job else []
-    if now.astimezone(TORONTO).hour==3 or force:
+    if (now.astimezone(TORONTO).hour>=3 or force) and (job is None or not job[0].startswith('results:')):
         # One freshness check gates all pick lists.
         if not feed.get('updated') or not 0<=(now-instant(feed['updated'])).total_seconds()<=7200:
             raise RuntimeError('Snapshot is stale; no pick lists sent')
@@ -190,14 +232,14 @@ def main():
                 with urlopen(SITE+f'data/{sport}/{day}-favorites.json',timeout=20) as r:feeds[sport]=json.load(r)
             except (HTTPError,URLError):print(f'{sport}: current favorites unavailable; no fabricated selections')
         jobs+=top_plans(state,feeds,now,force,os.getenv('FOOTBALL_LEAGUE',''))
-    if now.astimezone(TORONTO).hour==2 and not force:
+    if now.astimezone(TORONTO).hour>=2 and not force:
         trackers={}
         sports={p.get('sport') for v in state.get('top_slates',{}).values() for p in v['legs'] if p.get('sport')}
         for sport in sports:
             try:
                 with urlopen(SITE+f'data/{sport}-tracker.json',timeout=20) as r:trackers[sport]=json.load(r)
             except (HTTPError,URLError):print(f'{sport}: results unavailable; keeping pending')
-        sync_top(state,trackers);jobs+=recap_jobs(state,now)
+        sync_top(state,trackers);refresh_finals(state);jobs+=recap_jobs(state,now)
     for key,content,slate in jobs:
         url=os.getenv('DISCORD_WEBHOOK_URL','')
         if not url:raise RuntimeError('DISCORD_WEBHOOK_URL is not configured')

@@ -7,15 +7,15 @@ class MorningTests(unittest.TestCase):
   self.legs=[{'game_key':str(i),'side':'home','home':'CLE','away':'WSH','label':'CLE ML','start':'2026-10-28T23:00Z','probability':.65,'outcome':None} for i in range(5)]
   self.feed={'updated':self.now.isoformat(),'days':[{'day':'2026-10-28','legs':self.legs}]}
  def test_six_am_plain_three_max(self):
-  s=fresh_state();job=prepare(s,self.feed,self.now);self.assertEqual(len(job[2]['legs']),3);self.assertEqual(job[1],'CLE ML\nCLE ML\nCLE ML');self.assertNotIn('http',job[1]);self.assertNotIn('@',job[1]);s['sent'][job[0]]='sent';self.assertIsNone(prepare(s,self.feed,self.now))
+  s=fresh_state();s['sent']['results:2026-10-28']='sent';job=prepare(s,self.feed,self.now);self.assertEqual(len(job[2]['legs']),3);self.assertEqual(job[1],'CLE ML\nCLE ML\nCLE ML');self.assertNotIn('http',job[1]);self.assertNotIn('@',job[1]);s['sent'][job[0]]='sent';self.assertIsNone(prepare(s,self.feed,self.now))
  def test_initial_zero_and_results(self):
   s=fresh_state();now=datetime(2026,10,28,6,tzinfo=timezone.utc);job=prepare(s,self.feed,now);self.assertIn('AI Play 0-0',job[1])
   s['slates']['2026-10-27']={'legs':[dict(self.legs[0])]};self.legs[0]['outcome']='win';sync(s,self.feed);self.assertEqual(s['record']['wins'],1);self.assertIn('AI Play 1-0',prepare(s,self.feed,now)[1])
  def test_timezone_and_off_hours(self):
-  self.assertIsNone(prepare(fresh_state(),self.feed,datetime(2026,10,28,8,tzinfo=timezone.utc)))
+  self.assertIsNone(prepare(fresh_state(),self.feed,datetime(2026,10,28,5,tzinfo=timezone.utc)))
   winter=datetime(2026,12,1,7,tzinfo=timezone.utc);self.assertIn('AI Play 0-0',prepare(fresh_state(),{},winter)[1])
  def test_no_backfill_no_stale_picks(self):
-  s=fresh_state();self.feed['updated']='2026-10-27T01:00Z'
+  s=fresh_state();s['sent']['results:2026-10-28']='sent';self.feed['updated']='2026-10-27T01:00Z'
   with self.assertRaises(RuntimeError):prepare(s,self.feed,self.now)
   self.assertEqual(s['record']['wins'],0)
  def test_pending_not_a_loss(self):
@@ -56,3 +56,18 @@ class RecapTests(unittest.TestCase):
   s['slates']['2026-10-27']['legs'][0]['outcome']='win'
   jobs=recap_jobs(s,datetime(2026,10,28,6,tzinfo=timezone.utc))
   self.assertIn('✅',jobs[0][1]);self.assertIn('100% Win Rate',jobs[0][1]);self.assertIn('1 unique selections',jobs[-1][1]);self.assertIn('pending',result_summary([p]))
+
+class CatchupTests(unittest.TestCase):
+ def test_late_recap(self):
+  now=datetime(2026,10,29,15,tzinfo=timezone.utc);s=fresh_state();job=prepare(s,{},now)
+  self.assertEqual(job[0],'results:2026-10-29')
+ def test_completed_nhl_settles_without_snapshot_refresh(self):
+  from discord_publish import apply_finals
+  p={'game_key':'live:nhl:1','id':'1','side':'home','sport':'nhl','outcome':None}
+  state=fresh_state();state['top_slates']={'a':{'legs':[p]}}
+  e={'id':'1','status':{'type':{'completed':True}},'competitions':[{'competitors':[{'homeAway':'home','score':'4'},{'homeAway':'away','score':'0'}]}]}
+  apply_finals(state,'nhl',[e]);self.assertEqual(p['outcome'],'win')
+ def test_live_game_not_graded(self):
+  from discord_publish import apply_finals
+  p={'game_key':'live:nhl:1','id':'1','side':'home','sport':'nhl','outcome':None};state=fresh_state();state['top_slates']={'a':{'legs':[p]}}
+  apply_finals(state,'nhl',[{'id':'1','status':{'type':{'completed':False}},'competitions':[]}]);self.assertIsNone(p['outcome'])
