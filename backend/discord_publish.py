@@ -28,7 +28,7 @@ def sync(state,feed):
     state['record']={key:sum(p.get('outcome')==outcome for p in all_legs) for key,outcome in [('wins','win'),('losses','loss'),('pushes','push'),('pending',None)]}
 def prepare(state,feed,now,force=False):
     local=now.astimezone(TORONTO);day=local.date().isoformat();sync(state,feed)
-    if local.hour==6 or force:
+    if local.hour==3 or force:
         key='slip:'+day
         if key in state['sent']:return None
         # Stale snapshots cannot create a new prospective slip.
@@ -44,7 +44,7 @@ def prepare(state,feed,now,force=False):
             if len(legs)==3:break
         content=slip(legs) if legs else 'No AI play today.'
         return key,content,{'day':day,'legs':legs}
-    if local.hour==3:
+    if local.hour==2:
         key='results:'+day
         if key in state['sent']:return None
         previous=(local.date()-timedelta(days=1)).isoformat();slate=state['slates'].get(previous)
@@ -63,7 +63,7 @@ def prepare(state,feed,now,force=False):
 SOCCER=('ucl','epl','laliga','ligue1','bundesliga','seriea')
 def top_plans(state,feeds,now,force=False,football=''):
     local=now.astimezone(TORONTO)
-    if local.hour!=6 and not force:return []
+    if local.hour!=3 and not force:return []
     day=local.date().isoformat();jobs=[]
     groups=[('NBA',('nba',)),('NHL',('nhl',)),('NFL',('nfl',)),('SOCCER',SOCCER)]
     if football=='ncaaf':groups.insert(3,('CFB',('ncaaf',)))
@@ -128,7 +128,7 @@ def sync_top(state,trackers):
 
 def recap_jobs(state,now):
     local=now.astimezone(TORONTO)
-    if local.hour!=3:return []
+    if local.hour!=2:return []
     day=local.date().isoformat();previous=(local.date()-timedelta(days=1)).isoformat();jobs=[];all_legs=[]
     for title in ('NBA','NHL','NFL','CFB','SOCCER'):
         slate=next((v for v in state.get('top_slates',{}).values() if v['day']==previous and v['sport']==title),None)
@@ -180,7 +180,7 @@ def main():
         state['sent']={k:v for k,v in state['sent'].items() if not (k=='slip:'+today or k.startswith('top:') and k.endswith(':'+today))}
         state['top_slates']={k:v for k,v in state.get('top_slates',{}).items() if v['day']!=today}
     job=prepare(state,feed,now,force);jobs=[job] if job else []
-    if now.astimezone(TORONTO).hour==6 or force:
+    if now.astimezone(TORONTO).hour==3 or force:
         # One freshness check gates all pick lists.
         if not feed.get('updated') or not 0<=(now-instant(feed['updated'])).total_seconds()<=7200:
             raise RuntimeError('Snapshot is stale; no pick lists sent')
@@ -190,7 +190,7 @@ def main():
                 with urlopen(SITE+f'data/{sport}/{day}-favorites.json',timeout=20) as r:feeds[sport]=json.load(r)
             except (HTTPError,URLError):print(f'{sport}: current favorites unavailable; no fabricated selections')
         jobs+=top_plans(state,feeds,now,force,os.getenv('FOOTBALL_LEAGUE',''))
-    if now.astimezone(TORONTO).hour==3 and not force:
+    if now.astimezone(TORONTO).hour==2 and not force:
         trackers={}
         sports={p.get('sport') for v in state.get('top_slates',{}).values() for p in v['legs'] if p.get('sport')}
         for sport in sports:
