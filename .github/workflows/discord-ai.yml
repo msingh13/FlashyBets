@@ -45,6 +45,8 @@ jobs:
     needs: freshness
     if: needs.freshness.outputs.refresh == 'true'
     uses: ./.github/workflows/pages.yml
+    with:
+      skip_if_fresh: true
     secrets: inherit
   discord:
     needs: [freshness, refresh-data]
