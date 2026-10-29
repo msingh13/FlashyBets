@@ -14,20 +14,50 @@ on:
         description: 'Send corrected recap using fresh final scores'
         type: boolean
         default: false
+  workflow_run:
+    workflows: ['Update predictions and publish FlashyBets']
+    types: [completed]
   schedule:
     # Retry throughout the day; local-time gates and delivery keys prevent duplicates.
     - cron: '7,17,27,37,47,57 * * * *'
 permissions:
   contents: write
+  pages: write
+  id-token: write
 concurrency:
   group: discord-ai-morning
   cancel-in-progress: false
 jobs:
-  discord:
+  freshness:
     runs-on: ubuntu-latest
-    timeout-minutes: 4
+    timeout-minutes: 2
+    outputs:
+      refresh: ${{ steps.check.outputs.refresh }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
+      - id: check
+        env:
+          POST_NOW: ${{ inputs.post_now || 'false' }}
+        run: python3 backend/discord_preflight.py
+  refresh-data:
+    needs: freshness
+    if: needs.freshness.outputs.refresh == 'true'
+    uses: ./.github/workflows/pages.yml
+    secrets: inherit
+  discord:
+    needs: [freshness, refresh-data]
+    if: always() && needs.freshness.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: model-data
+          path: model-snapshot
+          persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -45,6 +75,8 @@ jobs:
         working-directory: backend
         run: python -m unittest test_discord_publish -q
       - name: Post only due morning message
+        id: post
+        continue-on-error: true
         working-directory: backend
         env:
           CORRECT_RECAP: ${{ inputs.correct_recap || 'false' }}
@@ -52,15 +84,23 @@ jobs:
           POST_NOW: ${{ inputs.post_now || 'false' }}
           FOOTBALL_LEAGUE: ${{ vars.FOOTBALL_LEAGUE || 'ncaaf' }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          PUBLISH_DIR: ../model-snapshot/data
           DISCORD_STATE: ${{ runner.temp }}/discord-ai-state/ai-play-tracker.json
         run: python discord_publish.py
       - name: Preserve fresh AI series
+        if: always()
         run: |
           state_dir="$RUNNER_TEMP/discord-ai-state"
           git -C "$state_dir" config user.name 'github-actions[bot]'
           git -C "$state_dir" config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if [ ! -f "$state_dir/ai-play-tracker.json" ]; then exit 0; fi
           git -C "$state_dir" add ai-play-tracker.json
           if ! git -C "$state_dir" diff --cached --quiet; then
             git -C "$state_dir" commit -m 'Track announced AI plays and morning delivery'
             git -C "$state_dir" push origin HEAD:refs/heads/discord-data
           fi
+      - name: Report delivery failure
+        if: always() && steps.post.outcome == 'failure'
+        run: |
+          echo 'Discord delivery failed; successful sends were preserved and the next scheduled run will retry.'
+          exit 1
