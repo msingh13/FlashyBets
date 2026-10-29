@@ -71,3 +71,22 @@ class CatchupTests(unittest.TestCase):
   from discord_publish import apply_finals
   p={'game_key':'live:nhl:1','id':'1','side':'home','sport':'nhl','outcome':None};state=fresh_state();state['top_slates']={'a':{'legs':[p]}}
   apply_finals(state,'nhl',[{'id':'1','status':{'type':{'completed':False}},'competitions':[]}]);self.assertIsNone(p['outcome'])
+
+class AutomaticFreshnessTests(unittest.TestCase):
+ def test_missing_due_picks_refresh_automatically(self):
+  from discord_preflight import needs_refresh
+  now=datetime(2026,10,29,14,tzinfo=timezone.utc)
+  self.assertTrue(needs_refresh({'sent':{}},{'updated':'2026-10-29T09:00Z'},now))
+  self.assertFalse(needs_refresh({'sent':{}},{'updated':now.isoformat()},now))
+ def test_completed_day_does_not_keep_rebuilding(self):
+  from discord_preflight import needs_refresh
+  now=datetime(2026,10,29,14,tzinfo=timezone.utc)
+  self.assertFalse(needs_refresh({'sent':{'slip:2026-10-29':'sent'}},{},now))
+ def test_results_do_not_wait_for_model_refresh(self):
+  from discord_preflight import needs_refresh
+  now=datetime(2026,10,29,6,tzinfo=timezone.utc)
+  self.assertFalse(needs_refresh({'sent':{}},{},now))
+ def test_refresh_force_and_bad_timestamp(self):
+  from discord_preflight import needs_refresh
+  now=datetime(2026,10,29,6,tzinfo=timezone.utc)
+  self.assertTrue(needs_refresh({'sent':{}},{},now,True))

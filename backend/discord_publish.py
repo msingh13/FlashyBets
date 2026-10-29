@@ -94,6 +94,7 @@ def top_plans(state,feeds,now,force=False,football=''):
 THEMES={'NBA':('🏀',0xF59E0B),'NHL':('🏒',0x38BDF8),'NFL':('🏈',0x22C55E),
         'CFB':('🏟️',0xA78BFA),'SOCCER':('⚽',0x14B8A6)}
 def card_message(key,content,slate,record):
+    if key.startswith('delay:'):return content
     if key.startswith('recap:'):
         sport=slate['sport'];icon,color=THEMES.get(sport,('🏁',0xE5E7EB))
         return {'embeds':[{'title':f'{icon} '+('GRAND TOTAL' if sport=='TOTAL' else sport+' • RESULTS'),'description':slate['day']+'\n\n'+content,'color':color}]}
@@ -209,10 +210,19 @@ def refresh_finals(state):
                 apply_finals(state,sport,data.get('events',[]))
             except (HTTPError,URLError):print(f'{sport}: final scoreboard unavailable; preserving pending status')
 
+def load_feed(relative):
+    root=os.getenv('PUBLISH_DIR')
+    if root:
+        path=Path(root)/relative
+        if path.is_file():return json.loads(path.read_text())
+    with urlopen(SITE+'data/'+relative,timeout=30) as response:return json.load(response)
+
 def main():
     path=Path(os.environ['DISCORD_STATE']);state=read(path,fresh_state())
     if state.get('version')!=3:raise RuntimeError('Use a new tracker state file for the new AI series')
-    with urlopen(SITE+'data/flashy-ai.json',timeout=30) as r:feed=json.load(r)
+    try:feed=load_feed('flashy-ai.json')
+    except (HTTPError,URLError,TimeoutError):
+        feed={'days':[]};print('AI snapshot temporarily unavailable; retaining recorded results.')
     now=datetime.now(timezone.utc);force=os.getenv('POST_NOW','false').lower()=='true'
     if os.getenv('REPLACE_POSTS','false').lower()=='true':
         today=now.astimezone(TORONTO).date().isoformat()
@@ -221,25 +231,33 @@ def main():
     if os.getenv('CORRECT_RECAP','false').lower()=='true':
         today=now.astimezone(TORONTO).date().isoformat()
         state['sent']={k:v for k,v in state['sent'].items() if not ((k.startswith('results:') or k.startswith('recap:')) and k.endswith(':'+today))}
-    job=prepare(state,feed,now,force);jobs=[job] if job else []
-    if (now.astimezone(TORONTO).hour>=3 or force) and (job is None or not job[0].startswith('results:')):
+    stale=False
+    try:job=prepare(state,feed,now,force)
+    except RuntimeError as e:
+        if 'stale' not in str(e).lower():raise
+        stale=True;job=None;print('Picks deferred: fresh model data required. Results can still proceed.')
+    jobs=[job] if job else []
+    if not stale and (now.astimezone(TORONTO).hour>=3 or force) and (job is None or not job[0].startswith('results:')):
         # One freshness check gates all pick lists.
         if not feed.get('updated') or not 0<=(now-instant(feed['updated'])).total_seconds()<=7200:
-            raise RuntimeError('Snapshot is stale; no pick lists sent')
-        day=now.astimezone(TORONTO).date().isoformat();feeds={}
-        for sport in ('nba','nhl','nfl','ncaaf')+SOCCER:
-            try:
-                with urlopen(SITE+f'data/{sport}/{day}-favorites.json',timeout=20) as r:feeds[sport]=json.load(r)
-            except (HTTPError,URLError):print(f'{sport}: current favorites unavailable; no fabricated selections')
-        jobs+=top_plans(state,feeds,now,force,os.getenv('FOOTBALL_LEAGUE',''))
+            stale=True;print('Top lists deferred until the next fresh-data update.')
+        if not stale:
+            day=now.astimezone(TORONTO).date().isoformat();feeds={}
+            for sport in ('nba','nhl','nfl','ncaaf')+SOCCER:
+                try:feeds[sport]=load_feed(f'{sport}/{day}-favorites.json')
+                except (HTTPError,URLError):print(f'{sport}: favorites unavailable; no fabricated selections')
+            jobs+=top_plans(state,feeds,now,force,os.getenv('FOOTBALL_LEAGUE',''))
     if now.astimezone(TORONTO).hour>=2 and not force:
         trackers={}
         sports={p.get('sport') for v in state.get('top_slates',{}).values() for p in v['legs'] if p.get('sport')}
         for sport in sports:
             try:
-                with urlopen(SITE+f'data/{sport}-tracker.json',timeout=20) as r:trackers[sport]=json.load(r)
+                trackers[sport]=load_feed(f'{sport}-tracker.json')
             except (HTTPError,URLError):print(f'{sport}: results unavailable; keeping pending')
         sync_top(state,trackers);refresh_finals(state);jobs+=recap_jobs(state,now)
+    notice='delay:'+now.astimezone(TORONTO).date().isoformat()
+    if stale and notice not in state['sent']:
+        jobs.append((notice,'⚡ FlashyBet update: today’s plays are delayed while current data refreshes. They will post automatically once ready.',None))
     for key,content,slate in jobs:
         url=os.getenv('DISCORD_WEBHOOK_URL','')
         if not url:raise RuntimeError('DISCORD_WEBHOOK_URL is not configured')
