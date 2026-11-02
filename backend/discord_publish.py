@@ -255,9 +255,11 @@ def main():
                 trackers[sport]=load_feed(f'{sport}-tracker.json')
             except (HTTPError,URLError):print(f'{sport}: results unavailable; keeping pending')
         sync_top(state,trackers);refresh_finals(state);jobs+=recap_jobs(state,now)
-    notice='delay:'+now.astimezone(TORONTO).date().isoformat()
-    if stale and notice not in state['sent']:
-        jobs.append((notice,'⚡ FlashyBet update: today’s plays are delayed while current data refreshes. They will post automatically once ready.',None))
+    # Refresh status belongs in Actions logs, not the public channel. A stale
+    # snapshot can occur after today's messages were already delivered. Keep
+    # delivery keys unchanged so scheduled retries remain safe and idempotent.
+    if stale:
+        print('Snapshot refresh pending; no public delay notification sent. Scheduled retries remain enabled.')
     for key,content,slate in jobs:
         url=os.getenv('DISCORD_WEBHOOK_URL','')
         if not url:raise RuntimeError('DISCORD_WEBHOOK_URL is not configured')
