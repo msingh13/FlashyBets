@@ -90,3 +90,27 @@ class AutomaticFreshnessTests(unittest.TestCase):
   from discord_preflight import needs_refresh
   now=datetime(2026,10,29,6,tzinfo=timezone.utc)
   self.assertTrue(needs_refresh({'sent':{}},{},now,True))
+
+class QuietRefreshTests(unittest.TestCase):
+ def run_stale_refresh(self, already_sent):
+  import tempfile,os
+  from pathlib import Path
+  from unittest.mock import patch
+  import discord_publish as publisher
+  now=datetime(2026,11,2,18,tzinfo=timezone.utc)
+  state=fresh_state()
+  # Recaps are already delivered; isolate a routine afternoon refresh.
+  state['sent']={'results:2026-11-02':'sent','recap:TOTAL:2026-11-02':'sent'}
+  if already_sent:state['sent']['slip:2026-11-02']='sent'
+  with tempfile.TemporaryDirectory() as directory:
+   path=Path(directory)/'state.json';path.write_text(json.dumps(state))
+   with patch.dict(os.environ,{'DISCORD_STATE':str(path),'POST_NOW':'false','REPLACE_POSTS':'false','CORRECT_RECAP':'false'},clear=True), patch.object(publisher,'datetime') as clock, patch.object(publisher,'load_feed',return_value={'updated':'2026-11-01T00:00:00Z','days':[]}), patch.object(publisher,'send') as send:
+    clock.now.return_value=now
+    clock.fromisoformat.side_effect=datetime.fromisoformat
+    publisher.main()
+    send.assert_not_called()
+   saved=json.loads(path.read_text())
+   self.assertEqual(saved['sent'],state['sent'])
+   self.assertFalse(any(key.startswith('delay:') for key in saved['sent']))
+ def test_no_false_delay_after_daily_delivery(self):self.run_stale_refresh(True)
+ def test_stale_retry_stays_quiet_without_consuming_delivery_key(self):self.run_stale_refresh(False)

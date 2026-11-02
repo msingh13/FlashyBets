@@ -1,0 +1,21 @@
+name: Notification reliability checks
+on:
+  pull_request:
+    paths:
+      - 'backend/discord*.py'
+      - 'backend/test_discord_publish.py'
+      - '.github/workflows/**'
+  push:
+    branches: ['codex/fix-workflow-delay-notices']
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify notification timing without sending messages
+        run: python -m unittest discover -s backend -p test_discord_publish.py -q
