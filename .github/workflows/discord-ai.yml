@@ -18,7 +18,9 @@ on:
     workflows: ['Update predictions and publish FlashyBets']
     types: [completed]
   schedule:
-    # Retry throughout the day; local-time gates and delivery keys prevent duplicates.
+    # Target 02:00 results / 03:00 plays in Toronto, including daylight saving.
+    # UTC boundary triggers plus retries; local gates prevent early/duplicate sends.
+    - cron: '0 6,7,8 * * *'
     - cron: '7,17,27,37,47,57 * * * *'
 permissions:
   contents: write
