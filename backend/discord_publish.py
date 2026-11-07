@@ -13,6 +13,11 @@ def read(path,default):
     try:return json.loads(path.read_text())
     except FileNotFoundError:return default
 def fresh_state():return {'version':3,'slates':{},'sent':{},'record':{'wins':0,'losses':0,'pushes':0,'pending':0}}
+def ml_price_allowed(p):
+    """The -900 boundary is inclusive; absent prices are not fabricated."""
+    price=p.get('odds')
+    return price is None or float(price)>=-900
+
 def label(p):
     name=p['label'].replace('**','').strip()
     return name if p['side'] in ('home','away','draw') else f"{p['away']} vs {p['home']} {name}"
@@ -39,7 +44,7 @@ def _prepare_exact(state,feed,now,force=False):
         for p in (card or {}).get('legs',[]):
             if p['game_key'] in seen or p.get('current_warning') or p.get('outcome') or instant(p['start'])<=now:continue
             if p.get('conditional',p.get('probability',0))<.60:continue
-            if p['side'] in ('home','away','draw') and p.get('probability',0)<=.536:continue
+            if p['side'] in ('home','away','draw') and (p.get('probability',0)<=.536 or not ml_price_allowed(p)):continue
             seen.add(p['game_key']);legs.append(dict(p,outcome=None))
             if len(legs)==3:break
         content=slip(legs) if legs else 'No AI play today.'
@@ -82,7 +87,7 @@ def top_plans(state,feeds,now,force=False,football=''):
         for league in leagues:
             for p in feeds.get(league,{}).get('moneylines',[]):
                 if p.get('current_warning') or p.get('outcome') or instant(p['start'])<=now:continue
-                if p['game_key'] in seen or p.get('probability',0)<=.536:continue
+                if p['game_key'] in seen or p.get('probability',0)<=.536 or not ml_price_allowed(p):continue
                 seen.add(p['game_key']);options.append(dict(p,sport=league))
         options.sort(key=lambda p:-p.get('probability',0))
         legs=options[:5]
@@ -146,6 +151,7 @@ def recap_jobs(state,now):
         if key in state['sent']:continue
         text='\n'.join(MARKS.get(p.get('outcome'),'⏳')+' '+label(p) for p in legs)+'\n\n'+result_summary(legs)
         jobs.append((key,text,{'sport':title,'day':previous,'legs':[]}))
+    sport_ids={(p['game_key'],p['side'],p.get('line') if p['side'] in ('over','under') else None) for p in all_legs}
     ai=state['slates'].get(previous,{}).get('legs',[]);all_legs+=ai
     unique={}
     for p in all_legs:
@@ -153,7 +159,8 @@ def recap_jobs(state,now):
         if identity not in unique or p.get('outcome') is not None:unique[identity]=p
     key='recap:TOTAL:'+day
     if key not in state['sent']:
-        legs=list(unique.values());text=result_summary(legs)+'\n'+f"{len(legs)} unique selections · AI + sport lists"
+        legs=list(unique.values());extra_ai=len(set(unique)-sport_ids)
+        text=result_summary(legs)+'\n'+f"{len(sport_ids)} sport-list picks + {extra_ai} additional AI selection(s) = {len(legs)} unique selections\nAI picks already in sport lists count once."
         jobs.append((key,text,{'sport':'TOTAL','day':previous,'legs':[]}))
     return jobs
 
