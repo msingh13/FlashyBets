@@ -31,6 +31,7 @@ def build(day,mode,path=None,at=None):
         options=[picks.chosen(g,k) for k in (('ml','total','btts') if g['sport'] in SOCCER else ('ml','total'))]
         for p in options:
             if p['conditional']<.60:continue
+            if p['side'] in ('home','away','draw') and not picks.ml_price_allowed(p):continue
             ref=g.get('market_reference')
             if ref and p['side'] in ('home','away') and abs(p['probability']-ref[p['side']])>.15:continue
             fresh=False

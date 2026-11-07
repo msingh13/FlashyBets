@@ -3,6 +3,10 @@ from .sports import SOCCER
 import json,math
 from . import store
 
+def ml_price_allowed(pick):
+    price=pick.get('odds')
+    return price is None or float(price)>=-900
+
 def withheld_keys(path=None):
     # Latest live review gates current recommendations without editing old records.
     with store.connect(path) as c:rows=c.execute('SELECT payload FROM snapshots ORDER BY created DESC').fetchall()
@@ -45,7 +49,7 @@ def build(sport,day,mode,path=None,at=None):
         if store.instant(g['start']).astimezone(ZoneInfo('America/Toronto')).date().isoformat()!=day or store.instant(g['start'])<=store.instant(at):continue
         if store.key(g) in blocked:continue
         pick=chosen(g,'ml')
-        if pick['conditional']>=.52:candidates.append(pick)
+        if pick['conditional']>=.52 and ml_price_allowed(pick):candidates.append(pick)
     legs=sorted(candidates,key=lambda x:(-x['probability'],x['start'],x['game_key']))[:5]
     if len(legs)<4:return None
     card={'key':card_key,'day':day,'sport':sport,'mode':mode,'created':at,'legs':legs,'experimental':not all(x['context_ready'] for x in legs),
@@ -87,6 +91,7 @@ def favorites(sport,day,mode,path=None):
         if not r and store.instant(g['start'])>store.instant(store.now()) and store.key(g) in blocked:continue
         for kind,target in ([('ml',ml),('total',totals),('btts',btts)] if sport in SOCCER else [('ml',ml),('total',totals)]):
             p=chosen(g,kind)
+            if kind=='ml' and not r and not ml_price_allowed(p):continue
             if r:p['outcome']=store.outcome('soccer_'+p['side'] if sport in SOCCER and p['side'] in ('home','away') else p['side'],r['home_score'],r['away_score'],p['line'])
             target.append(p)
     ml.sort(key=lambda x:-x['probability']);totals.sort(key=lambda x:-x['conditional'])
