@@ -99,7 +99,7 @@ def top_plans(state,feeds,now,force=False,football=''):
 THEMES={'NBA':('🏀',0xF59E0B),'NHL':('🏒',0x38BDF8),'NFL':('🏈',0x22C55E),
         'CFB':('🏟️',0xA78BFA),'SOCCER':('⚽',0x14B8A6)}
 def card_message(key,content,slate,record):
-    if key.startswith('delay:'):return content
+    if key.startswith(('delay:', 'pregame:')):return content
     if key.startswith('recap:'):
         sport=slate['sport'];icon,color=THEMES.get(sport,('🏁',0xE5E7EB))
         return {'embeds':[{'title':f'{icon} '+('GRAND TOTAL' if sport=='TOTAL' else sport+' • RESULTS'),'description':slate['day']+'\n\n'+content,'color':color}]}
@@ -224,6 +224,57 @@ def load_feed(relative):
         if path.is_file():return json.loads(path.read_text())
     with urlopen(SITE+'data/'+relative,timeout=30) as response:return json.load(response)
 
+def pregame_alerts(state, now):
+    """Compare refreshed boards with the picks actually sent to Discord."""
+    day = now.astimezone(TORONTO).date().isoformat()
+    slates = [state['slates'].get(day, {})]
+    slates += [s for s in state.get('top_slates', {}).values() if s['day'] == day]
+    boards = {}
+    jobs = {}
+    for slate in slates:
+        for pick in slate.get('legs', []):
+            side = pick['side']
+            if side not in ('home', 'away', 'draw') or instant(pick['start']) <= now:
+                continue
+            _, sport, game_id = pick['game_key'].split(':', 2)
+            if sport not in ('nba', 'nhl', 'nfl', 'ncaaf', *SOCCER):
+                continue
+            if sport not in boards:
+                try:
+                    data = load_feed(f'{sport}/{day}.json')
+                except (HTTPError, URLError, TimeoutError, ValueError):
+                    data = {}
+                boards[sport] = {str(g['id']): g for g in data.get('games', [])}
+            game = boards[sport].get(game_id)
+            if not game or game.get('state') != 'pre' or not game.get('prediction'):
+                continue
+            if not 0 <= (now - instant(game['updated'])).total_seconds() <= 1800:
+                continue
+            forecast = game['prediction']
+            sides = [s for s in ('home', 'away', 'draw') if s in forecast]
+            favorite = max(sides, key=forecast.get)
+            prefix = f"pregame:{day}:{pick['game_key']}:{side}:"
+            reasons = {}
+            if side in forecast and forecast[favorite] > forecast[side]:
+                name = 'Draw' if favorite == 'draw' else game[favorite + '_abbr']
+                reasons['flip'] = (f"Model lean changed to {name} ({forecast[favorite]:.1%}). "
+                                   f"Posted side: {pick['probability']:.1%} → {forecast[side]:.1%}.")
+            market = (game.get('markets') or {}).get(side)
+            reference = game.get('market_reference') or {}
+            updated = game.get('odds_updated')
+            price = None
+            if market and updated and 0 <= (now - instant(updated)).total_seconds() <= 1200:
+                price = market.get('odds')
+            if price is None:
+                price = reference.get(side + '_odds')
+            if price is not None and price < -900:
+                reasons['price'] = f'Book reference {price:+g} is past the −900 cutoff.'
+            for kind, detail in reasons.items():
+                key = prefix + kind
+                if key not in state['sent']:
+                    jobs[key] = (key, f'⚡ Pregame update · {label(pick)}\n{detail} The original pick stays in the tracker.', None)
+    return list(jobs.values())
+
 def main():
     path=Path(os.environ['DISCORD_STATE']);state=read(path,fresh_state())
     if state.get('version')!=3:raise RuntimeError('Use a new tracker state file for the new AI series')
@@ -267,6 +318,8 @@ def main():
     # delivery keys unchanged so scheduled retries remain safe and idempotent.
     if stale:
         print('Snapshot refresh pending; no public delay notification sent. Scheduled retries remain enabled.')
+    if not force:
+        jobs += pregame_alerts(state, now)
     for key,content,slate in jobs:
         url=os.getenv('DISCORD_WEBHOOK_URL','')
         if not url:raise RuntimeError('DISCORD_WEBHOOK_URL is not configured')

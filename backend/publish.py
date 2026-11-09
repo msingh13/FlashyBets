@@ -1,8 +1,10 @@
 """Scheduled static publishing with durable, public model state (no server required)."""
 import asyncio,json,os,tempfile
-from datetime import date,timedelta
+from datetime import date,datetime,timedelta,timezone
 from pathlib import Path
 from app import service,store,picks,learning,validation
+from pregame import add_changes, read_json, refresh_targets
+
 TABLES=('forecasts','cards','model_versions','model_checks','updates','daily_plays')
 
 def restore(path,db):
@@ -33,17 +35,30 @@ def public_board(board):
     board['refresh_seconds']=600
     return board
 
-async def publish(out,state,db):
-    restore(state,db);service.CACHE.clear();service.LOCKS.clear()
-    await service.tick('live',db)
+async def publish(out,state,db,scheduled=False):
     current=service.today();days=[(date.fromisoformat(current)+timedelta(days=i)).isoformat() for i in range(7)]
+    now=datetime.now(timezone.utc)
+    targets=refresh_targets(out,service.MODELS,days,now) if scheduled else None
+    if targets == []:
+        print('All boards are within their refresh windows.')
+        return False
+    restore(state,db);service.CACHE.clear();service.LOCKS.clear()
+    if targets is not None:
+        updated=False
+        for sport,day in targets:
+            try:
+                await publish_board(out,sport,day,db)
+                updated=True
+            except Exception:
+                print(f'{sport} {day}: pregame refresh failed; preserving previous data.')
+        if updated:save(state,db)
+        return updated
+    await service.tick('live',db)
     errors=[];available={s:[] for s in service.MODELS}
     for sport in service.MODELS:
         for day in days:
             try:
-                board=await service.board(sport,day,'live',path=db)
-                write(out/sport/(day+'.json'),public_board(board))
-                write(out/sport/(day+'-favorites.json'),picks.favorites(sport,day,'live',db))
+                await publish_board(out,sport,day,db)
                 available[sport].append(day)
             except Exception:
                 errors.append({'sport':sport,'day':day,'message':'Provider update failed; any prior published snapshot remains unchanged.'})
@@ -63,9 +78,21 @@ async def publish(out,state,db):
     spotlight.build(current,'live',db)
     write(out/'flashy-ai.json',spotlight.record('live',db))
     save(state,db)
-    write(out/'manifest.json',{'generated':store.now(),'today':current,'dates':available,'errors':errors,'cadence_minutes':10})
+    write(out/'manifest.json',{'generated':store.now(),'today':current,'dates':available,'errors':errors,'cadence_minutes':120,'near_kickoff_minutes':90,'near_cadence_minutes':10,'full_refresh_at':now.isoformat()})
     print(f'Published scheduled snapshots; {len(errors)} provider updates failed.')
+    return True
+
+async def publish_board(out,sport,day,db):
+    path=out/sport/(day+'.json')
+    board=await service.board(sport,day,'live',path=db)
+    add_changes(board,read_json(path))
+    favorites=picks.favorites(sport,day,'live',db)
+    write(path,public_board(board))
+    write(out/sport/(day+'-favorites.json'),favorites)
 
 if __name__=='__main__':
     out=Path(os.getenv('PUBLISH_DIR','../frontend/public/data'));state=Path(os.getenv('MODEL_STATE','../work/model-state.json'))
-    with tempfile.TemporaryDirectory() as tmp:asyncio.run(publish(out,state,str(Path(tmp)/'model.db')))
+    with tempfile.TemporaryDirectory() as tmp:
+        changed=asyncio.run(publish(out,state,str(Path(tmp)/'model.db'),scheduled=os.getenv('GITHUB_EVENT_NAME')=='schedule' and os.getenv('FORCE_FULL_REFRESH')!='true'))
+    if output:=os.getenv('GITHUB_OUTPUT'):
+        with open(output,'a') as f:f.write(f'changed={str(changed).lower()}\n')
