@@ -29,10 +29,13 @@ def sync(state,feed):
             latest=actual.get((p['game_key'],p['side']))
             if latest and latest.get('outcome') in ('win','loss','push'):
                 p['outcome']=latest['outcome'];p['final']=latest.get('final')
+    update_record(state)
+
+def update_record(state):
     all_legs=[p for s in state['slates'].values() for p in s['legs']]
     state['record']={key:sum(p.get('outcome')==outcome for p in all_legs) for key,outcome in [('wins','win'),('losses','loss'),('pushes','push'),('pending',None)]}
 def _prepare_exact(state,feed,now,force=False):
-    local=now.astimezone(TORONTO);day=local.date().isoformat();sync(state,feed)
+    local=now.astimezone(TORONTO);day=local.date().isoformat()
     if local.hour==3 or force:
         key='slip:'+day
         if key in state['sent']:return None
@@ -65,13 +68,31 @@ def _prepare_exact(state,feed,now,force=False):
         return key,'\n'.join(lines),None
     return None
 
+def results_due(state, now):
+    local = now.astimezone(TORONTO)
+    if local.hour < 2:
+        return False
+    if local.hour > 2 or local.minute >= 30:
+        return True
+    day = local.date().isoformat()
+    previous = (local.date() - timedelta(days=1)).isoformat()
+    if state.get('results_hold_day') == day:
+        return False
+    slates = [state['slates'].get(previous, {})]
+    slates += [s for s in state.get('top_slates', {}).values() if s['day'] == previous]
+    if any(p.get('outcome') not in ('win', 'loss', 'push') for s in slates for p in s.get('legs', [])):
+        state['results_hold_day'] = day
+        return False
+    return True
+
 def prepare(state,feed,now,force=False):
+    sync(state,feed)
     local=now.astimezone(TORONTO);day=local.date().isoformat()
     if force:return _prepare_exact(state,feed,now,True)
-    if local.hour>=2 and 'results:'+day not in state['sent']:
+    if 'results:'+day not in state['sent'] and results_due(state,now):
         return _prepare_exact(state,feed,local.replace(hour=2).astimezone(timezone.utc))
     if local.hour>=3:return _prepare_exact(state,feed,now,True)
-    sync(state,feed);return None
+    return None
 
 SOCCER=('ucl','epl','laliga','ligue1','bundesliga','seriea')
 def top_plans(state,feeds,now,force=False,football=''):
@@ -142,7 +163,7 @@ def sync_top(state,trackers):
 
 def recap_jobs(state,now):
     local=now.astimezone(TORONTO)
-    if local.hour<2:return []
+    if not results_due(state,now):return []
     day=local.date().isoformat();previous=(local.date()-timedelta(days=1)).isoformat();jobs=[];all_legs=[]
     for title in ('NBA','NHL','NFL','CFB','SOCCER'):
         slate=next((v for v in state.get('top_slates',{}).values() if v['day']==previous and v['sport']==title),None)
@@ -199,23 +220,40 @@ def apply_finals(state,sport,events):
             except (ValueError,KeyError,TypeError):continue
             if sport=='nhl' and h==a:continue
             finals[str(e['id'])]=(h,a)
-    for slate in state.get('top_slates',{}).values():
+    slates = list(state.get('top_slates', {}).values()) + list(state['slates'].values())
+    for slate in slates:
         for p in slate['legs']:
-            if p.get('sport')!=sport or p['side'] not in ('home','away','draw'):continue
+            if pick_sport(p) != sport:
+                continue
             result=finals.get(str(p.get('id',p['game_key'].rsplit(':',1)[-1])))
-            if not result:continue
+            if not result:
+                continue
             h,a=result
-            p['outcome']='push' if h==a else ('win' if (h>a)==(p['side']=='home') else 'loss')
+            if p['side'] in ('home', 'away'):
+                p['outcome'] = 'push' if h == a else ('win' if (h > a) == (p['side'] == 'home') else 'loss')
+            elif p['side'] in ('over', 'under') and p.get('line') is not None:
+                line = p['line']
+                p['outcome'] = 'push' if h + a == line else ('win' if (h + a > line) == (p['side'] == 'over') else 'loss')
+            else:
+                continue
             p['final']={'home_score':h,'away_score':a,'source':'ESPN confirmed final'}
+
+def pick_sport(pick):
+    key = pick['game_key'].split(':', 2)
+    return pick.get('sport') or (key[1] if len(key) == 3 else None)
+
 def refresh_finals(state):
+    slates = list(state.get('top_slates', {}).values()) + [
+        dict(slate, day=day) for day, slate in state['slates'].items()
+    ]
     for sport,(category,league) in SCOREBOARDS.items():
-        days={v['day'] for v in state.get('top_slates',{}).values() if any(p.get('sport')==sport and p.get('outcome') is None for p in v['legs'])}
-        for day in days:
+        days={v['day'] for v in slates if any(pick_sport(p)==sport and p.get('outcome') is None for p in v['legs'])}
+        for day in sorted(days):
             url=f"https://site.api.espn.com/apis/site/v2/sports/{category}/{league}/scoreboard?dates={day.replace('-','')}&limit=1000"
             try:
                 with urlopen(url,timeout=20) as r:data=json.load(r)
                 apply_finals(state,sport,data.get('events',[]))
-            except (HTTPError,URLError):print(f'{sport}: final scoreboard unavailable; preserving pending status')
+            except (HTTPError,URLError,TimeoutError,ValueError):print(f'{sport}: final scoreboard unavailable; preserving pending status')
 
 def load_feed(relative):
     root=os.getenv('PUBLISH_DIR')
@@ -289,30 +327,44 @@ def main():
     if os.getenv('CORRECT_RECAP','false').lower()=='true':
         today=now.astimezone(TORONTO).date().isoformat()
         state['sent']={k:v for k,v in state['sent'].items() if not ((k.startswith('results:') or k.startswith('recap:')) and k.endswith(':'+today))}
-    stale=False
-    try:job=prepare(state,feed,now,force)
-    except RuntimeError as e:
-        if 'stale' not in str(e).lower():raise
-        stale=True;job=None;print('Picks deferred: fresh model data required. Results can still proceed.')
-    jobs=[job] if job else []
-    if not stale and (now.astimezone(TORONTO).hour>=3 or force) and (job is None or not job[0].startswith('results:')):
-        # One freshness check gates all pick lists.
-        if not feed.get('updated') or not 0<=(now-instant(feed['updated'])).total_seconds()<=7200:
-            stale=True;print('Top lists deferred until the next fresh-data update.')
-        if not stale:
-            day=now.astimezone(TORONTO).date().isoformat();feeds={}
-            for sport in ('nba','nhl','nfl','ncaaf')+SOCCER:
-                try:feeds[sport]=load_feed(f'{sport}/{day}-favorites.json')
-                except (HTTPError,URLError):print(f'{sport}: favorites unavailable; no fabricated selections')
-            jobs+=top_plans(state,feeds,now,force,os.getenv('FOOTBALL_LEAGUE',''))
-    if now.astimezone(TORONTO).hour>=2 and not force:
+    jobs=[]
+    local=now.astimezone(TORONTO)
+    sync(state,feed)
+    if local.hour>=2 and not force:
         trackers={}
-        sports={p.get('sport') for v in state.get('top_slates',{}).values() for p in v['legs'] if p.get('sport')}
-        for sport in sports:
+        sports={pick_sport(p) for v in state.get('top_slates',{}).values() for p in v['legs']}
+        for sport in sorted(sports - {None}):
             try:
                 trackers[sport]=load_feed(f'{sport}-tracker.json')
-            except (HTTPError,URLError):print(f'{sport}: results unavailable; keeping pending')
-        sync_top(state,trackers);refresh_finals(state);jobs+=recap_jobs(state,now)
+            except (HTTPError,URLError,TimeoutError,ValueError):
+                print(f'{sport}: results unavailable; keeping pending')
+        sync_top(state,trackers)
+        refresh_finals(state)
+        update_record(state)
+        if results_due(state,now):
+            result=_prepare_exact(state,feed,local.replace(hour=2).astimezone(timezone.utc))
+            if result:
+                jobs.append(result)
+            jobs.extend(recap_jobs(state,now))
+        else:
+            print('Pending results; recap deferred until 02:30 Toronto time.')
+    stale=False
+    if local.hour>=3 or force:
+        try:
+            job=_prepare_exact(state,feed,now,True)
+            if job:
+                jobs.append(job)
+        except RuntimeError as e:
+            if 'stale' not in str(e).lower():raise
+            stale=True
+        if not feed.get('updated') or not 0<=(now-instant(feed['updated'])).total_seconds()<=7200:
+            stale=True
+        if not stale:
+            day=local.date().isoformat();feeds={}
+            for sport in ('nba','nhl','nfl','ncaaf')+SOCCER:
+                try:feeds[sport]=load_feed(f'{sport}/{day}-favorites.json')
+                except (HTTPError,URLError,TimeoutError,ValueError):print(f'{sport}: favorites unavailable; no fabricated selections')
+            jobs+=top_plans(state,feeds,now,force,os.getenv('FOOTBALL_LEAGUE',''))
     # Refresh status belongs in Actions logs, not the public channel. A stale
     # snapshot can occur after today's messages were already delivered. Keep
     # delivery keys unchanged so scheduled retries remain safe and idempotent.
@@ -328,7 +380,7 @@ def main():
         if slate is not None:
             if key.startswith('slip:'):state['slates'].setdefault(slate['day'],slate)
             elif key.startswith('top:'):state.setdefault('top_slates',{})[key]=slate
-        state['sent'][key]=now.isoformat();sync(state,feed)
+        state['sent'][key]=now.isoformat();update_record(state)
         print('Discord accepted a plain selection message. No link, mention or command included.')
         path.parent.mkdir(parents=True,exist_ok=True);temp=path.with_suffix('.tmp');temp.write_text(json.dumps(state,sort_keys=True));temp.replace(path)
         time.sleep(.5)

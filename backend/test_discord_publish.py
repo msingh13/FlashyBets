@@ -114,3 +114,44 @@ class QuietRefreshTests(unittest.TestCase):
    self.assertFalse(any(key.startswith('delay:') for key in saved['sent']))
  def test_no_false_delay_after_daily_delivery(self):self.run_stale_refresh(True)
  def test_stale_retry_stays_quiet_without_consuming_delivery_key(self):self.run_stale_refresh(False)
+
+class RecapGraceTests(unittest.TestCase):
+ def test_pending_sport_holds_entire_recap_until_230_eastern(self):
+  from discord_publish import recap_jobs
+  state=fresh_state()
+  leg={'game_key':'live:nhl:1','side':'home','label':'BUF ML','outcome':None}
+  state['top_slates']={'top:NHL:2026-11-08':{'day':'2026-11-08','sport':'NHL','legs':[leg]}}
+  start=datetime(2026,11,9,7,tzinfo=timezone.utc)
+  self.assertIsNone(prepare(state,{},start))
+  self.assertEqual(recap_jobs(state,start),[])
+  leg['outcome']='win'
+  self.assertIsNone(prepare(state,{},start.replace(minute=29)))
+  self.assertTrue(recap_jobs(state,start.replace(minute=30)))
+
+ def test_pending_after_grace_is_reported_as_pending(self):
+  from discord_publish import recap_jobs
+  state=fresh_state()
+  leg={'game_key':'live:nfl:1','side':'home','label':'BUF ML','outcome':None}
+  state['slates']={'2026-11-08':{'legs':[leg]}}
+  now=datetime(2026,11,9,7,30,tzinfo=timezone.utc)
+  self.assertIn('pending',prepare(state,{},now)[1])
+  self.assertIn('1 pending',recap_jobs(state,now)[-1][1])
+
+ def test_live_final_can_settle_ai_total_before_recap(self):
+  from discord_publish import apply_finals,update_record
+  state=fresh_state()
+  leg={'game_key':'live:nhl:1','side':'over','label':'Over 5.5','line':5.5}
+  state['slates']={'2026-11-08':{'legs':[leg]}}
+  event={'id':'1','status':{'type':{'completed':True}},'competitions':[{'competitors':[
+   {'homeAway':'home','score':'4'},{'homeAway':'away','score':'2'}]}]}
+  apply_finals(state,'nhl',[event])
+  update_record(state)
+  self.assertEqual(state['record']['wins'],1)
+  self.assertEqual(leg['outcome'],'win')
+
+ def test_warmup_refreshes_feed_that_would_expire_at_three(self):
+  from discord_preflight import needs_refresh
+  now=datetime(2026,11,9,7,42,tzinfo=timezone.utc)
+  state=fresh_state()
+  self.assertTrue(needs_refresh(state,{'updated':'2026-11-09T06:00Z'},now))
+  self.assertFalse(needs_refresh(state,{'updated':'2026-11-09T07:40Z'},now))
