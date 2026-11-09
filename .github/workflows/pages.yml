@@ -80,6 +80,7 @@ jobs:
           cd backend
           python -m pytest -q
       - name: Update schedules, predictions and results
+        id: update
         if: steps.reuse.outputs.fresh != 'true'
         working-directory: backend
         env:
@@ -90,11 +91,12 @@ jobs:
           ODDS_REGION: ${{ vars.ODDS_REGION || 'us' }}
           SPORTSDATAIO_KEY: ${{ secrets.SPORTSDATAIO_KEY }}
           FOOTBALL_DATA_TOKEN: ${{ secrets.FOOTBALL_DATA_TOKEN }}
+          FORCE_FULL_REFRESH: ${{ inputs.skip_if_fresh || 'false' }}
           MODEL_STATE: ${{ runner.temp }}/flashybets-state/model-state.json
           PUBLISH_DIR: ../frontend/public/data
         run: python publish.py
       - name: Preserve model record
-        if: steps.reuse.outputs.fresh != 'true'
+        if: steps.update.outputs.changed == 'true'
         shell: bash
         run: |
           state_dir="$RUNNER_TEMP/flashybets-state"
@@ -108,7 +110,7 @@ jobs:
             git -C "$state_dir" push origin HEAD:refs/heads/model-data
           fi
       - name: Build dashboard
-        if: steps.reuse.outputs.fresh != 'true'
+        if: steps.update.outputs.changed == 'true'
         working-directory: frontend
         env:
           STATIC_EXPORT: '1'
@@ -121,13 +123,13 @@ jobs:
           npm run build
           touch out/.nojekyll
       - uses: actions/configure-pages@v5
-        if: steps.reuse.outputs.fresh != 'true'
+        if: steps.update.outputs.changed == 'true'
       - uses: actions/upload-pages-artifact@v3
-        if: steps.reuse.outputs.fresh != 'true'
+        if: steps.update.outputs.changed == 'true'
         with:
           path: frontend/out
       - name: Deploy
-        if: steps.reuse.outputs.fresh != 'true'
+        if: steps.update.outputs.changed == 'true'
         id: deployment
         continue-on-error: true
         uses: actions/deploy-pages@v4
