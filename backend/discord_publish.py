@@ -15,8 +15,10 @@ def read(path,default):
 def fresh_state():return {'version':3,'slates':{},'sent':{},'record':{'wins':0,'losses':0,'pushes':0,'pending':0}}
 def ml_price_allowed(p):
     """The -900 boundary is inclusive; absent prices are not fabricated."""
-    price=p.get('odds')
-    return price is None or float(price)>=-900
+    price = p.get('odds')
+    if price is None:
+        price = p.get('reference_odds')
+    return price is None or float(price) >= -900
 
 def label(p):
     name=p['label'].replace('**','').strip()
@@ -38,20 +40,26 @@ def _prepare_exact(state,feed,now,force=False):
     local=now.astimezone(TORONTO);day=local.date().isoformat()
     if local.hour==3 or force:
         key='slip:'+day
-        if key in state['sent']:return None
+        saved = state['slates'].get(day)
+        if key in state['sent'] and (saved is None or saved.get('legs')):
+            return None
         # Stale snapshots cannot create a new prospective slip.
         updated=feed.get('updated')
         if not updated or not 0<=(now-instant(updated)).total_seconds()<=7200:raise RuntimeError('AI snapshot is stale; no picks sent')
-        card=state['slates'].get(day) or next((c for c in feed.get('days',[]) if c['day']==day),None)
+        card = saved if saved and saved.get('legs') else next((c for c in feed.get('days', []) if c['day'] == day), None)
         legs=[];seen=set()
         for p in (card or {}).get('legs',[]):
             if p['game_key'] in seen or p.get('current_warning') or p.get('outcome') or instant(p['start'])<=now:continue
-            if p.get('conditional',p.get('probability',0))<.60:continue
+            conditional = p.get('conditional', p.get('probability', 0))
+            fallback = p.get('research_fallback') and p['side'] in ('home', 'away', 'draw')
+            if conditional < .60 and not fallback:
+                continue
             if p['side'] in ('home','away','draw') and (p.get('probability',0)<=.536 or not ml_price_allowed(p)):continue
             seen.add(p['game_key']);legs.append(dict(p,outcome=None))
             if len(legs)==3:break
-        content=slip(legs) if legs else 'No AI play today.'
-        return key,content,{'day':day,'legs':legs}
+        if not legs:
+            return None
+        return key,slip(legs),{'day':day,'legs':legs}
     if local.hour==2:
         key='results:'+day
         if key in state['sent']:return None
@@ -134,7 +142,8 @@ def card_message(key,content,slate,record):
     for i,p in enumerate(legs,1):
         pct=p.get('probability',0)*100
         start=instant(p['start']).astimezone(TORONTO).strftime('%I:%M %p').lstrip('0')
-        fields.append({'name':f"{i:02d}  {label(p)}",'value':f"{p['away']} vs {p['home']}\n**Model: {pct:.1f}%**  ·  {start} ET",'inline':False})
+        research = '\nResearch fallback · below standard 60% threshold' if p.get('research_fallback') else ''
+        fields.append({'name':f"{i:02d}  {label(p)}",'value':f"{p['away']} vs {p['home']}\n**Model: {pct:.1f}%**  ·  {start} ET{research}",'inline':False})
     embed={'title':title,'color':color,'description':(slate or {}).get('day',''),
            'fields':fields,'footer':{'text':f"TRACKER  {record['wins']} W · {record['losses']} L · {record['pushes']} push · {record['pending']} pending" if ai else 'Moneylines above 53.6% model win probability'}}
     if not legs:embed['description']='No qualifying AI play today.'
@@ -378,9 +387,10 @@ def main():
         if key.startswith('slip:'):content='AI PLAY OF THE DAY\n'+content
         send(url,card_message(key,content,slate,state['record']))
         if slate is not None:
-            if key.startswith('slip:'):state['slates'].setdefault(slate['day'],slate)
+            if key.startswith('slip:') and not state['slates'].get(slate['day'], {}).get('legs'):
+                state['slates'][slate['day']] = slate
             elif key.startswith('top:'):state.setdefault('top_slates',{})[key]=slate
-        state['sent'][key]=now.isoformat();update_record(state)
+        state['sent'][key]=datetime.now(timezone.utc).isoformat();update_record(state)
         print('Discord accepted a plain selection message. No link, mention or command included.')
         path.parent.mkdir(parents=True,exist_ok=True);temp=path.with_suffix('.tmp');temp.write_text(json.dumps(state,sort_keys=True));temp.replace(path)
         time.sleep(.5)

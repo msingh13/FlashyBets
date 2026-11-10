@@ -155,3 +155,21 @@ class RecapGraceTests(unittest.TestCase):
   state=fresh_state()
   self.assertTrue(needs_refresh(state,{'updated':'2026-11-09T06:00Z'},now))
   self.assertFalse(needs_refresh(state,{'updated':'2026-11-09T07:40Z'},now))
+
+class EmptyPlayRecoveryTests(unittest.TestCase):
+ def test_empty_announcement_does_not_block_later_research_play(self):
+  now=datetime(2026,11,10,10,tzinfo=timezone.utc)
+  state=fresh_state()
+  state['sent']={'results:2026-11-10':'sent','slip:2026-11-10':'sent'}
+  state['slates']['2026-11-10']={'day':'2026-11-10','legs':[]}
+  feed={'updated':now.isoformat(),'days':[]}
+  self.assertIsNone(prepare(state,feed,now))
+  pick={'game_key':'live:ncaaf:1','side':'home','label':'BGSU ML',
+        'start':'2026-11-11T00:00Z','probability':.591,'research_fallback':True}
+  feed['days']=[{'day':'2026-11-10','legs':[dict(pick,reference_odds=-1100)]}]
+  self.assertIsNone(prepare(state,feed,now))
+  feed['days'][0]['legs']=[dict(pick,reference_odds=-218)]
+  job=prepare(state,feed,now)
+  self.assertEqual(job[1],'BGSU ML')
+  state['slates']['2026-11-10']=job[2]
+  self.assertIsNone(prepare(state,feed,now))
