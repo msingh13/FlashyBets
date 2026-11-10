@@ -17,12 +17,26 @@ def enrich(g,path=None):
         g.update(prediction=None,markets={},reference_line=g['line'],recommendations=[],explanation='NFL preseason/playoff modeling is not supported by the regular-season adapter. No forecast is issued.')
         return g
     adj=g['context']['adjustments'];hr=g['home_rate']+adj['home'];ar=g['away_rate']+adj['away']
-    line=g['line'] if g['line'] is not None else (2.5 if g['sport'] in SOCCER else {'nhl':6.5,'nba':228.5,'nfl':44.5,'ncaaf':55.5}[g['sport']])
+    line=g['line'] if g['line'] is not None else (2.5 if g['sport'] in SOCCER else {'nhl':6.5,'nba':228.5,'nfl':44.5,'ncaaf':55.5,'ncaab':g.get('college_lines',{}).get('total') or 145.0}[g['sport']])
     g['reference_line']=line
+    if g['sport'] == 'ncaab':
+        references = g.get('college_lines', {})
+        samples = min(g.get('sample_sizes', {}).values(), default=0)
+        weight = samples / (samples + 8)
+        margin, total = hr - ar, hr + ar
+        if references.get('home_spread') is not None:
+            margin = weight * margin - (1 - weight) * references['home_spread']
+        if references.get('total') is not None:
+            total = weight * total + (1 - weight) * references['total']
+        hr, ar = (total + margin) / 2, (total - margin) / 2
     p=MODELS[g['sport']].predict(hr,ar,line);p.setdefault('ml_push',0);g['prediction']=p
     if g['sport'] in SOCCER:p['version']=g['sport']+'-90min-poisson-v1'
     if g.get('scoring_evidence'):p['version']+=' / weighted-history-v2'
     learning.apply(g,path)
+    if g['sport'] == 'ncaab':
+        spread = g.get('college_lines', {}).get('home_spread')
+        if spread is not None:
+            g['college_spread'] = MODELS['ncaab'].spread(hr, ar, spread)
     markets={}
     for n in (('home','away','draw','over','under','btts_yes','btts_no') if g['sport'] in SOCCER else ('home','away','over','under')):
         odds=g.get(n+'_odds');push=p['ml_push'] if n in ('home','away') else p['push'] if n in ('over','under') else 0
@@ -35,6 +49,7 @@ def enrich(g,path=None):
     g['explanation']={'nhl':'Independent Poisson regulation goals; ties split 50/50, with one OT/shootout settlement goal added.',
       'ucl':'Independent Poisson 90-minute goals including stoppage time. Three-way ML includes draw; BTTS requires both teams to score. Extra time and penalties excluded. Champions League history only; domestic form and player effects are not fitted.',
       'nba':'Final-score Gaussian model: shrunk scoring/conceding means, 15-point margin and 20-point total standard deviations. Historical inputs include overtime.',
+      'ncaab':'College basketball final-score Gaussian baseline including overtime. Recent scoring blends with the sportsbook spread and total when available, with more weight on the book for sparse samples. Variances are initial assumptions.',
       'ncaaf':'College final-score Gaussian baseline, including overtime with no final tie. Margin/total variability are initial assumptions. Opponent-strength and player effects need validation.',
       'nfl':'Possession scoring model: eleven possessions with 0/3/7-point outcomes; explicit approximate overtime/tie settlement. Regular season only.'}.get(g['sport'],'Independent 90-minute Poisson goals with an explicit draw. Extra time and penalties excluded; league-specific completed results, with player effects not fitted.')
     g['recommendations']=[]
@@ -68,6 +83,10 @@ async def board(sport,day,mode,force=False,path=None):
                 g['markets']=saved['markets'] if saved else {}
                 g['context']=saved['context'] if saved else context_for(g)
                 g['reference_line']=saved['reference_line'] if saved else g['line']
+                if saved and sport == 'ncaab':
+                    g['college_lines'] = saved.get('college_lines', {})
+                    if 'college_spread' in saved:
+                        g['college_spread'] = saved['college_spread']
                 g['explanation']='Stored pregame forecast.' if saved else 'No pregame forecast was recorded. Results will not be backfilled into predictions.'
                 g['updated']=store.now();g['recommendations']=[]
                 store.settle(g,path)
@@ -77,7 +96,8 @@ async def board(sport,day,mode,force=False,path=None):
                 from .nfl import summary
                 g['matchup_summary']=summary(g)
             with store.connect(path) as c:c.execute('INSERT OR REPLACE INTO snapshots VALUES(?,?,?)',(g['id'],g['updated'],json.dumps(g)))
-        picks.build(sport,day,mode,path)
+        if sport != 'ncaab':
+            picks.build(sport,day,mode,path)
         result={'games':rows,'mode':mode,'sport':sport,'updated':store.now(),'date':day,'refresh_seconds':TTL,
             'warning':'Baseline forecasts, not calibrated recommendations. Missing context remains visible.'}
         CACHE[cache_key]=(datetime.now(timezone.utc),result)
@@ -121,4 +141,5 @@ def seed_demo(sport,path=None):
         captured=(store.instant(g['start'])-timedelta(hours=2)).isoformat()
         store.capture(g,path,at=captured)
         g.update(final);g['state']='post';store.settle(g,path)
-    picks.build(sport,day,'demo',path,at=day+'T14:00:00Z')
+    if sport != 'ncaab':
+        picks.build(sport,day,'demo',path,at=day+'T14:00:00Z')

@@ -3,9 +3,17 @@ from .data import demo as nhl_demo
 from .store import now,instant
 
 def games(sport,day):
-    if sport in ('epl','laliga','ligue1','bundesliga','seriea','ncaaf'):
-        rows=games('nfl' if sport=='ncaaf' else 'ucl',day)
+    if sport in ('epl','laliga','ligue1','bundesliga','seriea','ncaaf','ncaab'):
+        rows=games('nfl' if sport=='ncaaf' else 'nba' if sport=='ncaab' else 'ucl',day)
         for g in rows:g['sport']=sport;g['id']=sport+'-'+g['id']
+        if sport == 'ncaab':
+            for i, g in enumerate(rows):
+                g.update(home=f'Demo College {2*i+1}', away=f'Demo College {2*i+2}',
+                         home_abbr=f'C{2*i+1}', away_abbr=f'C{2*i+2}',
+                         home_rate=75+i, away_rate=70+i, line=145.5+i,
+                         college_lines={'home_spread':-4.5,'source':'Illustrative spread'})
+                if g['state'] == 'post':
+                    g.update(home_score=76+i, away_score=71+i)
         return rows
     if sport in ('nhl','ucl'):
         rows=nhl_demo(day)

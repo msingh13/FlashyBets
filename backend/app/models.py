@@ -67,5 +67,30 @@ class CollegeFootballModel:
         under=cdf(line-.5 if float(line).is_integer() else line,mean,24)
         over=1-cdf(line+.5,mean,24) if float(line).is_integer() else 1-under
         return dict(home=home,away=1-home,tie=0,ml_push=0,over=over,under=under,push=max(0,1-over-under),expected_total=mean,home_rate=home_rate,away_rate=away_rate,distribution=[],version='ncaaf-final-gaussian-v1',assumptions='Final-score Gaussian margin sigma=20, total sigma=24; includes overtime, no final tie. Starting assumptions, not fitted estimates. No opponent-strength adjustment; large college mismatches need further modeling.')
+class CollegeBasketballModel:
+    """Initial final-score Gaussian assumptions for men's college basketball."""
+
+    MARGIN_SD = 13.0
+    TOTAL_SD = 18.0
+
+    def predict(self, home_rate, away_rate, line):
+        margin, mean = home_rate - away_rate, home_rate + away_rate
+        home = 1 - cdf(0, margin, self.MARGIN_SD)
+        under, over, push = self.split(line, mean, self.TOTAL_SD)
+        return dict(home=home, away=1-home, tie=0, ml_push=0, over=over, under=under,
+                    push=push, expected_total=mean, home_rate=home_rate, away_rate=away_rate,
+                    distribution=[], version='ncaab-final-gaussian-v1')
+
+    @staticmethod
+    def split(line, mean, sd):
+        half_step = .5 if float(line).is_integer() else 0
+        below = cdf(line - half_step, mean, sd)
+        above = 1 - cdf(line + half_step, mean, sd)
+        return below, above, max(0.0, 1 - below - above)
+
+    def spread(self, home_rate, away_rate, home_line):
+        away, home, push = self.split(-home_line, home_rate-away_rate, self.MARGIN_SD)
+        return dict(home_line=home_line, home=home, away=away, push=push)
+
 from .sports import SOCCER
-MODELS={**{s:SoccerModel() for s in SOCCER},'nhl':NHLModel(),'nba':NBAModel(),'nfl':NFLModel(),'ncaaf':CollegeFootballModel()}
+MODELS={**{s:SoccerModel() for s in SOCCER},'nhl':NHLModel(),'nba':NBAModel(),'nfl':NFLModel(),'ncaaf':CollegeFootballModel(),'ncaab':CollegeBasketballModel()}

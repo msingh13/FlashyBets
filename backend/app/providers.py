@@ -7,7 +7,7 @@ from zoneinfo import ZoneInfo
 import httpx
 from .store import instant
 from .sports import SOCCER
-PATHS={'ncaaf':'football/college-football','nhl':'hockey/nhl','nba':'basketball/nba','nfl':'football/nfl'}
+PATHS={'ncaab':'basketball/mens-college-basketball','ncaaf':'football/college-football','nhl':'hockey/nhl','nba':'basketball/nba','nfl':'football/nfl'}
 ODDS_SPORT={'ncaaf':'americanfootball_ncaaf','nhl':'icehockey_nhl','nba':'basketball_nba','nfl':'americanfootball_nfl'}
 BASE='https://site.api.espn.com/apis/site/v2/sports/'
 CITY_CACHE={};GEO_LOCKS={};TEAM_CACHE={}
@@ -118,6 +118,9 @@ async def sportsdata_context(client,games,sport,day):
                 g['depth_chart']=depth;g['lineup_source']='SportsDataIO depth chart; inactives still required'
 
 async def live_games(sport,day):
+    if sport == 'ncaab':
+        from .college_basketball import live_games as college_games
+        return await college_games(day)
     if sport in SOCCER:
         from .soccer import live_games as soccer_games
         return await soccer_games(day,sport)

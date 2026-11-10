@@ -8,4 +8,4 @@ SOCCER={
  'bundesliga':('Bundesliga','ger.1','BL1'),
  'seriea':('Serie A','ita.1','SA'),
 }
-Sport=Literal['nhl','nba','nfl','ncaaf','ucl','epl','laliga','ligue1','bundesliga','seriea']
+Sport=Literal['nhl','nba','nfl','ncaaf','ncaab','ucl','epl','laliga','ligue1','bundesliga','seriea']

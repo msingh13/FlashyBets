@@ -18,7 +18,7 @@ def build(day,mode,path=None,at=None):
     candidates=[];fallback=[];seen=set()
     for row in rows:
         g=json.loads(row['payload']);game_key=store.key(g)
-        if g['mode']!=mode or game_key in seen or game_key not in recorded:continue
+        if g['sport']=='ncaab' or g['mode']!=mode or game_key in seen or game_key not in recorded:continue
         seen.add(game_key)
         if not g.get('prediction') or g['state']!='pre' or store.instant(g['start'])<=moment:continue
         if store.instant(g['start']).astimezone(ZoneInfo('America/Toronto')).date().isoformat()!=day:continue
