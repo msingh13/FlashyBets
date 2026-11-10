@@ -4,7 +4,7 @@ import json
 from datetime import datetime,timezone
 from zoneinfo import ZoneInfo
 from . import store,picks
-RULE='flashy-ai-v2'
+RULE='flashy-ai-v3'
 
 def build(day,mode,path=None,at=None):
     at=at or store.now();moment=store.instant(at)
@@ -15,7 +15,7 @@ def build(day,mode,path=None,at=None):
         if old:return json.loads(old['payload'])
         recorded={r['game_key'] for r in c.execute('SELECT game_key FROM forecasts WHERE mode=?',(mode,))}
         rows=c.execute('SELECT payload,created FROM snapshots ORDER BY created DESC').fetchall()
-    candidates=[];seen=set()
+    candidates=[];fallback=[];seen=set()
     for row in rows:
         g=json.loads(row['payload']);game_key=store.key(g)
         if g['mode']!=mode or game_key in seen or game_key not in recorded:continue
@@ -30,8 +30,12 @@ def build(day,mode,path=None,at=None):
         if (store.instant(g['start'])-moment).total_seconds()<2700 and not g.get('context',{}).get('checks',{}).get('starters'):continue
         options=[picks.chosen(g,k) for k in (('ml','total','btts') if g['sport'] in SOCCER else ('ml','total'))]
         for p in options:
-            if p['conditional']<.60:continue
-            if p['side'] in ('home','away','draw') and not picks.ml_price_allowed(p):continue
+            moneyline = p['side'] in ('home', 'away', 'draw')
+            if moneyline and (p['probability'] <= .536 or not picks.ml_price_allowed(p)):
+                continue
+            research_fallback = moneyline and p['conditional'] < .60
+            if p['conditional'] < .60 and not research_fallback:
+                continue
             ref=g.get('market_reference')
             if ref and p['side'] in ('home','away') and abs(p['probability']-ref[p['side']])>.15:continue
             fresh=False
@@ -40,7 +44,14 @@ def build(day,mode,path=None,at=None):
             verified=bool(p['context_ready'] and fresh and p['ev'] is not None and p['ev']>0 and (p['side'] in ('home','away','draw','btts_yes','btts_no') or p['market_line']))
             p.update(sport=g['sport'],captured=at,tier='Priced model edge' if verified else 'Research pick · not verified value',verified_value=verified,
                 summary=picks.explain(g,p['side']),outcome=None)
-            candidates.append(p)
+            if research_fallback:
+                p.update(tier='Research fallback · below standard 60% threshold',
+                         verified_value=False, research_fallback=True)
+                fallback.append(p)
+            else:
+                candidates.append(p)
+    if not candidates and fallback:
+        candidates = sorted(fallback, key=lambda p: (-p['probability'], p['start'], p['game_key']))[:1]
     candidates.sort(key=lambda p:(not p['verified_value'],-(p['ev'] if p['verified_value'] else p['conditional']),p['start'],p['game_key'],p['side']))
     legs=[];used=set()
     for p in candidates:
@@ -49,7 +60,7 @@ def build(day,mode,path=None,at=None):
         if len(legs)==3:break
     if not legs:return None
     card={'key':key,'day':day,'mode':mode,'created':at,'rule':RULE,'legs':legs,
-          'note':'Maximum three individual plays across all sports per Toronto day, one per game. Frozen when selected; not a parlay. Ranked by verified positive EV when eligible, otherwise by conditional model probability ≥60%, with sample-size, near-start lineup and model/market-disagreement checks. Research selections are not verified betting value; no LLM invents probabilities.'}
+          'note':'Maximum three individual plays across all sports per Toronto day, one per game. Frozen when selected; not a parlay. Ranked by verified positive EV when eligible, otherwise by conditional model probability ≥60%, with sample-size, near-start lineup and model/market-disagreement checks. If no standard play qualifies, one research moneyline above 53.6% may be selected. Research selections are not verified betting value.'}
     with store.connect(path) as c:
         c.execute('INSERT OR IGNORE INTO daily_plays VALUES(?,?,?,?,?)',(key,mode,day,at,json.dumps(card)))
         saved=c.execute('SELECT payload FROM daily_plays WHERE play_key=?',(key,)).fetchone()

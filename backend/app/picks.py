@@ -4,8 +4,10 @@ import json,math
 from . import store
 
 def ml_price_allowed(pick):
-    price=pick.get('odds')
-    return price is None or float(price)>=-900
+    price = pick.get('odds')
+    if price is None:
+        price = pick.get('reference_odds')
+    return price is None or float(price) >= -900
 
 def withheld_keys(path=None):
     # Latest live review gates current recommendations without editing old records.
@@ -32,6 +34,7 @@ def chosen(g,kind):
       'side':side,'label':('Draw' if side=='draw' else g[side+'_abbr']+' ML') if kind=='ml' else side.replace('_',' ').upper() if kind=='btts' else side.title()+' '+str(g['reference_line']),
       'summary':explain(g,side),
       'probability':p[side],'conditional':p[side]/(1-push),'push':push,'odds':m['odds'] if m else None,
+      'reference_odds':(g.get('market_reference') or {}).get(side+'_odds') if kind=='ml' else None,
       'ev':m['ev'] if m else None,'line':g['reference_line'],'market_line':g['line'] is not None,
       'context_ready':g['context']['ready'],'model':p['version'],'outcome':None}
 
