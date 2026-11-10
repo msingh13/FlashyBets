@@ -36,3 +36,26 @@ def test_never_backfills_or_selects_stale_or_started_games(tmp_path):
     assert spotlight.build('2026-10-19','live',db,'2026-10-19T13:00:00Z') is None
     with store.connect(db) as c:c.execute('UPDATE snapshots SET created=?',('2026-10-19T23:01:00Z',))
     assert spotlight.build('2026-10-19','live',db,'2026-10-19T23:01:00Z') is None
+
+
+def test_college_basketball_never_enters_play_of_the_day(tmp_path):
+    from datetime import datetime, timezone
+    from discord_publish import fresh_state, prepare
+
+    db = tmp_path / 'ncaab.db'
+    day, at = '2026-11-10', '2026-11-10T08:00:00Z'
+    game = games('ncaab', day)[0]
+    game.update(mode='live', state='pre', start='2026-11-10T23:00:00Z')
+    service.enrich(game, db)
+    game['prediction'].update(home=.8, away=.2, over=.8, under=.2)
+    store.capture(game, db, at=at)
+    with store.connect(db) as c:
+        c.execute('INSERT INTO snapshots VALUES(?,?,?)', (game['id'], at, json.dumps(game)))
+    assert spotlight.build(day, 'live', db, at=at) is None
+
+    state = fresh_state()
+    state['sent']['results:' + day] = at
+    candidate = dict(game_key=store.key(game), sport='ncaab', side='home',
+                     label='C1 ML', probability=.8, start=game['start'])
+    feed = {'updated': at, 'days': [{'day': day, 'legs': [candidate]}]}
+    assert prepare(state, feed, datetime(2026, 11, 10, 8, tzinfo=timezone.utc)) is None
