@@ -49,6 +49,8 @@ def _prepare_exact(state,feed,now,force=False):
         card = saved if saved and saved.get('legs') else next((c for c in feed.get('days', []) if c['day'] == day), None)
         legs=[];seen=set()
         for p in (card or {}).get('legs',[]):
+            if pick_sport(p) == 'ncaab':
+                continue
             if p['game_key'] in seen or p.get('current_warning') or p.get('outcome') or instant(p['start'])<=now:continue
             conditional = p.get('conditional', p.get('probability', 0))
             fallback = p.get('research_fallback') and p['side'] in ('home', 'away', 'draw')
