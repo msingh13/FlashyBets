@@ -2,7 +2,7 @@ from .sports import SOCCER
 """Daily, chronological temperature-calibration audit. No promise of daily improvement."""
 import json,math
 from datetime import datetime,timezone
-from . import store
+from . import store,win_probability
 TEMPERATURES=(.5,.65,.8,1.,1.2,1.5,2.)
 MIN_GAMES=100
 
@@ -34,6 +34,7 @@ def apply(g,path=None):
             p[sides[0]]=adjust(raw[sides[0]]/mass,t)*mass;p[sides[1]]=mass-p[sides[0]]
     p['calibration_versions']=versions
     if any(v!='baseline' for v in versions.values()):p['version']+=' / temperature-calibrated'
+    win_probability.apply(g,path)
 
 def audit(sport,day,path=None):
     if sport in SOCCER:return []
@@ -101,7 +102,9 @@ def status(sport,mode,path=None):
     if sport in SOCCER:return {'status':'Baseline · collecting results','checks':[],'versions':{},'note':'Three-way and BTTS calibration need a separate chronological evaluation; binary moneyline calibration is not applied.'}
     if mode=='demo':return {'status':'Demo · learning disabled','checks':[],'versions':{},'note':'Synthetic fixtures never train the live models.'}
     with store.connect(path) as c:
-        rs=c.execute('SELECT payload FROM model_checks WHERE sport=? ORDER BY day DESC,kind LIMIT 2',(sport,)).fetchall()
+        rs=c.execute('''SELECT m.payload FROM model_checks m WHERE m.sport=? AND m.day=(
+            SELECT MAX(day) FROM model_checks WHERE sport=m.sport AND kind=m.kind
+        ) ORDER BY m.kind''',(sport,)).fetchall()
     return {'status':'Evaluated every refresh','checks':[json.loads(r['payload']) for r in rs],
-        'versions':{k:active(sport,k,path)['version'] for k in ('ml','total')},
-        'note':'Every successful refresh settles results and evaluates calibration. Model promotion needs 100 settled games, fresh, non-overlapping dated holdouts and improvement in both Brier score and log loss.'}
+        'versions':{k:active(sport,k,path)['version'] for k in ('ml','total','ml_rating')},
+        'note':'Every successful refresh settles results and evaluates calibration. Probability calibration and opponent-adjusted moneylines are tested separately. Both require improvement on fresh, dated holdouts.'}

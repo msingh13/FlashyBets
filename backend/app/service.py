@@ -7,7 +7,7 @@ from .demo import games as demo_games
 from .models import MODELS
 from .model import market
 from .context import context_for
-from . import learning,picks
+from . import learning,picks,win_probability
 CACHE={};LOCKS={};TTL=max(60,int(os.getenv('REFRESH_SECONDS','600')))
 
 def today():return datetime.now(ZoneInfo('America/Toronto')).date().isoformat()
@@ -87,6 +87,8 @@ async def tick(mode=None,path=None):
     mode=mode or os.getenv('DATA_MODE','live')
     for sport in MODELS:
         try:
+            if mode == 'live':
+                win_probability.audit(sport, today(), path)
             await board(sport,today(),mode,force=True,path=path)
             # Settle outstanding games on their original dates; never manufacture missed forecasts.
             with store.connect(path) as c:
